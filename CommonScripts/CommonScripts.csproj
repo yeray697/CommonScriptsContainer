@@ -48,13 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomComponent\ScriptListBox\ScriptListManager.cs" />
     <Compile Include="CustomComponent\ScriptListBox\ScriptItem.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CustomComponent\ScriptListBox\ScriptItem.Designer.cs">
       <DependentUpon>ScriptItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomComponent\ScriptListBox\ScriptListManager.cs" />
     <Compile Include="Model\Script.cs" />
     <Compile Include="Presenter\Interfaces\IMainPresenter.cs" />
     <Compile Include="Presenter\MainPresenter.cs" />

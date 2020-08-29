@@ -1,15 +1,15 @@
-﻿using CommonScripts.Model;
+﻿using MetroFramework.Controls;
+using CommonScripts.Model;
 
 namespace CommonScripts.CustomComponent.ScriptListBox
 {
-    public partial class ScriptItem
+    public partial class ScriptItem : MetroUserControl
     {
         private Script _script;
         private bool _hasParentLoaded;
 
         public ScriptItem()
         {
-            this._script = null;
             InitializeComponent();
             PaintUI();
         }

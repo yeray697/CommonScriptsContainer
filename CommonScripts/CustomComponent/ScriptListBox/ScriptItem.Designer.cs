@@ -2,13 +2,32 @@
 
 namespace CommonScripts.CustomComponent.ScriptListBox
 {
-    public partial class ScriptItem : MetroPanel
+    partial class ScriptItem
     {
-        private System.Windows.Forms.PictureBox pbxScriptStatus;
-        private System.Windows.Forms.PictureBox pbxEdit;
-        private System.Windows.Forms.PictureBox pbxRemove;
-        private MetroLabel lblScriptName;
+        /// <summary> 
+        /// Variable del diseñador necesaria.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
+        /// <summary> 
+        /// Limpiar los recursos que se estén usando.
+        /// </summary>
+        /// <param name="disposing">true si los recursos administrados se deben desechar; false en caso contrario.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Código generado por el Diseñador de componentes
+
+        /// <summary> 
+        /// Método necesario para admitir el Diseñador. No se puede modificar
+        /// el contenido de este método con el editor de código.
+        /// </summary>
         private void InitializeComponent()
         {
             this.lblScriptName = new MetroFramework.Controls.MetroLabel();
@@ -22,7 +41,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             // 
             // lblScriptName
             // 
-            this.lblScriptName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lblScriptName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblScriptName.Location = new System.Drawing.Point(30, 5);
             this.lblScriptName.Name = "lblScriptName";
@@ -77,18 +96,24 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.Controls.Add(this.pbxEdit);
             this.Controls.Add(this.pbxScriptStatus);
             this.Controls.Add(this.lblScriptName);
-
+            this.Name = "ScriptItem";
             this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Size = new System.Drawing.Size(400, 30);
+            this.Size = new System.Drawing.Size(410, 30);
             this.Style = MetroFramework.MetroColorStyle.Teal;
+            this.ParentChanged += new System.EventHandler(this.MainForm_ParentChanged);
             ((System.ComponentModel.ISupportInitialize)(this.pbxScriptStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxRemove)).EndInit();
             this.ResumeLayout(false);
 
-            this.ParentChanged += MainForm_ParentChanged;
-
         }
+
+        #endregion
+        
+        private System.Windows.Forms.PictureBox pbxScriptStatus;
+        private System.Windows.Forms.PictureBox pbxEdit;
+        private System.Windows.Forms.PictureBox pbxRemove;
+        private MetroLabel lblScriptName;
     }
 }

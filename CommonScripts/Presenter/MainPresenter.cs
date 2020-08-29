@@ -31,6 +31,13 @@ namespace CommonScripts.Presenter
             scripts.Add(new Script() { Id = 4, ScriptName = "asdf4", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
             scripts.Add(new Script() { Id = 5, ScriptName = "asdf5", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
             scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
             _view.ShowScripts(scripts);
         }
     }
