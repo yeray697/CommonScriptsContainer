@@ -25,6 +25,24 @@ namespace CommonScripts.View
         {
             InitializeComponent();
             scriptListManager = new ScriptListManager(StyleManager);
+            scriptListManager.EditClicked += ShowEditForm;
+            scriptListManager.RemoveClicked += ShowRemoveDialog;
+            scriptListManager.StatusClicked += ChangeScriptStatus;
+        }
+
+        private void ChangeScriptStatus(ScriptItem source)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ShowRemoveDialog(ScriptItem source)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ShowEditForm(ScriptItem source)
+        {
+            throw new NotImplementedException();
         }
 
         protected override void OnLoad(EventArgs e)

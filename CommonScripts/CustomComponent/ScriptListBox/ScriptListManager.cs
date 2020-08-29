@@ -7,6 +7,11 @@ namespace CommonScripts.CustomComponent.ScriptListBox
 {
     public class ScriptListManager
     {
+
+        public event ScriptItem.ItemClickHandler RemoveClicked;
+        public event ScriptItem.ItemClickHandler EditClicked;
+        public event ScriptItem.ItemClickHandler StatusClicked;
+
         public List<ScriptItem> ControlList { get; private set; }
 
         public int MarginBetweenElements { get; set; }
@@ -75,12 +80,30 @@ namespace CommonScripts.CustomComponent.ScriptListBox
                 foreach (var item in list)
                 {
                     aux = new ScriptItem(item, _styleManager);
+                    aux.StatusClicked += Script_StatusClicked;
+                    aux.EditClicked += Script_EditClicked;
+                    aux.RemoveClicked += Script_RemoveClicked;
                     aux.Location = new Point(0, lastYLocation);
                     ControlList.Add(aux);
 
                     lastYLocation += aux.Height + MarginBetweenElements;
                 }
             }
+        }
+
+        private void Script_RemoveClicked(ScriptItem source)
+        {
+            RemoveClicked?.Invoke(source);
+        }
+
+        private void Script_EditClicked(ScriptItem source)
+        {
+            EditClicked?.Invoke(source);
+        }
+
+        private void Script_StatusClicked(ScriptItem source)
+        {
+            StatusClicked?.Invoke(source);
         }
 
         private int GetListCount()

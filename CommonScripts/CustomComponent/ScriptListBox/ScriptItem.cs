@@ -6,6 +6,12 @@ namespace CommonScripts.CustomComponent.ScriptListBox
 {
     public partial class ScriptItem : MetroUserControl
     {
+        public delegate void ItemClickHandler(ScriptItem source);
+
+        public event ItemClickHandler RemoveClicked;
+        public event ItemClickHandler EditClicked;
+        public event ItemClickHandler StatusClicked;
+
         private Script _script;
         private bool _hasParentLoaded;
         private MetroStyleManager _styleManager;
@@ -44,7 +50,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
 
         private void PaintUI()
         {
-            UpdateStyles();
+            UpdateMetroStyles();
             if (_script != null)
             {
                 PaintScriptName();
@@ -52,7 +58,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             }
         }
 
-        private void UpdateStyles()
+        private void UpdateMetroStyles()
         {
             this.Style = _styleManager.Style;
             this.Theme = _styleManager.Theme;
@@ -85,14 +91,29 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         {
             if (_script.ScriptType == Script.Type.Daemon || _script.ScriptType == Script.Type.Scheduled)
             {
-                pbxScriptStatus.Image = (_script.ScriptStatus == Script.Status.Stopped) ? Properties.Resources.play : Properties.Resources.pause;
-                pbxScriptStatus.Refresh();
-                pbxScriptStatus.Visible = true;
+                pbxStatus.Image = (_script.ScriptStatus == Script.Status.Stopped) ? Properties.Resources.play : Properties.Resources.pause;
+                pbxStatus.Refresh();
+                pbxStatus.Visible = true;
             }
             else
             {
-                pbxScriptStatus.Visible = false;
+                pbxStatus.Visible = false;
             }
+        }
+
+        private void pbxEdit_Click(object sender, System.EventArgs e)
+        {
+            EditClicked?.Invoke(this);
+        }
+
+        private void pbxRemove_Click(object sender, System.EventArgs e)
+        {
+            RemoveClicked?.Invoke(this);
+        }
+
+        private void pbxStatus_Click(object sender, System.EventArgs e)
+        {
+            StatusClicked?.Invoke(this);
         }
     }
 }

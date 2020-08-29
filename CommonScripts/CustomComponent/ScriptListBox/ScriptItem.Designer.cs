@@ -31,10 +31,10 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         private void InitializeComponent()
         {
             this.lblScriptName = new MetroFramework.Controls.MetroLabel();
-            this.pbxScriptStatus = new System.Windows.Forms.PictureBox();
+            this.pbxStatus = new System.Windows.Forms.PictureBox();
             this.pbxEdit = new System.Windows.Forms.PictureBox();
             this.pbxRemove = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxScriptStatus)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxStatus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxRemove)).BeginInit();
             this.SuspendLayout();
@@ -50,19 +50,20 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.lblScriptName.Text = "ScriptName";
             this.lblScriptName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // pbxScriptStatus
+            // pbxStatus
             // 
-            this.pbxScriptStatus.BackColor = System.Drawing.Color.Transparent;
-            this.pbxScriptStatus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pbxScriptStatus.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbxScriptStatus.Image = global::CommonScripts.Properties.Resources.pause;
-            this.pbxScriptStatus.Location = new System.Drawing.Point(5, 5);
-            this.pbxScriptStatus.Name = "pbxScriptStatus";
-            this.pbxScriptStatus.Padding = new System.Windows.Forms.Padding(2);
-            this.pbxScriptStatus.Size = new System.Drawing.Size(20, 20);
-            this.pbxScriptStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbxScriptStatus.TabIndex = 1;
-            this.pbxScriptStatus.TabStop = false;
+            this.pbxStatus.BackColor = System.Drawing.Color.Transparent;
+            this.pbxStatus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pbxStatus.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxStatus.Image = global::CommonScripts.Properties.Resources.pause;
+            this.pbxStatus.Location = new System.Drawing.Point(5, 5);
+            this.pbxStatus.Name = "pbxStatus";
+            this.pbxStatus.Padding = new System.Windows.Forms.Padding(2);
+            this.pbxStatus.Size = new System.Drawing.Size(20, 20);
+            this.pbxStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxStatus.TabIndex = 1;
+            this.pbxStatus.TabStop = false;
+            this.pbxStatus.Click += new System.EventHandler(this.pbxStatus_Click);
             // 
             // pbxEdit
             // 
@@ -76,6 +77,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.pbxEdit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxEdit.TabIndex = 2;
             this.pbxEdit.TabStop = false;
+            this.pbxEdit.Click += new System.EventHandler(this.pbxEdit_Click);
             // 
             // pbxRemove
             // 
@@ -89,18 +91,19 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.pbxRemove.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxRemove.TabIndex = 3;
             this.pbxRemove.TabStop = false;
+            this.pbxRemove.Click += new System.EventHandler(this.pbxRemove_Click);
             // 
             // ScriptItem
             // 
             this.Controls.Add(this.pbxRemove);
             this.Controls.Add(this.pbxEdit);
-            this.Controls.Add(this.pbxScriptStatus);
+            this.Controls.Add(this.pbxStatus);
             this.Controls.Add(this.lblScriptName);
             this.Name = "ScriptItem";
             this.Size = new System.Drawing.Size(410, 30);
             this.Style = MetroFramework.MetroColorStyle.Teal;
             this.ParentChanged += new System.EventHandler(this.MainForm_ParentChanged);
-            ((System.ComponentModel.ISupportInitialize)(this.pbxScriptStatus)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxRemove)).EndInit();
             this.ResumeLayout(false);
@@ -109,7 +112,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
 
         #endregion
         
-        private System.Windows.Forms.PictureBox pbxScriptStatus;
+        private System.Windows.Forms.PictureBox pbxStatus;
         private System.Windows.Forms.PictureBox pbxEdit;
         private System.Windows.Forms.PictureBox pbxRemove;
         private MetroLabel lblScriptName;
