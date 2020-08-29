@@ -40,7 +40,6 @@ namespace CommonScripts.View
             this.metroStyleManager = new MetroFramework.Components.MetroStyleManager(this.components);
             this.mtcMain.SuspendLayout();
             this.mtpRun.SuspendLayout();
-            this.pnlScripts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,6 +94,7 @@ namespace CommonScripts.View
             // 
             this.lblRunAddScript.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblRunAddScript.AutoSize = true;
+            this.lblRunAddScript.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblRunAddScript.FontWeight = MetroFramework.MetroLabelWeight.Regular;
             this.lblRunAddScript.ForeColor = System.Drawing.Color.Red;
             this.lblRunAddScript.Location = new System.Drawing.Point(3, 265);
@@ -122,7 +122,6 @@ namespace CommonScripts.View
             // 
             this.metroStyleManager.Owner = this;
             this.metroStyleManager.Style = MetroFramework.MetroColorStyle.Orange;
-            this.metroStyleManager.Theme = MetroFramework.MetroThemeStyle.Light;
             // 
             // MainForm
             // 
@@ -135,8 +134,6 @@ namespace CommonScripts.View
             this.mtcMain.ResumeLayout(false);
             this.mtpRun.ResumeLayout(false);
             this.mtpRun.PerformLayout();
-            this.pnlScripts.ResumeLayout(false);
-            this.pnlScripts.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager)).EndInit();
             this.ResumeLayout(false);
 
