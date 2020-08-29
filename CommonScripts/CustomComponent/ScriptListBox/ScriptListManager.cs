@@ -1,4 +1,5 @@
 ﻿using CommonScripts.Model;
+using MetroFramework.Components;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -10,10 +11,13 @@ namespace CommonScripts.CustomComponent.ScriptListBox
 
         public int MarginBetweenElements { get; set; }
 
-        public ScriptListManager()
+        private MetroStyleManager _styleManager;
+
+        public ScriptListManager(MetroStyleManager styleManager)
         {
             MarginBetweenElements = 5;
             ControlList = new List<ScriptItem>();
+            _styleManager = styleManager;
         }
 
         public List<ScriptItem> CreateWithList(IList<Script> list)
@@ -25,7 +29,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
 
         public ScriptItem AddItem(Script item)
         {
-            ScriptItem newItem = new ScriptItem(item);
+            ScriptItem newItem = new ScriptItem(item, _styleManager);
 
             ControlList.Add(newItem);
 
@@ -70,7 +74,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             {
                 foreach (var item in list)
                 {
-                    aux = new ScriptItem(item);
+                    aux = new ScriptItem(item, _styleManager);
                     aux.Location = new Point(0, lastYLocation);
                     ControlList.Add(aux);
 

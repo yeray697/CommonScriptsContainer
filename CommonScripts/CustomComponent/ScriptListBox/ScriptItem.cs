@@ -1,5 +1,6 @@
 ﻿using MetroFramework.Controls;
 using CommonScripts.Model;
+using MetroFramework.Components;
 
 namespace CommonScripts.CustomComponent.ScriptListBox
 {
@@ -7,6 +8,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
     {
         private Script _script;
         private bool _hasParentLoaded;
+        private MetroStyleManager _styleManager;
 
         public ScriptItem()
         {
@@ -14,8 +16,9 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             PaintUI();
         }
 
-        public ScriptItem(Script script)
+        public ScriptItem(Script script, MetroStyleManager styleManager)
         {
+            _styleManager = styleManager;
             this._script = script;
             InitializeComponent();
             PaintUI();
@@ -41,12 +44,22 @@ namespace CommonScripts.CustomComponent.ScriptListBox
 
         private void PaintUI()
         {
-
+            UpdateStyles();
             if (_script != null)
             {
                 PaintScriptName();
                 PaintScriptStatus();
             }
+        }
+
+        private void UpdateStyles()
+        {
+            this.Style = _styleManager.Style;
+            this.Theme = _styleManager.Theme;
+            this.StyleManager = _styleManager;
+
+            lblScriptName.Style = _styleManager.Style;
+            lblScriptName.Theme = _styleManager.Theme;
         }
 
         private void MainForm_ParentChanged(object sender, System.EventArgs e)

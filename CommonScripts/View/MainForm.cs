@@ -24,7 +24,7 @@ namespace CommonScripts.View
         public MainForm()
         {
             InitializeComponent();
-            scriptListManager = new ScriptListManager();
+            scriptListManager = new ScriptListManager(StyleManager);
         }
 
         protected override void OnLoad(EventArgs e)
