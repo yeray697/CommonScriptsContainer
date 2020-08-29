@@ -58,6 +58,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             if (!_hasParentLoaded && Parent != null)
             {
                 Width = Parent.Width;
+                this.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
                 _hasParentLoaded = true;
             }
         }

@@ -97,8 +97,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.Controls.Add(this.pbxScriptStatus);
             this.Controls.Add(this.lblScriptName);
             this.Name = "ScriptItem";
-            this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.Size = new System.Drawing.Size(410, 30);
             this.Style = MetroFramework.MetroColorStyle.Teal;
             this.ParentChanged += new System.EventHandler(this.MainForm_ParentChanged);
