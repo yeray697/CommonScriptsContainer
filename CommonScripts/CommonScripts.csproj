@@ -48,13 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomComponent\ScriptListBox\ScriptListManager.cs" />
+    <Compile Include="CustomComponent\ScriptListBox\ScriptListAdapter.cs" />
     <Compile Include="CustomComponent\ScriptListBox\ScriptItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CustomComponent\ScriptListBox\ScriptItem.Designer.cs">
       <DependentUpon>ScriptItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extension\MetroStyleManagerExtension.cs" />
     <Compile Include="Model\Script.cs" />
     <Compile Include="Presenter\Interfaces\IMainPresenter.cs" />
     <Compile Include="Presenter\MainPresenter.cs" />
@@ -72,6 +73,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\ChocolateyService.cs" />
+    <Compile Include="View\ScriptForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ScriptForm.Designer.cs">
+      <DependentUpon>ScriptForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="CustomComponent\ScriptListBox\ScriptItem.resx">
       <DependentUpon>ScriptItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -88,6 +95,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\ScriptForm.resx">
+      <DependentUpon>ScriptForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -102,20 +112,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MetroFramework">
-      <Version>1.2.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Windows.SDK.Contracts">
-      <Version>10.0.19041.1</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.WindowsRuntime">
-      <Version>4.6.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Runtime.WindowsRuntime.UI.Xaml">
-      <Version>4.6.0</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\edit.png" />
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +122,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MetroSet_UI">
+      <Version>1.0.5</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

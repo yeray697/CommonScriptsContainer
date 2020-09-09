@@ -1,4 +1,4 @@
-﻿using MetroFramework.Controls;
+﻿using MetroSet_UI.Controls;
 
 namespace CommonScripts.CustomComponent.ScriptListBox
 {
@@ -30,7 +30,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblScriptName = new MetroFramework.Controls.MetroLabel();
+            this.lblScriptName = new MetroSet_UI.Controls.MetroSetLabel();
             this.pbxStatus = new System.Windows.Forms.PictureBox();
             this.pbxEdit = new System.Windows.Forms.PictureBox();
             this.pbxRemove = new System.Windows.Forms.PictureBox();
@@ -43,12 +43,17 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             // 
             this.lblScriptName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblScriptName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.lblScriptName.Location = new System.Drawing.Point(30, 5);
             this.lblScriptName.Name = "lblScriptName";
-            this.lblScriptName.Size = new System.Drawing.Size(315, 20);
+            this.lblScriptName.Size = new System.Drawing.Size(325, 20);
+            this.lblScriptName.Style = MetroSet_UI.Design.Style.Light;
+            this.lblScriptName.StyleManager = null;
             this.lblScriptName.TabIndex = 0;
             this.lblScriptName.Text = "ScriptName";
             this.lblScriptName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblScriptName.ThemeAuthor = "Narwin";
+            this.lblScriptName.ThemeName = "MetroLite";
             // 
             // pbxStatus
             // 
@@ -71,7 +76,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.pbxEdit.BackColor = System.Drawing.Color.Transparent;
             this.pbxEdit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbxEdit.Image = global::CommonScripts.Properties.Resources.edit;
-            this.pbxEdit.Location = new System.Drawing.Point(350, 5);
+            this.pbxEdit.Location = new System.Drawing.Point(360, 5);
             this.pbxEdit.Name = "pbxEdit";
             this.pbxEdit.Size = new System.Drawing.Size(20, 20);
             this.pbxEdit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -85,7 +90,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.pbxRemove.BackColor = System.Drawing.Color.Transparent;
             this.pbxRemove.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbxRemove.Image = global::CommonScripts.Properties.Resources.delete;
-            this.pbxRemove.Location = new System.Drawing.Point(375, 5);
+            this.pbxRemove.Location = new System.Drawing.Point(385, 5);
             this.pbxRemove.Name = "pbxRemove";
             this.pbxRemove.Size = new System.Drawing.Size(20, 20);
             this.pbxRemove.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -95,14 +100,13 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             // 
             // ScriptItem
             // 
+            this.AutoScroll = true;
             this.Controls.Add(this.pbxRemove);
             this.Controls.Add(this.pbxEdit);
             this.Controls.Add(this.pbxStatus);
             this.Controls.Add(this.lblScriptName);
             this.Name = "ScriptItem";
             this.Size = new System.Drawing.Size(410, 30);
-            this.Style = MetroFramework.MetroColorStyle.Teal;
-            this.ParentChanged += new System.EventHandler(this.MainForm_ParentChanged);
             ((System.ComponentModel.ISupportInitialize)(this.pbxStatus)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxRemove)).EndInit();
@@ -115,6 +119,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         private System.Windows.Forms.PictureBox pbxStatus;
         private System.Windows.Forms.PictureBox pbxEdit;
         private System.Windows.Forms.PictureBox pbxRemove;
-        private MetroLabel lblScriptName;
+        private MetroSetLabel lblScriptName;
     }
 }

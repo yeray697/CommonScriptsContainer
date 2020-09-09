@@ -31,14 +31,49 @@ namespace CommonScripts.Presenter
             scripts.Add(new Script() { Id = 4, ScriptName = "asdf4", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
             scripts.Add(new Script() { Id = 5, ScriptName = "asdf5", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
             scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
-            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
-            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
-            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
-            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
-            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
-            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
-            scripts.Add(new Script() { Id = 6, ScriptName = "asdf6", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 7, ScriptName = "asdf7", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 8, ScriptName = "asdf8", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 9, ScriptName = "asdf9", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 10, ScriptName = "asdf10", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 11, ScriptName = "asdf11", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 12, ScriptName = "asdf12", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
+            scripts.Add(new Script() { Id = 13, ScriptName = "asdf13", ScriptStatus = Script.Status.Running, ScriptType = Script.Type.Daemon});
             _view.ShowScripts(scripts);
+        }
+
+        public bool AddScript(Script script)
+        {
+            return true;
+        }
+
+        public bool EditScript(Script script)
+        {
+            return true;
+        }
+
+        public bool RemoveScript(int scriptId)
+        {
+            return true;
+        }
+
+        public Script.Status ChangeScriptStatus(Script script)
+        {
+            Script.Status newStatus = Script.Status.Undefined;
+            switch (script.ScriptStatus)
+            {
+                case Script.Status.Running:
+                case Script.Status.Resuming:
+                    newStatus = Script.Status.Stopped;
+                    break;
+                case Script.Status.Undefined:
+                case Script.Status.Stopped:
+                    newStatus = Script.Status.Running;
+                    break;
+                default:
+                    break;
+            }
+
+            return newStatus;
         }
     }
 }

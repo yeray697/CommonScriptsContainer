@@ -2,64 +2,96 @@
 using CommonScripts.Model;
 using CommonScripts.Presenter;
 using CommonScripts.View.Interfaces;
-using MetroFramework.Forms;
-using Microsoft.Win32;
+using MetroSet_UI.Forms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CommonScripts.View
 {
-    public partial class MainForm : MetroForm, IMainView
+    public partial class MainForm : MetroSetForm, IMainView
     {
         public MainPresenter Presenter { get; set; }
-        private ScriptListManager scriptListManager;
+        private ScriptListAdapter scriptListManager;
 
         public MainForm()
         {
             InitializeComponent();
-            scriptListManager = new ScriptListManager(StyleManager);
-            scriptListManager.EditClicked += ShowEditForm;
-            scriptListManager.RemoveClicked += ShowRemoveDialog;
+            scriptListManager = new ScriptListAdapter(StyleManager, pnlScripts);
+            scriptListManager.EditClicked += EditScript;
+            scriptListManager.RemoveClicked += RemoveScript;
             scriptListManager.StatusClicked += ChangeScriptStatus;
         }
-
-        private void ChangeScriptStatus(ScriptItem source)
+        //Helps with the refresh of the UI when resizing the window
+        protected override CreateParams CreateParams
         {
-            throw new NotImplementedException();
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
+                return cp;
+            }
         }
 
-        private void ShowRemoveDialog(ScriptItem source)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ShowEditForm(ScriptItem source)
-        {
-            throw new NotImplementedException();
-        }
-
+        #region Events
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             Presenter.LoadSettings();
         }
 
-        private void lblRunAddScript_Click(object sender, EventArgs e)
+        private void AddScript(object sender, EventArgs e)
         {
+            ShowScriptForm(null, (Script addedScript) => {
+                if (Presenter.AddScript(addedScript))
+                {
+                    scriptListManager.AddItem(addedScript);
+                }
+            });
+        }
 
+        private void ChangeScriptStatus(Script script)
+        {
+            Script.Status newStatus = Presenter.ChangeScriptStatus(script);
+            scriptListManager.ChangeScriptStatus(script.Id, newStatus);
+        }
+
+        private void RemoveScript(Script script)
+        {
+            DialogResult r = MetroSetMessageBox.Show(this, "Do you want to remove the script?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            if (r == DialogResult.Yes)
+            {
+                int scriptId = script.Id;
+                if (Presenter.RemoveScript(scriptId))
+                {
+                    scriptListManager.RemoveItem(scriptId);
+                }
+            }
+        }
+
+        private void EditScript(Script script)
+        {
+            ShowScriptForm(script, (Script editedScript) => {
+                if (Presenter.EditScript(editedScript))
+                {
+                    scriptListManager.EditItem(editedScript);
+                }
+            });
+        }
+        #endregion
+
+        private void ShowScriptForm(Script script, Action<Script> postAction)
+        {
+            ScriptForm scriptForm = new ScriptForm(styleManager, script);
+            if (scriptForm.ShowDialog() == DialogResult.OK)
+            {
+                postAction(scriptForm.GetScript());
+            }
         }
 
         public void ShowScripts(IList<Script> scripts)
         {
-            var controls = scriptListManager.CreateWithList(scripts).ToArray();
-            pnlScripts.Controls.AddRange(controls);
+            scriptListManager.CreateWithList(scripts);
         }
     }
 }
