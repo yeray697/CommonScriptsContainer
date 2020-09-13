@@ -93,5 +93,23 @@ namespace CommonScripts.View
         {
             scriptListManager.CreateWithList(scripts);
         }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            //if the form is minimized  
+            //hide it from the task bar  
+            //and show the system tray icon (represented by the NotifyIcon control)  
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+            }
+        }
+
+        private void appNotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+            
+        }
     }
 }

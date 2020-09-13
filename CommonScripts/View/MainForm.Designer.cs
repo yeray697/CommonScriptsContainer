@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.mtcMain = new MetroSet_UI.Controls.MetroSetTabControl();
             this.mtpRun = new MetroSet_UI.Child.MetroSetTabPage();
             this.pnlScripts = new MetroSet_UI.Controls.MetroSetPanel();
@@ -35,6 +37,7 @@
             this.lblRunAddScript = new MetroSet_UI.Controls.MetroSetLabel();
             this.mtpSettings = new MetroSet_UI.Child.MetroSetTabPage();
             this.metroSetControlBox1 = new MetroSet_UI.Controls.MetroSetControlBox();
+            this.appNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.mtcMain.SuspendLayout();
             this.mtpRun.SuspendLayout();
             this.SuspendLayout();
@@ -167,6 +170,12 @@
             this.metroSetControlBox1.ThemeAuthor = "Narwin";
             this.metroSetControlBox1.ThemeName = "MetroLite";
             // 
+            // appNotifyIcon
+            // 
+            this.appNotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("appNotifyIcon.Icon")));
+            this.appNotifyIcon.Visible = true;
+            this.appNotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.appNotifyIcon_MouseDoubleClick);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -179,6 +188,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StyleManager = this.styleManager;
             this.Text = "Common Scripts";
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.mtcMain.ResumeLayout(false);
             this.mtpRun.ResumeLayout(false);
             this.mtpRun.PerformLayout();
@@ -195,6 +205,7 @@
         private MetroSet_UI.Controls.MetroSetPanel pnlScripts;
         private MetroSet_UI.StyleManager styleManager;
         private MetroSet_UI.Controls.MetroSetControlBox metroSetControlBox1;
+        private System.Windows.Forms.NotifyIcon appNotifyIcon;
     }
 }
 
