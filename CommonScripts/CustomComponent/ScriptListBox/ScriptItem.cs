@@ -1,4 +1,5 @@
 ﻿using CommonScripts.Model;
+using CommonScripts.Model.Base;
 using MetroSet_UI;
 using System.Windows.Forms;
 
@@ -12,32 +13,59 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         public event ItemClickHandler EditClicked;
         public event ItemClickHandler StatusClicked;
 
-        private Script _script;
         private StyleManager _styleManager;
 
-        public ScriptItem(Script script, StyleManager styleManager)
+        public ScriptAbs Script { get; private set; }
+
+        public ScriptItem(ScriptAbs script, StyleManager styleManager)
         {
             _styleManager = styleManager;
-            _script = script;
+            Script = script;
             InitializeComponent();
             PaintUI();
         }
-        public int GetScriptId() => _script.Id;
 
-        public void ModifyScriptStatus(Script.Status status)
+        public void SetWidth(int width)
         {
-            if (_script.ScriptStatus != status)
+            Width = width;
+            this.Anchor = ((AnchorStyles.Top | AnchorStyles.Left) | AnchorStyles.Right);
+        }
+
+        public bool ModifyScript(ScriptAbs editScript, bool hasScriptTypeChanged)
+        {
+            bool hasNameBeenModified = false;
+
+            hasNameBeenModified = ModifyScriptName(editScript.ScriptName);
+            if (hasScriptTypeChanged)
             {
-                _script.ScriptStatus = status;
+                ScriptTypeChanged(editScript);
+            }
+            Script = editScript;
+
+            return hasNameBeenModified;
+        }
+
+        public void ModifyScriptStatus(ScriptStatus status)
+        {
+            if (Script.ScriptStatus != status)
+            {
+                Script.ScriptStatus = status;
                 PaintScriptStatus();
             }
         }
-        public bool ModifyScriptName(string name)
+
+        private void ScriptTypeChanged(ScriptAbs newItem)
+        {
+            Script = newItem;
+            PaintScriptType();
+        }
+
+        private bool ModifyScriptName(string name)
         {
             bool hasChanged = false;
-            if (_script.ScriptName != name)
+            if (Script.ScriptName != name)
             {
-                _script.ScriptName = name;
+                Script.ScriptName = name;
                 PaintScriptName();
                 hasChanged = true;
             }
@@ -47,47 +75,41 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         private void PaintUI()
         {
             UpdateMetroStyles();
-            if (_script != null)
+            if (Script != null)
             {
                 PaintScriptName();
                 PaintScriptStatus();
+                PaintScriptType();
             }
         }
 
         private void UpdateMetroStyles()
         {
             lblScriptName.StyleManager = _styleManager;
-            lblScriptName.Style = _styleManager.Style; //Little hack to make the style of a component created programmatically to apply
-            //The style property call the private method 'ApplyTheme', which refresh the style https://github.com/N-a-r-w-i-n/MetroSet-UI/blob/4939610696619884f5596ef63965e3b1898c4ff0/MetroSet%20UI/Controls/MetroSetLabel.cs#L51
+            lblScriptType.StyleManager = _styleManager;
 
-        }
+            //Little hack to make the style of a component created programmatically to be applied
+            //The Style property call the private method 'ApplyTheme', which refreshes the style https://github.com/N-a-r-w-i-n/MetroSet-UI/blob/4939610696619884f5596ef63965e3b1898c4ff0/MetroSet%20UI/Controls/
+            lblScriptName.Style = _styleManager.Style;
+            lblScriptType.Style = _styleManager.Style;
 
-        public void SetWidth(int width)
-        {
-            Width = width;
-            this.Anchor = ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right);
-        }
-
-        public Script GetScript()
-        {
-            return _script;
         }
 
         private void PaintScriptName()
         {
-            lblScriptName.Text = _script.ScriptName;
+            lblScriptName.Text = Script.ScriptName;
         }
 
         private void PaintScriptStatus()
         {
-            switch (_script.ScriptStatus)
+            switch (Script.ScriptStatus)
             {
-                case Script.Status.Running:
-                case Script.Status.Resuming:
+                case ScriptStatus.Running:
+                case ScriptStatus.Resuming:
                     pbxStatus.Image = Properties.Resources.pause;
                     break;
-                case Script.Status.Undefined:
-                case Script.Status.Stopped:
+                case ScriptStatus.Undefined:
+                case ScriptStatus.Stopped:
                     pbxStatus.Image = Properties.Resources.play;
                     break;
                 default:
@@ -95,6 +117,11 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             }
             pbxStatus.Refresh();
 
+        }
+
+        private void PaintScriptType()
+        {
+            lblScriptType.Text = Script.ScriptType.ToString();
         }
 
         private void pbxEdit_Click(object sender, System.EventArgs e)

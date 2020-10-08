@@ -1,6 +1,8 @@
 ﻿using CommonScripts.CustomComponent.ScriptListBox;
 using CommonScripts.Model;
+using CommonScripts.Model.Base;
 using CommonScripts.Presenter;
+using CommonScripts.Service;
 using CommonScripts.View.Interfaces;
 using MetroSet_UI.Forms;
 using System;
@@ -12,15 +14,17 @@ namespace CommonScripts.View
     public partial class MainForm : MetroSetForm, IMainView
     {
         public MainPresenter Presenter { get; set; }
-        private ScriptListAdapter scriptListManager;
+        private ScriptListAdapter scriptListAdapter;
 
         public MainForm()
         {
             InitializeComponent();
-            scriptListManager = new ScriptListAdapter(StyleManager, pnlScripts);
-            scriptListManager.EditClicked += EditScript;
-            scriptListManager.RemoveClicked += RemoveScript;
-            scriptListManager.StatusClicked += ChangeScriptStatus;
+            scriptListAdapter = new ScriptListAdapter(StyleManager, pnlScripts);
+            scriptListAdapter.EditClicked += EditScript;
+            scriptListAdapter.RemoveClicked += RemoveScript;
+            scriptListAdapter.StatusClicked += ChangeScriptStatus;
+
+            ListenKeysService.GetInstance().Run();
         }
         //Helps with the refresh of the UI when resizing the window
         protected override CreateParams CreateParams
@@ -42,21 +46,21 @@ namespace CommonScripts.View
 
         private void AddScript(object sender, EventArgs e)
         {
-            ShowScriptForm(null, (Script addedScript) => {
+            ShowScriptForm(null, (ScriptAbs addedScript, bool hasScriptTypeChanged /*Unused, just used when editting*/) => {
                 if (Presenter.AddScript(addedScript))
                 {
-                    scriptListManager.AddItem(addedScript);
+                    scriptListAdapter.AddItem(addedScript);
                 }
             });
         }
 
-        private void ChangeScriptStatus(Script script)
+        private void ChangeScriptStatus(ScriptAbs script)
         {
-            Script.Status newStatus = Presenter.ChangeScriptStatus(script);
-            scriptListManager.ChangeScriptStatus(script.Id, newStatus);
+            ScriptStatus newStatus = Presenter.ChangeScriptStatus(script);
+            scriptListAdapter.ChangeScriptStatus(script.Id, newStatus);
         }
 
-        private void RemoveScript(Script script)
+        private void RemoveScript(ScriptAbs script)
         {
             DialogResult r = MetroSetMessageBox.Show(this, "Do you want to remove the script?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (r == DialogResult.Yes)
@@ -64,45 +68,41 @@ namespace CommonScripts.View
                 int scriptId = script.Id;
                 if (Presenter.RemoveScript(scriptId))
                 {
-                    scriptListManager.RemoveItem(scriptId);
+                    scriptListAdapter.RemoveItem(scriptId);
                 }
             }
         }
 
-        private void EditScript(Script script)
+        private void EditScript(ScriptAbs script)
         {
-            ShowScriptForm(script, (Script editedScript) => {
+            ShowScriptForm(script, (ScriptAbs editedScript, bool hasScriptTypeChanged) => {
                 if (Presenter.EditScript(editedScript))
                 {
-                    scriptListManager.EditItem(editedScript);
+                    scriptListAdapter.EditItem(editedScript, hasScriptTypeChanged);
                 }
             });
         }
         #endregion
 
-        private void ShowScriptForm(Script script, Action<Script> postAction)
+        private void ShowScriptForm(ScriptAbs script, Action<ScriptAbs, bool> postAction)
         {
             ScriptForm scriptForm = new ScriptForm(styleManager, script);
             if (scriptForm.ShowDialog() == DialogResult.OK)
             {
-                postAction(scriptForm.GetScript());
+                bool hasScriptTypeChanged = script != null && scriptForm.HasScriptTypeChanged;
+                postAction(scriptForm.GetScript(), hasScriptTypeChanged);
             }
         }
 
-        public void ShowScripts(IList<Script> scripts)
+        public void ShowScripts(IList<ScriptAbs> scripts)
         {
-            scriptListManager.CreateWithList(scripts);
+            scriptListAdapter.CreateWithList(scripts);
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            //if the form is minimized  
-            //hide it from the task bar  
-            //and show the system tray icon (represented by the NotifyIcon control)  
             if (this.WindowState == FormWindowState.Minimized)
-            {
                 Hide();
-            }
         }
 
         private void appNotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)

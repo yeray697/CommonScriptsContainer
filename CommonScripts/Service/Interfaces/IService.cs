@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CommonScripts.Service.Interfaces
 {
-    public interface IChocolateyService
+    public interface IService
     {
-        void Install();
-        void InstallPackage();
+        void Run();
+        void Stop();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CommonScripts.Model;
+using CommonScripts.Model.Base;
 using MetroSet_UI;
 using MetroSet_UI.Controls;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
     public class ScriptListAdapter
     {
 
-        public delegate void ScriptClickHandler(Script source);
+        public delegate void ScriptClickHandler(ScriptAbs source);
 
         public event ScriptClickHandler RemoveClicked;
         public event ScriptClickHandler EditClicked;
@@ -30,13 +31,49 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             _pnlScripts = pnlScripts;
         }
 
-        public void CreateWithList(IList<Script> list)
+        #region Public methods
+        public void CreateWithList(IList<ScriptAbs> list)
         {
             CreateUIElements(list);
             PaintUI();
         }
 
-        private void CreateUIElements(IList<Script> list)
+        public void AddItem(ScriptAbs item)
+        {
+            ScriptItem scriptItem = GetScriptItemInstance(item);
+            ControlList.Add(scriptItem);
+            AddItemToPanel(scriptItem);
+            SortControls();
+        }
+
+        public void EditItem(ScriptAbs editItem, bool hasScriptTypeChanged)
+        {
+            var item = FindById(editItem.Id);
+            if (item != null && item.ModifyScript(editItem, hasScriptTypeChanged))
+                SortControls();
+        }
+
+        public void RemoveItem(int scriptId)
+        {
+            var item = FindById(scriptId);
+            if (item != null)
+            {
+                ControlList.Remove(item);
+                _pnlScripts.Controls.Remove(item);
+                SortControls();
+            }
+        }
+
+        public void ChangeScriptStatus(int scriptId, ScriptStatus newStatus)
+        {
+            var item = FindById(scriptId);
+            if (item != null)
+                item.ModifyScriptStatus(newStatus);
+        }
+        #endregion
+
+        #region Private methods
+        private void CreateUIElements(IList<ScriptAbs> list)
         {
             ControlList = new List<ScriptItem>();
             if ((list?.Count ?? 0) > 0)
@@ -44,7 +81,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
                     ControlList.Add(GetScriptItemInstance(item));
         }
 
-        private ScriptItem GetScriptItemInstance(Script script)
+        private ScriptItem GetScriptItemInstance(ScriptAbs script)
         {
             ScriptItem item = new ScriptItem(script, _styleManager);
             item.StatusClicked += Script_StatusClicked;
@@ -74,41 +111,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             _pnlScripts.Controls.Add(item);
         }
 
-        #region Control List methods
-        public void AddItem(Script item)
-        {
-            ScriptItem scriptItem = GetScriptItemInstance(item);
-            ControlList.Add(scriptItem);
-            AddItemToPanel(scriptItem);
-            SortControls();
-        }
-
-        public void EditItem(Script editItem)
-        {
-            var item = FindById(editItem.Id);
-            if (item != null && item.ModifyScriptName(editItem.ScriptName))
-                SortControls();
-        }
-
-        public void RemoveItem(int scriptId)
-        {
-            var item = FindById(scriptId);
-            if (item != null)
-            {
-                ControlList.Remove(item);
-                _pnlScripts.Controls.Remove(item);
-                SortControls();
-            }
-        }
-
-        public void ChangeScriptStatus(int scriptId, Script.Status newStatus)
-        {
-            var item = FindById(scriptId);
-            if (item != null)
-                item.ModifyScriptStatus(newStatus);
-        }
-        #endregion
-
         private int GetListCount()
         {
             return ControlList?.Count ?? 0;
@@ -120,7 +122,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             if (!IsEmptyList())
             {
                 int lastYLocation = 0;
-                foreach (var item in ControlList.OrderBy(i => i.GetScript().ScriptName))
+                foreach (var item in ControlList.OrderBy(i => i.Script.ScriptName))
                 {
                     item.Location = new Point(0, lastYLocation);
                     lastYLocation += item.Height + MarginBetweenElements;
@@ -130,28 +132,29 @@ namespace CommonScripts.CustomComponent.ScriptListBox
 
         private ScriptItem FindById(int id)
         {
-            return !IsEmptyList() ? ControlList.Find(s => s.GetScriptId() == id) : null;
+            return !IsEmptyList() ? ControlList.Find(s => s.Script.Id == id) : null;
         }
 
         private bool IsEmptyList()
         {
             return GetListCount() == 0;
         }
+        #endregion
 
         #region Events
         private void Script_RemoveClicked(ScriptItem source)
         {
-            RemoveClicked?.Invoke(source.GetScript());
+            RemoveClicked?.Invoke(source.Script);
         }
 
         private void Script_EditClicked(ScriptItem source)
         {
-            EditClicked?.Invoke(source.GetScript());
+            EditClicked?.Invoke(source.Script);
         }
 
         private void Script_StatusClicked(ScriptItem source)
         {
-            StatusClicked?.Invoke(source.GetScript());
+            StatusClicked?.Invoke(source.Script);
         }
         #endregion
     }

@@ -39,6 +39,14 @@
             this.lblScriptType = new MetroSet_UI.Controls.MetroSetLabel();
             this.cbxScriptType = new MetroSet_UI.Controls.MetroSetComboBox();
             this.ofdScriptPath = new System.Windows.Forms.OpenFileDialog();
+            this.tbxKeyPressed = new MetroSet_UI.Controls.MetroSetTextBox();
+            this.lblListenKey = new MetroSet_UI.Controls.MetroSetLabel();
+            this.dtpScriptScheduled = new System.Windows.Forms.DateTimePicker();
+            this.lblScriptSchedule = new MetroSet_UI.Controls.MetroSetLabel();
+            this.pbxRemoveKeyPressed = new System.Windows.Forms.PictureBox();
+            this.pbxEditKeyPressed = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxRemoveKeyPressed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxEditKeyPressed)).BeginInit();
             this.SuspendLayout();
             // 
             // metroSetControlBox1
@@ -48,7 +56,7 @@
             this.metroSetControlBox1.CloseHoverForeColor = System.Drawing.Color.White;
             this.metroSetControlBox1.CloseNormalForeColor = System.Drawing.Color.Gray;
             this.metroSetControlBox1.DisabledForeColor = System.Drawing.Color.DimGray;
-            this.metroSetControlBox1.Location = new System.Drawing.Point(924, 0);
+            this.metroSetControlBox1.Location = new System.Drawing.Point(550, 0);
             this.metroSetControlBox1.MaximizeBox = true;
             this.metroSetControlBox1.MaximizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.metroSetControlBox1.MaximizeHoverForeColor = System.Drawing.Color.Gray;
@@ -114,7 +122,7 @@
             this.tbxScriptName.Multiline = false;
             this.tbxScriptName.Name = "tbxScriptName";
             this.tbxScriptName.ReadOnly = false;
-            this.tbxScriptName.Size = new System.Drawing.Size(888, 26);
+            this.tbxScriptName.Size = new System.Drawing.Size(514, 26);
             this.tbxScriptName.Style = MetroSet_UI.Design.Style.Light;
             this.tbxScriptName.StyleManager = null;
             this.tbxScriptName.TabIndex = 3;
@@ -134,7 +142,7 @@
             this.btnPathSelector.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnPathSelector.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnPathSelector.HoverTextColor = System.Drawing.Color.White;
-            this.btnPathSelector.Location = new System.Drawing.Point(983, 131);
+            this.btnPathSelector.Location = new System.Drawing.Point(609, 131);
             this.btnPathSelector.Name = "btnPathSelector";
             this.btnPathSelector.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnPathSelector.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
@@ -171,7 +179,7 @@
             this.tbxScriptPath.Multiline = false;
             this.tbxScriptPath.Name = "tbxScriptPath";
             this.tbxScriptPath.ReadOnly = false;
-            this.tbxScriptPath.Size = new System.Drawing.Size(856, 26);
+            this.tbxScriptPath.Size = new System.Drawing.Size(482, 26);
             this.tbxScriptPath.Style = MetroSet_UI.Design.Style.Light;
             this.tbxScriptPath.StyleManager = null;
             this.tbxScriptPath.TabIndex = 5;
@@ -191,7 +199,7 @@
             this.btnCancel.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnCancel.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnCancel.HoverTextColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(853, 212);
+            this.btnCancel.Location = new System.Drawing.Point(479, 212);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnCancel.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
@@ -218,7 +226,7 @@
             this.btnSave.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnSave.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnSave.HoverTextColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(934, 212);
+            this.btnSave.Location = new System.Drawing.Point(560, 212);
             this.btnSave.Name = "btnSave";
             this.btnSave.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnSave.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
@@ -271,22 +279,129 @@
             this.cbxScriptType.Name = "cbxScriptType";
             this.cbxScriptType.SelectedItemBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.cbxScriptType.SelectedItemForeColor = System.Drawing.Color.White;
-            this.cbxScriptType.Size = new System.Drawing.Size(888, 26);
+            this.cbxScriptType.Size = new System.Drawing.Size(115, 26);
             this.cbxScriptType.Style = MetroSet_UI.Design.Style.Light;
             this.cbxScriptType.StyleManager = null;
             this.cbxScriptType.TabIndex = 10;
             this.cbxScriptType.ThemeAuthor = "Narwin";
             this.cbxScriptType.ThemeName = "MetroLite";
+            this.cbxScriptType.SelectedValueChanged += new System.EventHandler(this.cbxScriptType_SelectedValueChanged);
             // 
             // ofdScriptPath
             // 
             this.ofdScriptPath.FileName = "openFileDialog1";
             // 
+            // tbxKeyPressed
+            // 
+            this.tbxKeyPressed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbxKeyPressed.AutoCompleteCustomSource = null;
+            this.tbxKeyPressed.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.tbxKeyPressed.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.tbxKeyPressed.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.tbxKeyPressed.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.tbxKeyPressed.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.tbxKeyPressed.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            this.tbxKeyPressed.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.tbxKeyPressed.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
+            this.tbxKeyPressed.Image = null;
+            this.tbxKeyPressed.Lines = null;
+            this.tbxKeyPressed.Location = new System.Drawing.Point(396, 167);
+            this.tbxKeyPressed.MaxLength = 32767;
+            this.tbxKeyPressed.Multiline = false;
+            this.tbxKeyPressed.Name = "tbxKeyPressed";
+            this.tbxKeyPressed.ReadOnly = true;
+            this.tbxKeyPressed.Size = new System.Drawing.Size(175, 26);
+            this.tbxKeyPressed.Style = MetroSet_UI.Design.Style.Light;
+            this.tbxKeyPressed.StyleManager = null;
+            this.tbxKeyPressed.TabIndex = 13;
+            this.tbxKeyPressed.Text = "Listening...";
+            this.tbxKeyPressed.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.tbxKeyPressed.ThemeAuthor = "Narwin";
+            this.tbxKeyPressed.ThemeName = "MetroLite";
+            this.tbxKeyPressed.UseSystemPasswordChar = false;
+            this.tbxKeyPressed.WatermarkText = "";
+            // 
+            // lblListenKey
+            // 
+            this.lblListenKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblListenKey.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblListenKey.Location = new System.Drawing.Point(242, 167);
+            this.lblListenKey.Name = "lblListenKey";
+            this.lblListenKey.Size = new System.Drawing.Size(148, 26);
+            this.lblListenKey.Style = MetroSet_UI.Design.Style.Light;
+            this.lblListenKey.StyleManager = null;
+            this.lblListenKey.TabIndex = 11;
+            this.lblListenKey.Text = "Run on key pressed:";
+            this.lblListenKey.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblListenKey.ThemeAuthor = "Narwin";
+            this.lblListenKey.ThemeName = "MetroLite";
+            // 
+            // dtpScriptScheduled
+            // 
+            this.dtpScriptScheduled.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.dtpScriptScheduled.CustomFormat = "HH:mm";
+            this.dtpScriptScheduled.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpScriptScheduled.Location = new System.Drawing.Point(320, 166);
+            this.dtpScriptScheduled.Name = "dtpScriptScheduled";
+            this.dtpScriptScheduled.ShowUpDown = true;
+            this.dtpScriptScheduled.Size = new System.Drawing.Size(86, 27);
+            this.dtpScriptScheduled.TabIndex = 14;
+            // 
+            // lblScriptSchedule
+            // 
+            this.lblScriptSchedule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblScriptSchedule.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblScriptSchedule.Location = new System.Drawing.Point(264, 167);
+            this.lblScriptSchedule.Name = "lblScriptSchedule";
+            this.lblScriptSchedule.Size = new System.Drawing.Size(50, 26);
+            this.lblScriptSchedule.Style = MetroSet_UI.Design.Style.Light;
+            this.lblScriptSchedule.StyleManager = null;
+            this.lblScriptSchedule.TabIndex = 15;
+            this.lblScriptSchedule.Text = "Run at:";
+            this.lblScriptSchedule.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblScriptSchedule.ThemeAuthor = "Narwin";
+            this.lblScriptSchedule.ThemeName = "MetroLite";
+            this.lblScriptSchedule.UseCompatibleTextRendering = true;
+            // 
+            // pbxRemoveKeyPressed
+            // 
+            this.pbxRemoveKeyPressed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxRemoveKeyPressed.BackColor = System.Drawing.Color.Transparent;
+            this.pbxRemoveKeyPressed.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxRemoveKeyPressed.Image = global::CommonScripts.Properties.Resources.delete;
+            this.pbxRemoveKeyPressed.Location = new System.Drawing.Point(609, 167);
+            this.pbxRemoveKeyPressed.Name = "pbxRemoveKeyPressed";
+            this.pbxRemoveKeyPressed.Size = new System.Drawing.Size(26, 26);
+            this.pbxRemoveKeyPressed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxRemoveKeyPressed.TabIndex = 17;
+            this.pbxRemoveKeyPressed.TabStop = false;
+            this.pbxRemoveKeyPressed.Click += new System.EventHandler(this.pbxRemoveKeyPressed_Click);
+            // 
+            // pbxEditKeyPressed
+            // 
+            this.pbxEditKeyPressed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxEditKeyPressed.BackColor = System.Drawing.Color.Transparent;
+            this.pbxEditKeyPressed.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxEditKeyPressed.Image = global::CommonScripts.Properties.Resources.edit;
+            this.pbxEditKeyPressed.Location = new System.Drawing.Point(577, 167);
+            this.pbxEditKeyPressed.Name = "pbxEditKeyPressed";
+            this.pbxEditKeyPressed.Size = new System.Drawing.Size(26, 26);
+            this.pbxEditKeyPressed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxEditKeyPressed.TabIndex = 16;
+            this.pbxEditKeyPressed.TabStop = false;
+            this.pbxEditKeyPressed.Click += new System.EventHandler(this.pbxEditKeyPressed_Click);
+            // 
             // ScriptForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1024, 250);
+            this.ClientSize = new System.Drawing.Size(650, 250);
+            this.Controls.Add(this.pbxRemoveKeyPressed);
+            this.Controls.Add(this.pbxEditKeyPressed);
+            this.Controls.Add(this.lblScriptSchedule);
+            this.Controls.Add(this.dtpScriptScheduled);
+            this.Controls.Add(this.tbxKeyPressed);
+            this.Controls.Add(this.lblListenKey);
             this.Controls.Add(this.cbxScriptType);
             this.Controls.Add(this.lblScriptType);
             this.Controls.Add(this.btnSave);
@@ -298,9 +413,11 @@
             this.Controls.Add(this.lblScriptName);
             this.Controls.Add(this.metroSetControlBox1);
             this.MaximumSize = new System.Drawing.Size(1024, 250);
-            this.MinimumSize = new System.Drawing.Size(400, 250);
+            this.MinimumSize = new System.Drawing.Size(650, 250);
             this.Name = "ScriptForm";
             this.Text = "ScriptForm";
+            ((System.ComponentModel.ISupportInitialize)(this.pbxRemoveKeyPressed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxEditKeyPressed)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -318,5 +435,11 @@
         private MetroSet_UI.Controls.MetroSetLabel lblScriptType;
         private MetroSet_UI.Controls.MetroSetComboBox cbxScriptType;
         private System.Windows.Forms.OpenFileDialog ofdScriptPath;
+        private MetroSet_UI.Controls.MetroSetTextBox tbxKeyPressed;
+        private MetroSet_UI.Controls.MetroSetLabel lblListenKey;
+        private System.Windows.Forms.DateTimePicker dtpScriptScheduled;
+        private MetroSet_UI.Controls.MetroSetLabel lblScriptSchedule;
+        private System.Windows.Forms.PictureBox pbxRemoveKeyPressed;
+        private System.Windows.Forms.PictureBox pbxEditKeyPressed;
     }
 }

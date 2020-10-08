@@ -1,13 +1,14 @@
 ﻿using CommonScripts.Model;
+using CommonScripts.Model.Base;
 
 namespace CommonScripts.Presenter.Interfaces
 {
     public interface IMainPresenter
     {
         void LoadSettings();
-        bool AddScript(Script script);
-        bool EditScript(Script script);
+        bool AddScript(ScriptAbs script);
+        bool EditScript(ScriptAbs script);
         bool RemoveScript(int scriptId);
-        Script.Status ChangeScriptStatus(Script script);
+        ScriptStatus ChangeScriptStatus(ScriptAbs script);
     }
 }

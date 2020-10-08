@@ -5,6 +5,6 @@ namespace CommonScripts.View.Interfaces
     public interface IMainView
     {
         Presenter.MainPresenter Presenter { get; set; }
-        void ShowScripts(IList<Model.Script> scripts);
+        void ShowScripts(IList<Model.Base.ScriptAbs> scripts);
     }
 }
