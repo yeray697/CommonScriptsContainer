@@ -44,7 +44,7 @@ namespace CommonScripts.View
             cbxScriptType.SelectedItem = _script == null ? 0 : _script.ScriptType;
 
             this.Text = formTitle;
-            LoadSpecificScriptFields(script);
+            LoadSpecificScriptFields();
         }
 
         private void UpdateMetroStyles(StyleManager styleManager)
@@ -102,22 +102,17 @@ namespace CommonScripts.View
 
             StopListeningKeys();
             DisplaySpecificScriptFields();
-
-            if (scriptType == ScriptType.ListenKey)
-            {
-                DisplayScriptListeningKeyText(null);
-            }
         }
 
-        private void DisplayScriptListeningKeyText(ScriptAbs script)
+        private void DisplayScriptListeningKeyText()
         {
             tbxKeyPressed.Text = "Undefined";
             if (_listeningKeys)
             {
                 tbxKeyPressed.Text = "Listening...";
-            } else if (script != null)
+            } else if (_script != null)
             {
-                KeyPressed triggerKey = ((ScriptListenKey)script).TriggerKey;
+                KeyPressed triggerKey = ((ScriptListenKey)_script).TriggerKey;
                 if (triggerKey != null)
                     tbxKeyPressed.Text = triggerKey.ToString();
             }
@@ -136,19 +131,21 @@ namespace CommonScripts.View
                 case ScriptType.Scheduled:
                     HideScheduledScriptFields(false);
                     HideListenKeyScriptFields(true);
+                    AssignDateTimePickerValue();
                     break;
                 case ScriptType.ListenKey:
                     HideScheduledScriptFields(true);
                     HideListenKeyScriptFields(false);
+                    DisplayScriptListeningKeyText();
                     break;
                 default:
                     break;
             }
         }
 
-        private void LoadSpecificScriptFields(ScriptAbs script)
+        private void LoadSpecificScriptFields()
         {
-            if (script != null)
+            if (_script != null)
             {
                 ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue);
 
@@ -157,11 +154,10 @@ namespace CommonScripts.View
                     case ScriptType.OneOff:
                         break;
                     case ScriptType.Scheduled:
-                        TimeSpan scheduledHour = ((ScriptScheduled)script).ScheduledHour;
-                        dtpScriptScheduled.Value = DateTime.Now + scheduledHour;
+                        AssignDateTimePickerValue();
                         break;
                     case ScriptType.ListenKey:
-                        DisplayScriptListeningKeyText(script);
+                        DisplayScriptListeningKeyText();
                         break;
                     default:
                         break;
@@ -169,6 +165,15 @@ namespace CommonScripts.View
             }
 
             DisplaySpecificScriptFields();
+        }
+
+        private void AssignDateTimePickerValue()
+        {
+            DateTime value = DateTime.Now.Date;
+            if (_script != null)
+                value += ((ScriptScheduled)_script).ScheduledHour;
+
+            dtpScriptScheduled.Value = value;
         }
 
         private void HideScheduledScriptFields(bool hide)
@@ -216,7 +221,7 @@ namespace CommonScripts.View
         private void StartListeningKeys()
         {
             _listeningKeys = true;
-            DisplayScriptListeningKeyText(null);
+            DisplayScriptListeningKeyText();
 
             ListenKeysService listenKeysService = ListenKeysService.GetInstance();
             listenKeysService.SingleKeyUpClicked += ListenKeysService_KeyUpClicked;
