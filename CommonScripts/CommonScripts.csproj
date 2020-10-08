@@ -55,7 +55,7 @@
     <Compile Include="CustomComponent\ScriptListBox\ScriptItem.Designer.cs">
       <DependentUpon>ScriptItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Extension\MetroStyleManagerExtension.cs" />
+    <Compile Include="Extension\MetroStyleManagerExtensions.cs" />
     <Compile Include="Model\Base\IScript.cs" />
     <Compile Include="Model\Base\ScriptAbs.cs" />
     <Compile Include="Model\KeyPressed.cs" />
@@ -69,6 +69,7 @@
     <Compile Include="Repository\Interfaces\ISettingsRepository.cs" />
     <Compile Include="Repository\SettingsRepository.cs" />
     <Compile Include="Service\Interfaces\IService.cs" />
+    <Compile Include="Utils\EnumUtils.cs" />
     <Compile Include="View\Interfaces\IMainView.cs" />
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>

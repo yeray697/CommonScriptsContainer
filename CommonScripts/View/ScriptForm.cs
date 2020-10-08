@@ -2,6 +2,7 @@
 using CommonScripts.Model;
 using CommonScripts.Model.Base;
 using CommonScripts.Service;
+using CommonScripts.Utils;
 using MetroSet_UI;
 using MetroSet_UI.Forms;
 using System;
@@ -65,8 +66,7 @@ namespace CommonScripts.View
 
         private void Save(object sender, EventArgs e)
         {
-            ScriptType scriptType;
-            Enum.TryParse<ScriptType>(cbxScriptType.SelectedValue.ToString(), out scriptType);
+            ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue);
 
             HasScriptTypeChanged = _script != null && (scriptType != _script.ScriptType);
             _script = ScriptAbs.GetInstance(_script, scriptType, HasScriptTypeChanged);
@@ -125,8 +125,7 @@ namespace CommonScripts.View
 
         private void DisplaySpecificScriptFields()
         {
-            ScriptType scriptType;
-            Enum.TryParse<ScriptType>(cbxScriptType.SelectedValue.ToString(), out scriptType);
+            ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue);
 
             switch (scriptType)
             {
@@ -151,8 +150,7 @@ namespace CommonScripts.View
         {
             if (script != null)
             {
-                ScriptType scriptType;
-                Enum.TryParse<ScriptType>(cbxScriptType.SelectedValue.ToString(), out scriptType);
+                ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue);
 
                 switch (scriptType)
                 {

@@ -3,7 +3,7 @@ using MetroSet_UI.Forms;
 
 namespace CommonScripts.Extension
 {
-    public static class MetroStyleManagerExtension
+    public static class MetroStyleManagerExtensions
     {
         public static StyleManager Clone(this StyleManager styleManager, MetroSetForm form = null)
         {
