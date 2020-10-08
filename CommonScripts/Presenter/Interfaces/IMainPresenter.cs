@@ -8,7 +8,7 @@ namespace CommonScripts.Presenter.Interfaces
         void LoadSettings();
         bool AddScript(ScriptAbs script);
         bool EditScript(ScriptAbs script);
-        bool RemoveScript(int scriptId);
+        bool RemoveScript(string scriptId);
         ScriptStatus ChangeScriptStatus(ScriptAbs script);
     }
 }

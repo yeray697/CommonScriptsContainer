@@ -5,7 +5,7 @@ namespace CommonScripts.Model.Base
     public abstract class ScriptAbs : ICloneable, IScript
     {
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string ScriptName { get; set; }
         public abstract ScriptType ScriptType { get; }
         public ScriptStatus ScriptStatus { get; set; }
@@ -13,7 +13,7 @@ namespace CommonScripts.Model.Base
 
         protected ScriptAbs()
         {
-            Id = -1;
+            Id = "";
             ScriptName = "";
             ScriptStatus = ScriptStatus.Undefined;
             ScriptPath = "";

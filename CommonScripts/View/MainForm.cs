@@ -65,7 +65,7 @@ namespace CommonScripts.View
             DialogResult r = MetroSetMessageBox.Show(this, "Do you want to remove the script?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (r == DialogResult.Yes)
             {
-                int scriptId = script.Id;
+                string scriptId = script.Id;
                 if (Presenter.RemoveScript(scriptId))
                 {
                     scriptListAdapter.RemoveItem(scriptId);

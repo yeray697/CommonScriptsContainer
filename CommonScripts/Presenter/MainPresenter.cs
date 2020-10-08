@@ -2,6 +2,7 @@
 using CommonScripts.Model.Base;
 using CommonScripts.Presenter.Interfaces;
 using CommonScripts.Repository.Interfaces;
+using CommonScripts.Service.Interfaces;
 using CommonScripts.View.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,47 +15,47 @@ namespace CommonScripts.Presenter
     public class MainPresenter : IMainPresenter
     {
         private IMainView _view { get; set; }
-        private ISettingsRepository _settingsRepository { get; set; }
+        private ISettingsService _settingsService { get; set; }
+        private List<ScriptAbs> Scripts { get; set; }
 
-        public MainPresenter(IMainView view, ISettingsRepository settingsRepository)
+        public MainPresenter(IMainView view, ISettingsService settingsService)
         {
             _view = view;
             _view.Presenter = this; // Poor Man's DI
-            _settingsRepository = settingsRepository;
+            _settingsService = settingsService;
         }
 
         public void LoadSettings()
         {
-            var scripts = new List<ScriptAbs>();
-            scripts.Add(new ScriptOneOff() { Id = 1, ScriptName = "asdf1", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 2, ScriptName = "asdf2", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 3, ScriptName = "asdf3", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 4, ScriptName = "asdf4", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 5, ScriptName = "asdf5", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 6, ScriptName = "asdf6", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 7, ScriptName = "asdf7", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 8, ScriptName = "asdf8", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 9, ScriptName = "asdf9", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 10, ScriptName = "asdf10", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 11, ScriptName = "asdf11", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 12, ScriptName = "asdf12", ScriptStatus = ScriptStatus.Running});
-            scripts.Add(new ScriptOneOff() { Id = 13, ScriptName = "asdf13", ScriptStatus = ScriptStatus.Running});
-            _view.ShowScripts(scripts);
+            Scripts = _settingsService.GetScripts();
+            _view.ShowScripts(Scripts);
         }
 
         public bool AddScript(ScriptAbs script)
         {
+            script.Id = Guid.NewGuid().ToString();
+            Scripts.Add(script);
+            _settingsService.SaveScripts(Scripts);
             return true;
         }
 
         public bool EditScript(ScriptAbs script)
         {
-            return true;
-        }
+            bool successful = false;
 
-        public bool RemoveScript(int scriptId)
+            if (RemoveScript(script.Id, false))
+            {
+                Scripts.Add(script);
+                successful = _settingsService.SaveScripts(Scripts);
+            }
+
+            return successful;
+        }
+        
+
+        public bool RemoveScript(string scriptId)
         {
-            return true;
+            return RemoveScript(scriptId, true);
         }
 
         public ScriptStatus ChangeScriptStatus(ScriptAbs script)
@@ -75,6 +76,20 @@ namespace CommonScripts.Presenter
             }
 
             return newStatus;
+        }
+
+        private bool RemoveScript(string scriptId, bool save)
+        {
+            bool successful = false;
+            int originalCount = Scripts.Count;
+            Scripts = Scripts.Where(s => s.Id != scriptId).ToList();
+
+            if (originalCount > Scripts.Count)
+            {
+                successful = save ? _settingsService.SaveScripts(Scripts) : true;
+            }
+
+            return successful;
         }
     }
 }

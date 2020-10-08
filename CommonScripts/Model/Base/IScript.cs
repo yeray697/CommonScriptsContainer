@@ -8,7 +8,7 @@ namespace CommonScripts.Model.Base
 {
     interface IScript
     {
-        int Id { get; set; }
+        string Id { get; set; }
         string ScriptName { get; set; }
         ScriptStatus ScriptStatus { get; set; }
         string ScriptPath { get; set; }

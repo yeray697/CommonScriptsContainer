@@ -1,9 +1,9 @@
 ﻿using CommonScripts.Model.Base;
 using System.Collections.Generic;
 
-namespace CommonScripts.Repository.Interfaces
+namespace CommonScripts.Service.Interfaces
 {
-    public interface ISettingsRepository
+    public interface ISettingsService
     {
         bool SaveScripts(List<ScriptAbs> scripts);
         List<ScriptAbs> GetScripts();

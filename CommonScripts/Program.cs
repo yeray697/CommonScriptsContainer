@@ -1,6 +1,8 @@
 ﻿using CommonScripts.Presenter;
 using CommonScripts.Repository;
 using CommonScripts.Repository.Interfaces;
+using CommonScripts.Service;
+using CommonScripts.Service.Interfaces;
 using CommonScripts.View;
 using System;
 using System.Collections.Generic;
@@ -32,10 +34,11 @@ namespace CommonScripts
 
         private static Form InjectMainForm()
         {
-            ISettingsRepository repository = new SettingsRepository();
+            ISettingsRepository settingsRepository = new SettingsRepository();
+            ISettingsService settingsService = new SettingsService(settingsRepository);
             MainForm view = new MainForm();
 
-            var presenter = new MainPresenter(view, repository);
+            var presenter = new MainPresenter(view, settingsService);
 
             return view;
         }

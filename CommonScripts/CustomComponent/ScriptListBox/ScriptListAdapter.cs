@@ -53,7 +53,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
                 SortControls();
         }
 
-        public void RemoveItem(int scriptId)
+        public void RemoveItem(string scriptId)
         {
             var item = FindById(scriptId);
             if (item != null)
@@ -64,7 +64,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             }
         }
 
-        public void ChangeScriptStatus(int scriptId, ScriptStatus newStatus)
+        public void ChangeScriptStatus(string scriptId, ScriptStatus newStatus)
         {
             var item = FindById(scriptId);
             if (item != null)
@@ -130,7 +130,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             }
         }
 
-        private ScriptItem FindById(int id)
+        private ScriptItem FindById(string id)
         {
             return !IsEmptyList() ? ControlList.Find(s => s.Script.Id == id) : null;
         }
