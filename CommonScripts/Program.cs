@@ -1,8 +1,8 @@
 ﻿using CommonScripts.Presenter;
-using CommonScripts.Repository;
-using CommonScripts.Repository.Interfaces;
-using CommonScripts.Service;
-using CommonScripts.Service.Interfaces;
+using CommonScripts.Model.Repository;
+using CommonScripts.Model.Repository.Interfaces;
+using CommonScripts.Model.Service;
+using CommonScripts.Model.Service.Interfaces;
 using CommonScripts.View;
 using System;
 using System.Collections.Generic;

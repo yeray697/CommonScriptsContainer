@@ -1,12 +1,12 @@
-﻿using CommonScripts.Model;
-using CommonScripts.Service.Interfaces;
+﻿using CommonScripts.Model.Pojo;
+using CommonScripts.Model.Service.Interfaces;
 using Gma.System.MouseKeyHook;
 using System;
 using System.Windows.Forms;
 
-namespace CommonScripts.Service
+namespace CommonScripts.Model.Service
 {
-    public class ListenKeysService : IService
+    public class ListenKeysService : IRunnableService
     {
         public delegate void KeyUpHandler(KeyPressed keyPressed);
 

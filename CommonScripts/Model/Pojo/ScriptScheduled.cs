@@ -1,11 +1,7 @@
-﻿using CommonScripts.Model.Base;
+﻿using CommonScripts.Model.Pojo.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CommonScripts.Model
+namespace CommonScripts.Model.Pojo
 {
     public class ScriptScheduled : ScriptAbs
     {

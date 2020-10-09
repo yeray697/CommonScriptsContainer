@@ -1,9 +1,9 @@
-﻿using CommonScripts.Model.Base;
+﻿using CommonScripts.Model.Pojo.Base;
 using System.Collections.Generic;
 
-namespace CommonScripts.Service.Interfaces
+namespace CommonScripts.Model.Repository.Interfaces
 {
-    public interface ISettingsService
+    public interface ISettingsRepository
     {
         bool SaveScripts(List<ScriptAbs> scripts);
         List<ScriptAbs> GetScripts();

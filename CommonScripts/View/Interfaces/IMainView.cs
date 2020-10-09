@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using CommonScripts.Model.Pojo.Base;
+using System.Collections.Generic;
 
 namespace CommonScripts.View.Interfaces
 {
     public interface IMainView
     {
         Presenter.MainPresenter Presenter { get; set; }
-        void ShowScripts(IList<Model.Base.ScriptAbs> scripts);
+        void ShowScripts(IList<ScriptAbs> scripts);
     }
 }

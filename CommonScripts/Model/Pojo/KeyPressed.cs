@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace CommonScripts.Model
+namespace CommonScripts.Model.Pojo
 {
     public class KeyPressed
     {

@@ -1,5 +1,5 @@
-﻿using CommonScripts.Model;
-using CommonScripts.Model.Base;
+﻿using CommonScripts.Model.Pojo;
+using CommonScripts.Model.Pojo.Base;
 
 namespace CommonScripts.Presenter.Interfaces
 {

@@ -1,8 +1,8 @@
-﻿using CommonScripts.Model.Base;
+﻿using CommonScripts.Model.Pojo.Base;
 
-namespace CommonScripts.Model
+namespace CommonScripts.Model.Pojo
 {
-    class ScriptListenKey : ScriptAbs
+    public class ScriptListenKey : ScriptAbs
     {
         public override ScriptType ScriptType => ScriptType.ListenKey;
         public KeyPressed TriggerKey { get; set; }

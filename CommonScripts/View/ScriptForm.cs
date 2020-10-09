@@ -1,18 +1,11 @@
 ﻿using CommonScripts.Extension;
-using CommonScripts.Model;
-using CommonScripts.Model.Base;
-using CommonScripts.Service;
+using CommonScripts.Model.Pojo;
+using CommonScripts.Model.Pojo.Base;
+using CommonScripts.Model.Service;
 using CommonScripts.Utils;
 using MetroSet_UI;
 using MetroSet_UI.Forms;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CommonScripts.View

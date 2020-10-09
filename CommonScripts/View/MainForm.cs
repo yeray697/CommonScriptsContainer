@@ -1,8 +1,8 @@
 ﻿using CommonScripts.CustomComponent.ScriptListBox;
-using CommonScripts.Model;
-using CommonScripts.Model.Base;
+using CommonScripts.Model.Pojo;
+using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Presenter;
-using CommonScripts.Service;
+using CommonScripts.Model.Service;
 using CommonScripts.View.Interfaces;
 using MetroSet_UI.Forms;
 using System;

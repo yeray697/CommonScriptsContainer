@@ -1,9 +1,9 @@
-﻿using CommonScripts.Model.Base;
-using CommonScripts.Repository.Interfaces;
-using CommonScripts.Service.Interfaces;
+﻿using CommonScripts.Model.Pojo.Base;
+using CommonScripts.Model.Repository.Interfaces;
+using CommonScripts.Model.Service.Interfaces;
 using System.Collections.Generic;
 
-namespace CommonScripts.Service
+namespace CommonScripts.Model.Service
 {
     public class SettingsService : ISettingsService
     {

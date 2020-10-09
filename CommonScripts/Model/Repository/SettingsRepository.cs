@@ -1,11 +1,11 @@
-﻿using CommonScripts.Model.Base;
-using CommonScripts.Repository.Interfaces;
+﻿using CommonScripts.Model.Pojo.Base;
+using CommonScripts.Model.Repository.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace CommonScripts.Repository
+namespace CommonScripts.Model.Repository
 {
     public class SettingsRepository : ISettingsRepository
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CommonScripts.Model.Base
+namespace CommonScripts.Model.Pojo.Base
 {
     public abstract class ScriptAbs : ICloneable, IScript
     {
