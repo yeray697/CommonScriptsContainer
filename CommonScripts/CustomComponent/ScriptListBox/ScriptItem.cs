@@ -45,15 +45,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             return hasNameBeenModified;
         }
 
-        public void ModifyScriptStatus(ScriptStatus status)
-        {
-            if (Script.ScriptStatus != status)
-            {
-                Script.ScriptStatus = status;
-                PaintScriptStatus();
-            }
-        }
-
         private void ScriptTypeChanged(ScriptAbs newItem)
         {
             Script = newItem;
@@ -100,7 +91,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             lblScriptName.Text = Script.ScriptName;
         }
 
-        private void PaintScriptStatus()
+        public void PaintScriptStatus()
         {
             switch (Script.ScriptStatus)
             {

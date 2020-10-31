@@ -64,11 +64,9 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             }
         }
 
-        public void ChangeScriptStatus(string scriptId, ScriptStatus newStatus)
+        public void ChangeScriptStatus(string scriptId)
         {
-            var item = FindById(scriptId);
-            if (item != null)
-                item.ModifyScriptStatus(newStatus);
+            FindById(scriptId)?.PaintScriptStatus();
         }
         #endregion
 

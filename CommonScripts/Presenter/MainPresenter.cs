@@ -64,40 +64,44 @@ namespace CommonScripts.Presenter
             return RemoveScript(scriptId, true);
         }
 
-        public async Task<ScriptStatus> ChangeScriptStatus(ScriptAbs script)
+        public async Task<bool> ChangeScriptStatus(ScriptAbs script)
         {
+            ScriptStatus oldStatus = script.ScriptStatus;
             ScriptStatus newStatus = ScriptStatus.Undefined;
-            switch (script.ScriptStatus)
+            switch (oldStatus)
             {
                 case ScriptStatus.Running:
                 case ScriptStatus.Resuming:
-                    if (script is ScriptListenKey && !IsListenKeyServiceNecessary())
-                    {
-                        _listenKeysService.Stop();
-                    }
-                    else
-                    {
-                        await _runScriptService.StopScript(script);
-                    }
                     newStatus = ScriptStatus.Stopped;
                     break;
                 case ScriptStatus.Undefined:
                 case ScriptStatus.Stopped:
-                    if (script is ScriptListenKey)
-                    {
-                        _listenKeysService.Run();
-                    }
-                    else
-                    {
-                        await _runScriptService.RunScript(script);
-                    }
                     newStatus = ScriptStatus.Running;
                     break;
                 default:
                     break;
             }
-            _settingsService.SaveScripts(Scripts);//ToDo better
-            return newStatus;
+
+            script.ScriptStatus = newStatus;
+
+            if (newStatus == ScriptStatus.Running)
+            {
+                if (script is ScriptListenKey)
+                    _listenKeysService.Run();
+                else
+                    await _runScriptService.RunScript(script);
+            }
+            else
+            {
+                if (script is ScriptListenKey && !IsListenKeyServiceNecessary())
+                    _listenKeysService.Stop();
+                else
+                    await _runScriptService.StopScript(script);
+            }
+
+            _settingsService.SaveScripts(Scripts);
+
+            return newStatus != oldStatus;
         }
 
         private bool IsListenKeyServiceNecessary()

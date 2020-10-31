@@ -10,6 +10,6 @@ namespace CommonScripts.Presenter.Interfaces
         bool AddScript(ScriptAbs script);
         bool EditScript(ScriptAbs script);
         bool RemoveScript(string scriptId);
-        Task<ScriptStatus> ChangeScriptStatus(ScriptAbs script);
+        Task<bool> ChangeScriptStatus(ScriptAbs script);
     }
 }

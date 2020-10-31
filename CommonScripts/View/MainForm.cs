@@ -54,8 +54,9 @@ namespace CommonScripts.View
 
         private void ChangeScriptStatus(ScriptAbs script)
         {
-            ScriptStatus newStatus = Presenter.ChangeScriptStatus(script).Result;
-            scriptListAdapter.ChangeScriptStatus(script.Id, newStatus);
+            bool hasStatusChanged = Presenter.ChangeScriptStatus(script).Result;
+            if (hasStatusChanged)
+                scriptListAdapter.ChangeScriptStatus(script.Id);
         }
 
         private void RemoveScript(ScriptAbs script)
