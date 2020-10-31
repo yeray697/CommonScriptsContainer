@@ -64,13 +64,14 @@
     <Compile Include="Model\Pojo\ScriptScheduled.cs" />
     <Compile Include="Model\Pojo\ScriptStatus.cs" />
     <Compile Include="Model\Pojo\ScriptType.cs" />
+    <Compile Include="Model\Service\Interfaces\IRunScriptService.cs" />
+    <Compile Include="Model\Service\Job\RunScriptJob.cs" />
+    <Compile Include="Model\Service\RunScriptService.cs" />
     <Compile Include="Presenter\Interfaces\IMainPresenter.cs" />
     <Compile Include="Presenter\MainPresenter.cs" />
     <Compile Include="Model\Repository\Interfaces\ISettingsRepository.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingsService.cs" />
     <Compile Include="Model\Repository\SettingsRepository.cs" />
-    <Compile Include="Model\Service\Interfaces\IRunnableService.cs" />
-    <Compile Include="Model\Service\ScheduledScriptService.cs" />
     <Compile Include="Model\Service\SettingsService.cs" />
     <Compile Include="Utils\EnumUtils.cs" />
     <Compile Include="View\Interfaces\IMainView.cs" />

@@ -36,9 +36,10 @@ namespace CommonScripts
         {
             ISettingsRepository settingsRepository = new SettingsRepository();
             ISettingsService settingsService = new SettingsService(settingsRepository);
+            IRunScriptService runScriptService = new RunScriptService();
             MainForm view = new MainForm();
 
-            var presenter = new MainPresenter(view, settingsService);
+            var presenter = new MainPresenter(view, settingsService, runScriptService);
 
             return view;
         }

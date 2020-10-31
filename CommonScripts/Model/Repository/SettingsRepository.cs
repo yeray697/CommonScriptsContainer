@@ -56,7 +56,7 @@ namespace CommonScripts.Model.Repository
                     string json = File.ReadAllText(fileName);
                     t = JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings
                     {
-                        TypeNameHandling = TypeNameHandling.Auto
+                        TypeNameHandling = TypeNameHandling.All
                     }); ;
                 }
             }

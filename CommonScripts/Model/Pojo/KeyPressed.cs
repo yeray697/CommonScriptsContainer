@@ -1,18 +1,19 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace CommonScripts.Model.Pojo
 {
-    public class KeyPressed
+    public class KeyPressed : IEquatable<KeyPressed>
     {
         private const string PlusToString = " + ";
         private Keys? _key;
 
-        public bool IsShiftPressed { get; private set; }
-        public bool IsControlPressed { get; private set; }
-        public bool IsAltPressed { get; private set; }
+        public bool IsShiftPressed { get; set; }
+        public bool IsControlPressed { get; set; }
+        public bool IsAltPressed { get; set; }
         public Keys? Key {
             get { return _key; }
-            private set {
+            set {
                 if (value == null)
                     _key = null;
                 else
@@ -26,12 +27,19 @@ namespace CommonScripts.Model.Pojo
             }
         }
 
+        public KeyPressed() : this(null)
+        {
+        }
+
         public KeyPressed(KeyEventArgs keyEventArgs)
         {
-            IsShiftPressed = keyEventArgs.Shift;
-            IsControlPressed = keyEventArgs.Control;
-            IsAltPressed = keyEventArgs.Alt;
-            Key = keyEventArgs.KeyCode;
+            if (keyEventArgs != null)
+            {
+                IsShiftPressed = keyEventArgs.Shift;
+                IsControlPressed = keyEventArgs.Control;
+                IsAltPressed = keyEventArgs.Alt;
+                Key = keyEventArgs.KeyCode;
+            }
         }
 
         private bool IsOnlyShiftPressed(Keys key)
@@ -71,6 +79,25 @@ namespace CommonScripts.Model.Pojo
         private string GetPlusSignIfRequired(string currentRepresentation)
         {
             return (currentRepresentation == "" ? "" : PlusToString); 
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as KeyPressed);
+        }
+
+        public bool Equals(KeyPressed other)
+        {
+            if (other == null)
+                return false;
+
+            return this.IsShiftPressed == other.IsShiftPressed
+                && this.IsControlPressed == other.IsControlPressed
+                && this.IsAltPressed == other.IsAltPressed
+                && (
+                    (this.Key == null && other.Key == null)
+                    || (this.Key == other.Key)
+                );
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
+using System.Threading.Tasks;
 
 namespace CommonScripts.Presenter.Interfaces
 {
@@ -9,6 +10,6 @@ namespace CommonScripts.Presenter.Interfaces
         bool AddScript(ScriptAbs script);
         bool EditScript(ScriptAbs script);
         bool RemoveScript(string scriptId);
-        ScriptStatus ChangeScriptStatus(ScriptAbs script);
+        Task<ScriptStatus> ChangeScriptStatus(ScriptAbs script);
     }
 }

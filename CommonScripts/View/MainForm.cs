@@ -2,7 +2,6 @@
 using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Presenter;
-using CommonScripts.Model.Service;
 using CommonScripts.View.Interfaces;
 using MetroSet_UI.Forms;
 using System;
@@ -23,9 +22,8 @@ namespace CommonScripts.View
             scriptListAdapter.EditClicked += EditScript;
             scriptListAdapter.RemoveClicked += RemoveScript;
             scriptListAdapter.StatusClicked += ChangeScriptStatus;
-
-            ListenKeysService.GetInstance().Run();
         }
+
         //Helps with the refresh of the UI when resizing the window
         protected override CreateParams CreateParams
         {
@@ -56,7 +54,7 @@ namespace CommonScripts.View
 
         private void ChangeScriptStatus(ScriptAbs script)
         {
-            ScriptStatus newStatus = Presenter.ChangeScriptStatus(script);
+            ScriptStatus newStatus = Presenter.ChangeScriptStatus(script).Result;
             scriptListAdapter.ChangeScriptStatus(script.Id, newStatus);
         }
 

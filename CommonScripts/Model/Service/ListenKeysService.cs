@@ -1,12 +1,11 @@
 ﻿using CommonScripts.Model.Pojo;
-using CommonScripts.Model.Service.Interfaces;
 using Gma.System.MouseKeyHook;
 using System;
 using System.Windows.Forms;
 
 namespace CommonScripts.Model.Service
 {
-    public class ListenKeysService : IRunnableService
+    public class ListenKeysService
     {
         public delegate void KeyUpHandler(KeyPressed keyPressed);
 
@@ -16,7 +15,7 @@ namespace CommonScripts.Model.Service
         private static ListenKeysService _instance;
         private IKeyboardMouseEvents _globalHook;
         private bool _running;
-        private bool SingleKeyListen { get; set; }
+        private bool _singleKeyListen;
 
         private ListenKeysService()
         {
@@ -33,7 +32,7 @@ namespace CommonScripts.Model.Service
 
         public void Run(bool singleKeyListen)
         {
-            SingleKeyListen = singleKeyListen;
+            _singleKeyListen = singleKeyListen;
             Run();
         }
 
@@ -70,10 +69,10 @@ namespace CommonScripts.Model.Service
             KeyPressed keyPressed = new KeyPressed(e);
             Console.WriteLine(keyPressed);
 
-            if (SingleKeyListen)
+            if (_singleKeyListen)
             {
                 SingleKeyUpClicked?.Invoke(keyPressed);
-                SingleKeyListen = false;
+                _singleKeyListen = false;
             } else
             {
                 KeyUpClicked?.Invoke(keyPressed);
