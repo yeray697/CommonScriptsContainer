@@ -85,6 +85,7 @@ namespace CommonScripts.Model.Service
             {
                 _globalHook.KeyUp -= GlobalHookKeyUp;
                 _globalHook.Dispose();
+                _globalHook = null;
             }
         }
     }
