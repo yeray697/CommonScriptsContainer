@@ -1,5 +1,4 @@
 ﻿using CommonScripts.CustomComponent.ScriptListBox;
-using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Presenter;
 using CommonScripts.View.Interfaces;

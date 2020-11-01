@@ -1,5 +1,4 @@
-﻿using CommonScripts.Model.Pojo;
-using CommonScripts.Model.Pojo.Base;
+﻿using CommonScripts.Model.Pojo.Base;
 using MetroSet_UI;
 using MetroSet_UI.Controls;
 using System.Collections.Generic;

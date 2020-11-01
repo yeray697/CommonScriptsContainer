@@ -1,12 +1,12 @@
 ﻿using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
+using CommonScripts.Model.Service;
 using CommonScripts.Presenter.Interfaces;
 using CommonScripts.Model.Service.Interfaces;
 using CommonScripts.View.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CommonScripts.Model.Service;
 using System.Threading.Tasks;
 
 namespace CommonScripts.Presenter
