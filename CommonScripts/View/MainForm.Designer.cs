@@ -31,11 +31,11 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.mtcMain = new MetroSet_UI.Controls.MetroSetTabControl();
-            this.mtpRun = new MetroSet_UI.Child.MetroSetTabPage();
+            this.mtpRun = new MetroSet_UI.Child.MetroSetSetTabPage();
             this.pnlScripts = new MetroSet_UI.Controls.MetroSetPanel();
-            this.styleManager = new MetroSet_UI.StyleManager();
+            this.styleManager = new MetroSet_UI.Components.StyleManager();
             this.lblRunAddScript = new MetroSet_UI.Controls.MetroSetLabel();
-            this.mtpSettings = new MetroSet_UI.Child.MetroSetTabPage();
+            this.mtpSettings = new MetroSet_UI.Child.MetroSetSetTabPage();
             this.metroSetControlBox1 = new MetroSet_UI.Controls.MetroSetControlBox();
             this.appNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.mtcMain.SuspendLayout();
@@ -59,7 +59,7 @@
             this.mtcMain.Size = new System.Drawing.Size(644, 351);
             this.mtcMain.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.mtcMain.Speed = 20;
-            this.mtcMain.Style = MetroSet_UI.Design.Style.Light;
+            this.mtcMain.Style = MetroSet_UI.Enums.Style.Light;
             this.mtcMain.StyleManager = this.styleManager;
             this.mtcMain.TabIndex = 0;
             this.mtcMain.TabStyle = MetroSet_UI.Enums.TabStyle.Style2;
@@ -77,7 +77,7 @@
             this.mtpRun.Location = new System.Drawing.Point(4, 42);
             this.mtpRun.Name = "mtpRun";
             this.mtpRun.Size = new System.Drawing.Size(636, 305);
-            this.mtpRun.Style = MetroSet_UI.Design.Style.Light;
+            this.mtpRun.Style = MetroSet_UI.Enums.Style.Light;
             this.mtpRun.StyleManager = this.styleManager;
             this.mtpRun.TabIndex = 0;
             this.mtpRun.Text = "Run";
@@ -98,7 +98,7 @@
             this.pnlScripts.Name = "pnlScripts";
             this.pnlScripts.Padding = new System.Windows.Forms.Padding(500);
             this.pnlScripts.Size = new System.Drawing.Size(630, 279);
-            this.pnlScripts.Style = MetroSet_UI.Design.Style.Light;
+            this.pnlScripts.Style = MetroSet_UI.Enums.Style.Light;
             this.pnlScripts.StyleManager = this.styleManager;
             this.pnlScripts.TabIndex = 4;
             this.pnlScripts.ThemeAuthor = "Narwin";
@@ -108,7 +108,7 @@
             // 
             this.styleManager.CustomTheme = "";
             this.styleManager.MetroForm = this;
-            this.styleManager.Style = MetroSet_UI.Design.Style.Light;
+            this.styleManager.Style = MetroSet_UI.Enums.Style.Light;
             this.styleManager.ThemeAuthor = "Narwin";
             this.styleManager.ThemeName = "MetroLite";
             // 
@@ -121,7 +121,7 @@
             this.lblRunAddScript.Location = new System.Drawing.Point(3, 288);
             this.lblRunAddScript.Name = "lblRunAddScript";
             this.lblRunAddScript.Size = new System.Drawing.Size(124, 17);
-            this.lblRunAddScript.Style = MetroSet_UI.Design.Style.Light;
+            this.lblRunAddScript.Style = MetroSet_UI.Enums.Style.Light;
             this.lblRunAddScript.StyleManager = this.styleManager;
             this.lblRunAddScript.TabIndex = 3;
             this.lblRunAddScript.Text = "Add a new script...";
@@ -137,7 +137,7 @@
             this.mtpSettings.Location = new System.Drawing.Point(4, 42);
             this.mtpSettings.Name = "mtpSettings";
             this.mtpSettings.Size = new System.Drawing.Size(636, 305);
-            this.mtpSettings.Style = MetroSet_UI.Design.Style.Light;
+            this.mtpSettings.Style = MetroSet_UI.Enums.Style.Light;
             this.mtpSettings.StyleManager = this.styleManager;
             this.mtpSettings.TabIndex = 0;
             this.mtpSettings.Text = "Settings";
@@ -163,7 +163,7 @@
             this.metroSetControlBox1.MinimizeNormalForeColor = System.Drawing.Color.Gray;
             this.metroSetControlBox1.Name = "metroSetControlBox1";
             this.metroSetControlBox1.Size = new System.Drawing.Size(100, 25);
-            this.metroSetControlBox1.Style = MetroSet_UI.Design.Style.Light;
+            this.metroSetControlBox1.Style = MetroSet_UI.Enums.Style.Light;
             this.metroSetControlBox1.StyleManager = this.styleManager;
             this.metroSetControlBox1.TabIndex = 1;
             this.metroSetControlBox1.Text = "metroSetControlBox1";
@@ -199,11 +199,11 @@
         #endregion
 
         private MetroSet_UI.Controls.MetroSetTabControl mtcMain;
-        private MetroSet_UI.Child.MetroSetTabPage mtpRun;
-        private MetroSet_UI.Child.MetroSetTabPage mtpSettings;
+        private MetroSet_UI.Child.MetroSetSetTabPage mtpRun;
+        private MetroSet_UI.Child.MetroSetSetTabPage mtpSettings;
         private MetroSet_UI.Controls.MetroSetLabel lblRunAddScript;
         private MetroSet_UI.Controls.MetroSetPanel pnlScripts;
-        private MetroSet_UI.StyleManager styleManager;
+        private MetroSet_UI.Components.StyleManager styleManager;
         private MetroSet_UI.Controls.MetroSetControlBox metroSetControlBox1;
         private System.Windows.Forms.NotifyIcon appNotifyIcon;
     }

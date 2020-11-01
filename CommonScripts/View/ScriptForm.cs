@@ -3,7 +3,7 @@ using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Model.Service;
 using CommonScripts.Utils;
-using MetroSet_UI;
+using MetroSet_UI.Components;
 using MetroSet_UI.Forms;
 using System;
 using System.Windows.Forms;
@@ -19,7 +19,7 @@ namespace CommonScripts.View
 
         public ScriptAbs GetScript() => _script;
 
-        public ScriptForm(MetroSet_UI.StyleManager styleManager, ScriptAbs script)
+        public ScriptForm(StyleManager styleManager, ScriptAbs script)
         {
             InitializeComponent();
             UpdateMetroStyles(styleManager);

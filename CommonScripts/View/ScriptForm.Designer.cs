@@ -67,7 +67,7 @@
             this.metroSetControlBox1.MinimizeNormalForeColor = System.Drawing.Color.Gray;
             this.metroSetControlBox1.Name = "metroSetControlBox1";
             this.metroSetControlBox1.Size = new System.Drawing.Size(100, 25);
-            this.metroSetControlBox1.Style = MetroSet_UI.Design.Style.Light;
+            this.metroSetControlBox1.Style = MetroSet_UI.Enums.Style.Light;
             this.metroSetControlBox1.StyleManager = null;
             this.metroSetControlBox1.TabIndex = 0;
             this.metroSetControlBox1.Text = "metroSetControlBox1";
@@ -80,7 +80,7 @@
             this.lblScriptName.Location = new System.Drawing.Point(15, 95);
             this.lblScriptName.Name = "lblScriptName";
             this.lblScriptName.Size = new System.Drawing.Size(100, 26);
-            this.lblScriptName.Style = MetroSet_UI.Design.Style.Light;
+            this.lblScriptName.Style = MetroSet_UI.Enums.Style.Light;
             this.lblScriptName.StyleManager = null;
             this.lblScriptName.TabIndex = 1;
             this.lblScriptName.Text = "Name:";
@@ -94,7 +94,7 @@
             this.lblScriptPath.Location = new System.Drawing.Point(15, 131);
             this.lblScriptPath.Name = "lblScriptPath";
             this.lblScriptPath.Size = new System.Drawing.Size(100, 26);
-            this.lblScriptPath.Style = MetroSet_UI.Design.Style.Light;
+            this.lblScriptPath.Style = MetroSet_UI.Enums.Style.Light;
             this.lblScriptPath.StyleManager = null;
             this.lblScriptPath.TabIndex = 2;
             this.lblScriptPath.Text = "Path:";
@@ -123,7 +123,7 @@
             this.tbxScriptName.Name = "tbxScriptName";
             this.tbxScriptName.ReadOnly = false;
             this.tbxScriptName.Size = new System.Drawing.Size(514, 26);
-            this.tbxScriptName.Style = MetroSet_UI.Design.Style.Light;
+            this.tbxScriptName.Style = MetroSet_UI.Enums.Style.Light;
             this.tbxScriptName.StyleManager = null;
             this.tbxScriptName.TabIndex = 3;
             this.tbxScriptName.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -151,7 +151,7 @@
             this.btnPathSelector.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(147)))), ((int)(((byte)(195)))));
             this.btnPathSelector.PressTextColor = System.Drawing.Color.White;
             this.btnPathSelector.Size = new System.Drawing.Size(26, 26);
-            this.btnPathSelector.Style = MetroSet_UI.Design.Style.Light;
+            this.btnPathSelector.Style = MetroSet_UI.Enums.Style.Light;
             this.btnPathSelector.StyleManager = null;
             this.btnPathSelector.TabIndex = 4;
             this.btnPathSelector.Text = "...";
@@ -180,7 +180,7 @@
             this.tbxScriptPath.Name = "tbxScriptPath";
             this.tbxScriptPath.ReadOnly = false;
             this.tbxScriptPath.Size = new System.Drawing.Size(482, 26);
-            this.tbxScriptPath.Style = MetroSet_UI.Design.Style.Light;
+            this.tbxScriptPath.Style = MetroSet_UI.Enums.Style.Light;
             this.tbxScriptPath.StyleManager = null;
             this.tbxScriptPath.TabIndex = 5;
             this.tbxScriptPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -208,7 +208,7 @@
             this.btnCancel.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(147)))), ((int)(((byte)(195)))));
             this.btnCancel.PressTextColor = System.Drawing.Color.White;
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.Style = MetroSet_UI.Design.Style.Light;
+            this.btnCancel.Style = MetroSet_UI.Enums.Style.Light;
             this.btnCancel.StyleManager = null;
             this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Cancel";
@@ -235,7 +235,7 @@
             this.btnSave.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(147)))), ((int)(((byte)(195)))));
             this.btnSave.PressTextColor = System.Drawing.Color.White;
             this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.Style = MetroSet_UI.Design.Style.Light;
+            this.btnSave.Style = MetroSet_UI.Enums.Style.Light;
             this.btnSave.StyleManager = null;
             this.btnSave.TabIndex = 7;
             this.btnSave.Text = "Save";
@@ -249,7 +249,7 @@
             this.lblScriptType.Location = new System.Drawing.Point(15, 167);
             this.lblScriptType.Name = "lblScriptType";
             this.lblScriptType.Size = new System.Drawing.Size(100, 26);
-            this.lblScriptType.Style = MetroSet_UI.Design.Style.Light;
+            this.lblScriptType.Style = MetroSet_UI.Enums.Style.Light;
             this.lblScriptType.StyleManager = null;
             this.lblScriptType.TabIndex = 8;
             this.lblScriptType.Text = "Type:";
@@ -280,7 +280,7 @@
             this.cbxScriptType.SelectedItemBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.cbxScriptType.SelectedItemForeColor = System.Drawing.Color.White;
             this.cbxScriptType.Size = new System.Drawing.Size(115, 26);
-            this.cbxScriptType.Style = MetroSet_UI.Design.Style.Light;
+            this.cbxScriptType.Style = MetroSet_UI.Enums.Style.Light;
             this.cbxScriptType.StyleManager = null;
             this.cbxScriptType.TabIndex = 10;
             this.cbxScriptType.ThemeAuthor = "Narwin";
@@ -311,7 +311,7 @@
             this.tbxKeyPressed.Name = "tbxKeyPressed";
             this.tbxKeyPressed.ReadOnly = true;
             this.tbxKeyPressed.Size = new System.Drawing.Size(175, 26);
-            this.tbxKeyPressed.Style = MetroSet_UI.Design.Style.Light;
+            this.tbxKeyPressed.Style = MetroSet_UI.Enums.Style.Light;
             this.tbxKeyPressed.StyleManager = null;
             this.tbxKeyPressed.TabIndex = 13;
             this.tbxKeyPressed.Text = "Listening...";
@@ -328,7 +328,7 @@
             this.lblListenKey.Location = new System.Drawing.Point(242, 167);
             this.lblListenKey.Name = "lblListenKey";
             this.lblListenKey.Size = new System.Drawing.Size(148, 26);
-            this.lblListenKey.Style = MetroSet_UI.Design.Style.Light;
+            this.lblListenKey.Style = MetroSet_UI.Enums.Style.Light;
             this.lblListenKey.StyleManager = null;
             this.lblListenKey.TabIndex = 11;
             this.lblListenKey.Text = "Run on key pressed:";
@@ -354,7 +354,7 @@
             this.lblScriptSchedule.Location = new System.Drawing.Point(264, 167);
             this.lblScriptSchedule.Name = "lblScriptSchedule";
             this.lblScriptSchedule.Size = new System.Drawing.Size(50, 26);
-            this.lblScriptSchedule.Style = MetroSet_UI.Design.Style.Light;
+            this.lblScriptSchedule.Style = MetroSet_UI.Enums.Style.Light;
             this.lblScriptSchedule.StyleManager = null;
             this.lblScriptSchedule.TabIndex = 15;
             this.lblScriptSchedule.Text = "Run at:";

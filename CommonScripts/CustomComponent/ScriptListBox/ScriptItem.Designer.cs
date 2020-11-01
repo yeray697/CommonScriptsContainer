@@ -48,7 +48,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.lblScriptName.Location = new System.Drawing.Point(30, 5);
             this.lblScriptName.Name = "lblScriptName";
             this.lblScriptName.Size = new System.Drawing.Size(218, 20);
-            this.lblScriptName.Style = MetroSet_UI.Design.Style.Light;
+            this.lblScriptName.Style = MetroSet_UI.Enums.Style.Light;
             this.lblScriptName.StyleManager = null;
             this.lblScriptName.TabIndex = 0;
             this.lblScriptName.Text = "ScriptName";
@@ -106,7 +106,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.lblScriptType.Location = new System.Drawing.Point(254, 5);
             this.lblScriptType.Name = "lblScriptType";
             this.lblScriptType.Size = new System.Drawing.Size(100, 20);
-            this.lblScriptType.Style = MetroSet_UI.Design.Style.Light;
+            this.lblScriptType.Style = MetroSet_UI.Enums.Style.Light;
             this.lblScriptType.StyleManager = null;
             this.lblScriptType.TabIndex = 4;
             this.lblScriptType.Text = "Script Type";
