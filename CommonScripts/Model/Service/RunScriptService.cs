@@ -4,6 +4,7 @@ using CommonScripts.Model.Service.Interfaces;
 using CommonScripts.Model.Service.Job;
 using Quartz;
 using Quartz.Impl;
+using Serilog;
 using System;
 using System.Threading.Tasks;
 
@@ -21,7 +22,9 @@ namespace CommonScripts.Model.Service
 
         public async Task Run()
         {
-            if (!Scheduler?.IsStarted ?? true) {
+            if (!Scheduler?.IsStarted ?? true)
+            {
+                Log.Information("Running RunScriptService...");
                 Scheduler = await _schedulerFactory.GetScheduler();
                 await Scheduler.Start();
             }
@@ -30,6 +33,7 @@ namespace CommonScripts.Model.Service
         public async Task RunScript(ScriptAbs script)
         {
             await Run();
+            Log.Information("Schedule Job for script {@Script}", script);
             if (await Scheduler.CheckExists(new JobKey(script.ScriptName)))
             {
                 await Scheduler.ResumeJob(new JobKey(script.ScriptName));
@@ -46,11 +50,13 @@ namespace CommonScripts.Model.Service
 
         public async Task StopScript(ScriptAbs script)
         {
+            Log.Information("Stopping Job for script {@Script}", script);
             await Scheduler.PauseJob(new JobKey(script.ScriptName));
         }
 
         public async Task Stop()
         {
+            Log.Information("Stopping RunScriptService...");
             await Scheduler?.Shutdown();
         }
 

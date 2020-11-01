@@ -5,6 +5,7 @@ using CommonScripts.Model.Service;
 using CommonScripts.Utils;
 using MetroSet_UI.Components;
 using MetroSet_UI.Forms;
+using Serilog;
 using System;
 using System.Windows.Forms;
 
@@ -223,6 +224,7 @@ namespace CommonScripts.View
 
         private void ListenKeysService_KeyUpClicked(KeyPressed keyPressed)
         {
+            Log.Debug("ScriptForm: SingleKeyUpClicked event received");
             tbxKeyPressed.Text = keyPressed.ToString();
             tbxKeyPressed.Tag = keyPressed;
             StopListeningKeys();

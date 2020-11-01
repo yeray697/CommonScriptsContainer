@@ -1,5 +1,6 @@
 ﻿using CommonScripts.Model.Pojo;
 using Gma.System.MouseKeyHook;
+using Serilog;
 using System;
 using System.Windows.Forms;
 
@@ -40,6 +41,7 @@ namespace CommonScripts.Model.Service
         {
             if (!_running)
             {
+                Log.Information("Running ListenKeyService...");
                 _running = true;
                 Subscribe();
             }
@@ -49,6 +51,7 @@ namespace CommonScripts.Model.Service
         {
             if (_running)
             {
+                Log.Information("Stopping ListenKeyService...");
                 _running = false;
                 Unsubscribe();
             }
@@ -67,14 +70,16 @@ namespace CommonScripts.Model.Service
         private void GlobalHookKeyUp(object sender, KeyEventArgs e)
         {
             KeyPressed keyPressed = new KeyPressed(e);
-            Console.WriteLine(keyPressed);
+            Log.Debug("Key Up: {@KeyPressed}", keyPressed.ToString());
 
             if (_singleKeyListen)
             {
+                Log.Debug("Emitting SingleKeyUpClicked...");
                 SingleKeyUpClicked?.Invoke(keyPressed);
                 _singleKeyListen = false;
             } else
             {
+                Log.Debug("Emitting KeyUpClicked...");
                 KeyUpClicked?.Invoke(keyPressed);
             }
         }

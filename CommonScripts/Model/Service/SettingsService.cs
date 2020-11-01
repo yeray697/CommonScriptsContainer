@@ -1,6 +1,7 @@
 ﻿using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Model.Repository.Interfaces;
 using CommonScripts.Model.Service.Interfaces;
+using Serilog;
 using System.Collections.Generic;
 
 namespace CommonScripts.Model.Service
@@ -16,11 +17,13 @@ namespace CommonScripts.Model.Service
 
         public List<ScriptAbs> GetScripts()
         {
+            Log.Information("Loading Scripts from json file");
             return _repository.GetScripts();
         }
 
         public bool SaveScripts(List<ScriptAbs> scripts)
         {
+            Log.Information("Saving Scripts into json file");
             return _repository.SaveScripts(scripts);
         }
     }

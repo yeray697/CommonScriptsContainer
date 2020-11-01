@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace CommonScripts.Presenter
 {
@@ -42,6 +43,8 @@ namespace CommonScripts.Presenter
             script.Id = Guid.NewGuid().ToString();
             Scripts.Add(script);
             _settingsService.SaveScripts(Scripts);
+
+            Log.Debug("Adding Script {@Script}", script);
             return true;
         }
 
@@ -53,6 +56,7 @@ namespace CommonScripts.Presenter
             {
                 Scripts.Add(script);
                 successful = _settingsService.SaveScripts(Scripts);
+                Log.Debug("Edit Script {@Script}", script);
             }
 
             return successful;
@@ -61,6 +65,7 @@ namespace CommonScripts.Presenter
 
         public bool RemoveScript(string scriptId)
         {
+            Log.Debug("Remove ScriptId {@ScriptId}", scriptId);
             return RemoveScript(scriptId, true);
         }
 
@@ -84,6 +89,7 @@ namespace CommonScripts.Presenter
 
             script.ScriptStatus = newStatus;
 
+            Log.Debug("Change {@ScriptName} ({@ScriptType}) Script Status from {@OldStatus} to {@NewStatus}", script.ScriptName, script.ScriptType, oldStatus, newStatus);
             if (newStatus == ScriptStatus.Running)
             {
                 if (script is ScriptListenKey)
@@ -130,10 +136,12 @@ namespace CommonScripts.Presenter
 
         private void ListenKeysService_KeyUpClicked(KeyPressed keyPressed)
         {
+            Log.Debug("MainPresenter: KeyUpClicked event received");
             foreach (ScriptListenKey item in GetScriptListenKeyScripts())
             {
                 if (item.ScriptStatus == ScriptStatus.Running && (item.TriggerKey?.Equals(keyPressed) ?? false))
                 {
+                    Log.Debug("KeyUp matches with a running ScriptListenKey script ({@ScriptName})", item.ScriptName);
                     _runScriptService.RunScript(item);
                 }
 
@@ -170,7 +178,6 @@ namespace CommonScripts.Presenter
             {
                 _listenKeysService.Stop();
             }
-
         }
     }
 }
