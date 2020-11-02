@@ -56,6 +56,8 @@
       <DependentUpon>ScriptItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Extension\MetroStyleManagerExtensions.cs" />
+    <Compile Include="Extension\RichTextBoxExtensions.cs" />
+    <Compile Include="Logging\LogSink.cs" />
     <Compile Include="Model\Pojo\Base\IScript.cs" />
     <Compile Include="Model\Pojo\Base\ScriptAbs.cs" />
     <Compile Include="Model\Pojo\KeyPressed.cs" />

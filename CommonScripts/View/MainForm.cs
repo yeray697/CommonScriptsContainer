@@ -1,10 +1,15 @@
 ﻿using CommonScripts.CustomComponent.ScriptListBox;
+using CommonScripts.Extension;
+using CommonScripts.Logging;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Presenter;
 using CommonScripts.View.Interfaces;
 using MetroSet_UI.Forms;
+using Serilog;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace CommonScripts.View
@@ -49,6 +54,28 @@ namespace CommonScripts.View
                     scriptListAdapter.AddItem(addedScript);
                 }
             });
+        }
+
+        public void LogEmitted(LogMsg log)
+        {
+            Color color;
+
+            switch (log.Lvl)
+            {
+                case LogEventLevel.Error:
+                case LogEventLevel.Fatal:
+                    color = Color.DarkRed;
+                    break;
+                case LogEventLevel.Warning:
+                    color = Color.Orange;// Goldenrod;
+                    break;
+                case LogEventLevel.Debug:
+                case LogEventLevel.Verbose:
+                default:
+                    color = Color.Black;
+                    break;
+            }
+            rtbConsole.AppendText(log.ToString(), color, true);
         }
 
         private void ChangeScriptStatus(ScriptAbs script)

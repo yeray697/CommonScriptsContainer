@@ -7,6 +7,9 @@ using CommonScripts.View;
 using Serilog;
 using System;
 using System.Windows.Forms;
+using Serilog.Events;
+using Serilog.Core;
+using CommonScripts.Logging;
 
 namespace CommonScripts
 {
@@ -26,31 +29,39 @@ namespace CommonScripts
 
         private static Form Injection()
         {
-            InstanceLogger();
+            var sink = new LogSink();
+            InstanceLogger(sink);
             //Poor Man's DI
-            return InjectMainForm();
+            return InjectMainForm(sink);
         }
 
-        private static Form InjectMainForm()
+        private static Form InjectMainForm(LogSink sink)
         {
             Log.Information("Starting application...");
             ISettingsRepository settingsRepository = new SettingsRepository();
             ISettingsService settingsService = new SettingsService(settingsRepository);
             IRunScriptService runScriptService = new RunScriptService();
             MainForm view = new MainForm();
+            sink.LogEmitted += view.LogEmitted;
 
             var presenter = new MainPresenter(view, settingsService, runScriptService);
 
             return view;
         }
 
-        private static void InstanceLogger()
+        private static void InstanceLogger(ILogEventSink sink)
         {
-            Log.Logger = new LoggerConfiguration()
+            var logPath = @"logs\CommonScripts.log";
+            var loggerConfiguration = new LoggerConfiguration()
                 .MinimumLevel.Debug()
+                .MinimumLevel.Override("Quartz", LogEventLevel.Warning);
+
+            loggerConfiguration
                 .WriteTo.Console()
-                .WriteTo.File("logs\\CommonScripts.log")
-                .CreateLogger();
+                .WriteTo.File(logPath)
+                .WriteTo.Sink(sink);
+
+            Log.Logger = loggerConfiguration.CreateLogger();
         }
     }
 }
