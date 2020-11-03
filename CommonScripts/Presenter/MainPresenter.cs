@@ -167,16 +167,20 @@ namespace CommonScripts.Presenter
 
         private void CheckScriptStatus()
         {
-            bool areScriptsScheduled = false;
             bool shouldListenForKeys = false;
             if (Scripts != null) {
                 
-                foreach (var script in Scripts.Where(s => s.ScriptStatus == ScriptStatus.Running))
+                var runningScripts = Scripts.Where(s => s.ScriptStatus == ScriptStatus.Running);
+
+                if (runningScripts.Any())
+                    _runScriptService.Run();
+                else
+                    _runScriptService.Stop();
+
+                foreach (var script in runningScripts)
                 {
                     if (script is ScriptScheduled)
                     {
-                        areScriptsScheduled = true;
-                        _runScriptService.Run();
                         _runScriptService.RunScript(script);
                     } else if (script is ScriptListenKey)
                     {
@@ -186,15 +190,10 @@ namespace CommonScripts.Presenter
                 }
             }
 
-            if (!areScriptsScheduled)
-            {
-                _runScriptService.Stop();
-            }
-
-            if (!shouldListenForKeys)
-            {
+            if (shouldListenForKeys)
+                _listenKeysService.Run();
+            else
                 _listenKeysService.Stop();
-            }
         }
     }
 }

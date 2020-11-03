@@ -22,18 +22,6 @@ namespace CommonScripts.Model.Service
             _schedulerFactory = new StdSchedulerFactory();
         }
 
-        public void SetOneOffJobListener(IJobListener jobListenerOneOff)
-        {
-            _jobListenerOneOff = jobListenerOneOff;
-            AddJobListener(_jobListenerOneOff, ScriptType.OneOff.ToString());
-        }
-        
-        private void AddJobListener(IJobListener jobListener, string jobGroup)
-        {
-            if (Scheduler != null)
-                Scheduler.ListenerManager.AddJobListener(jobListener, GroupMatcher<JobKey>.GroupEquals(jobGroup));
-        }
-
         public async Task Run()
         {
             if (!Scheduler?.IsStarted ?? true)
@@ -69,14 +57,32 @@ namespace CommonScripts.Model.Service
 
         public async Task StopScript(ScriptAbs script)
         {
-            Log.Information("Stopping Job for script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
-            await Scheduler.PauseJob(GetJobKeyForScript(script));
+            if (Scheduler != null)
+            {
+                Log.Information("Stopping Job for script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
+                await Scheduler.PauseJob(GetJobKeyForScript(script));
+            }
         }
 
         public async Task Stop()
         {
-            Log.Information("Stopping RunScriptService...");
-            await Scheduler?.Shutdown();
+            if (Scheduler != null)
+            {
+                await Scheduler.Shutdown();
+                Log.Information("Stopping RunScriptService...");
+            }
+        }
+
+        public void SetOneOffJobListener(IJobListener jobListenerOneOff)
+        {
+            _jobListenerOneOff = jobListenerOneOff;
+            AddJobListener(_jobListenerOneOff, ScriptType.OneOff.ToString());
+        }
+
+        private void AddJobListener(IJobListener jobListener, string jobGroup)
+        {
+            if (Scheduler != null)
+                Scheduler.ListenerManager.AddJobListener(jobListener, GroupMatcher<JobKey>.GroupEquals(jobGroup));
         }
 
         private IJobDetail CreateJob(ScriptAbs script)
