@@ -7,5 +7,6 @@ namespace CommonScripts.View.Interfaces
     {
         Presenter.MainPresenter Presenter { get; set; }
         void ShowScripts(IList<ScriptAbs> scripts);
+        void ChangeScriptStatusThreadSafe(ScriptAbs script);
     }
 }

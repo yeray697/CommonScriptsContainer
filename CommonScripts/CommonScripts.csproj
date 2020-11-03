@@ -67,6 +67,7 @@
     <Compile Include="Model\Pojo\ScriptStatus.cs" />
     <Compile Include="Model\Pojo\ScriptType.cs" />
     <Compile Include="Model\Service\Interfaces\IRunScriptService.cs" />
+    <Compile Include="Model\Service\Job\JobListener.cs" />
     <Compile Include="Model\Service\Job\RunScriptJob.cs" />
     <Compile Include="Model\Service\RunScriptService.cs" />
     <Compile Include="Presenter\Interfaces\IMainPresenter.cs" />

@@ -27,7 +27,7 @@ namespace CommonScripts.Model.Service.Job
         {
             if (File.Exists(_script.ScriptPath))
             {
-                Log.Information("Executing \"{@ScriptName}\"", _script.ScriptName);
+                Log.Information("Executing {@ScriptName}", _script.ScriptName);
                 var process = new Process();
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.FileName = @"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe";
@@ -37,8 +37,9 @@ namespace CommonScripts.Model.Service.Job
                 process.WaitForExit();
             } else
             {
-                Log.Warning("Script \"{@ScriptName}\" could not run. Script Path not found \"{@ScriptPath}\"", _script.ScriptName, _script.ScriptPath);
+                Log.Warning("Script {@ScriptName} could not run. Script Path not found {@ScriptPath}", _script.ScriptName, _script.ScriptPath);
             }
+            Log.Information("Job {@ScriptName} finished", _script.ScriptName);
         }
     }
 }

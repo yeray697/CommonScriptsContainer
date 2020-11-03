@@ -17,13 +17,13 @@ namespace CommonScripts.Model.Service
 
         public List<ScriptAbs> GetScripts()
         {
-            Log.Information("Loading Scripts from json file");
+            Log.Debug("Loading Scripts from json file");
             return _repository.GetScripts();
         }
 
         public bool SaveScripts(List<ScriptAbs> scripts)
         {
-            Log.Information("Saving Scripts into json file");
+            Log.Debug("Saving Scripts into json file");
             return _repository.SaveScripts(scripts);
         }
     }

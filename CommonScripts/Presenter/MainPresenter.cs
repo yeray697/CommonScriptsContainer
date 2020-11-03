@@ -1,8 +1,9 @@
 ﻿using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Model.Service;
-using CommonScripts.Presenter.Interfaces;
 using CommonScripts.Model.Service.Interfaces;
+using CommonScripts.Model.Service.Job;
+using CommonScripts.Presenter.Interfaces;
 using CommonScripts.View.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace CommonScripts.Presenter
         private IRunScriptService _runScriptService;
         private List<ScriptAbs> Scripts;
         private ListenKeysService _listenKeysService;
+        private JobListener _oneOffJobListener;
 
         public MainPresenter(IMainView view, ISettingsService settingsService, IRunScriptService runScriptService)
         {
@@ -29,6 +31,21 @@ namespace CommonScripts.Presenter
 
             _listenKeysService = ListenKeysService.GetInstance();
             _listenKeysService.KeyUpClicked += ListenKeysService_KeyUpClicked;
+
+            _oneOffJobListener = new JobListener();
+            _oneOffJobListener.JobWasExecutedListener += OneOffJobWasExecuted;
+            _runScriptService.SetOneOffJobListener(_oneOffJobListener);
+        }
+
+        private void OneOffJobWasExecuted(Quartz.IJobExecutionContext context, Quartz.JobExecutionException jobException)
+        {
+            string scriptId = context.JobDetail.Key.Name;
+            _view.ChangeScriptStatusThreadSafe(GetScriptById(scriptId));
+        }
+
+        private ScriptAbs GetScriptById(string scriptId)
+        {
+            return Scripts?.FirstOrDefault(s => s.Id == scriptId);
         }
 
         public void LoadSettings()
@@ -44,7 +61,7 @@ namespace CommonScripts.Presenter
             Scripts.Add(script);
             _settingsService.SaveScripts(Scripts);
 
-            Log.Debug("Adding Script {@Script}", script);
+            Log.Debug("Adding Script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
             return true;
         }
 
@@ -56,7 +73,7 @@ namespace CommonScripts.Presenter
             {
                 Scripts.Add(script);
                 successful = _settingsService.SaveScripts(Scripts);
-                Log.Debug("Edit Script {@Script}", script);
+                Log.Debug("Edit Script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
             }
 
             return successful;

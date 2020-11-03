@@ -5,7 +5,6 @@ using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Presenter;
 using CommonScripts.View.Interfaces;
 using MetroSet_UI.Forms;
-using Serilog;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
@@ -62,7 +61,7 @@ namespace CommonScripts.View
             if (log.Lvl >= MinimumLoggingLevelGUIConsole)
             {
                 Color color = GetConsoleTextColor(log.Lvl);
-                rtbConsole.AppendText(log, color, true);
+                rtbConsole.AppendTextThreadSafe(log.ToString(), color, true);
             }
         }
 
@@ -92,6 +91,11 @@ namespace CommonScripts.View
             bool hasStatusChanged = Presenter.ChangeScriptStatus(script).Result;
             if (hasStatusChanged)
                 scriptListAdapter.ChangeScriptStatus(script.Id);
+        }
+
+        public void ChangeScriptStatusThreadSafe(ScriptAbs script)
+        {
+            this.Invoke((MethodInvoker)delegate () { ChangeScriptStatus(script); });
         }
 
         private void RemoveScript(ScriptAbs script)

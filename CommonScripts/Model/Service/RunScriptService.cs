@@ -4,6 +4,7 @@ using CommonScripts.Model.Service.Interfaces;
 using CommonScripts.Model.Service.Job;
 using Quartz;
 using Quartz.Impl;
+using Quartz.Impl.Matchers;
 using Serilog;
 using System;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace CommonScripts.Model.Service
     public class RunScriptService : IRunScriptService
     {
         private readonly ISchedulerFactory _schedulerFactory;
+        private IJobListener _jobListenerOneOff;
         public IScheduler Scheduler { get; set; }
 
         public RunScriptService()
@@ -20,12 +22,28 @@ namespace CommonScripts.Model.Service
             _schedulerFactory = new StdSchedulerFactory();
         }
 
+        public void SetOneOffJobListener(IJobListener jobListenerOneOff)
+        {
+            _jobListenerOneOff = jobListenerOneOff;
+            AddJobListener(_jobListenerOneOff, ScriptType.OneOff.ToString());
+        }
+        
+        private void AddJobListener(IJobListener jobListener, string jobGroup)
+        {
+            if (Scheduler != null)
+                Scheduler.ListenerManager.AddJobListener(jobListener, GroupMatcher<JobKey>.GroupEquals(jobGroup));
+        }
+
         public async Task Run()
         {
             if (!Scheduler?.IsStarted ?? true)
             {
                 Log.Information("Running RunScriptService...");
-                Scheduler = await _schedulerFactory.GetScheduler();
+                if (Scheduler == null)
+                {
+                    Scheduler = await _schedulerFactory.GetScheduler();
+                    AddJobListener(_jobListenerOneOff, ScriptType.OneOff.ToString());
+                }
                 await Scheduler.Start();
             }
         }
@@ -34,9 +52,10 @@ namespace CommonScripts.Model.Service
         {
             await Run();
             Log.Information("Schedule Job for script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
-            if (await Scheduler.CheckExists(new JobKey(script.ScriptName)))
+            JobKey jobKey = GetJobKeyForScript(script);
+            if (await Scheduler.CheckExists(jobKey))
             {
-                await Scheduler.ResumeJob(new JobKey(script.ScriptName));
+                await Scheduler.ResumeJob(jobKey);
             }
             else
             {
@@ -50,8 +69,8 @@ namespace CommonScripts.Model.Service
 
         public async Task StopScript(ScriptAbs script)
         {
-            Log.Information("Stopping Job for script {@Script}", script);
-            await Scheduler.PauseJob(new JobKey(script.ScriptName));
+            Log.Information("Stopping Job for script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
+            await Scheduler.PauseJob(GetJobKeyForScript(script));
         }
 
         public async Task Stop()
@@ -64,7 +83,7 @@ namespace CommonScripts.Model.Service
         {
             return JobBuilder
                 .Create<RunScriptJob>()
-                .WithIdentity(script.ScriptName)
+                .WithIdentity(GetJobKeyForScript(script))
                 .WithDescription(script.ToString())
                 .Build();
         }
@@ -73,7 +92,7 @@ namespace CommonScripts.Model.Service
         {
             TriggerBuilder triggerBuilder = TriggerBuilder
                 .Create()
-                .WithIdentity($"{script.ScriptName}.trigger");
+                .WithIdentity(GetTriggerKeyForScript(script));
 
             if (script is ScriptScheduled)
             {
@@ -98,6 +117,16 @@ namespace CommonScripts.Model.Service
                 startAt = startAt.AddDays(1);
 
             return startAt;
+        }
+
+        private JobKey GetJobKeyForScript(ScriptAbs script)
+        {
+            return new JobKey(script.Id, script.ScriptType.ToString());
+        }
+
+        private TriggerKey GetTriggerKeyForScript(ScriptAbs script)
+        {
+            return new TriggerKey($"{script.Id}.trigger", script.ScriptType.ToString());
         }
     }
 }
