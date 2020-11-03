@@ -16,6 +16,7 @@ namespace CommonScripts.View
 {
     public partial class MainForm : MetroSetForm, IMainView
     {
+        private LogEventLevel MinimumLoggingLevelGUIConsole = LogEventLevel.Information;
         public MainPresenter Presenter { get; set; }
         private ScriptListAdapter scriptListAdapter;
 
@@ -58,16 +59,24 @@ namespace CommonScripts.View
 
         public void LogEmitted(LogMsg log)
         {
-            Color color;
+            if (log.Lvl >= MinimumLoggingLevelGUIConsole)
+            {
+                Color color = GetConsoleTextColor(log.Lvl);
+                rtbConsole.AppendText(log, color, true);
+            }
+        }
 
-            switch (log.Lvl)
+        private Color GetConsoleTextColor(LogEventLevel logLevel)
+        {
+            Color color;
+            switch (logLevel)
             {
                 case LogEventLevel.Error:
                 case LogEventLevel.Fatal:
                     color = Color.DarkRed;
                     break;
                 case LogEventLevel.Warning:
-                    color = Color.Orange;// Goldenrod;
+                    color = Color.Orange;
                     break;
                 case LogEventLevel.Debug:
                 case LogEventLevel.Verbose:
@@ -75,7 +84,7 @@ namespace CommonScripts.View
                     color = Color.Black;
                     break;
             }
-            rtbConsole.AppendText(log.ToString(), color, true);
+            return color;
         }
 
         private void ChangeScriptStatus(ScriptAbs script)

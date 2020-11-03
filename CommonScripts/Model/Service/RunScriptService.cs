@@ -33,7 +33,7 @@ namespace CommonScripts.Model.Service
         public async Task RunScript(ScriptAbs script)
         {
             await Run();
-            Log.Information("Schedule Job for script {@Script}", script);
+            Log.Information("Schedule Job for script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
             if (await Scheduler.CheckExists(new JobKey(script.ScriptName)))
             {
                 await Scheduler.ResumeJob(new JobKey(script.ScriptName));

@@ -16,5 +16,6 @@ namespace CommonScripts.Extension
             box.ScrollToCaret();
             box.ResumeLayout();
         }
+        public static void AppendText(this RichTextBox box, object any, Color color, bool addNewLine = false) => AppendText(box, any.ToString(), color, addNewLine);
     }
 }

@@ -58,17 +58,17 @@ namespace CommonScripts.Logging
             switch (Lvl)
             {
                 case LogEventLevel.Debug:
-                    return "[DBG]";
+                    return "[DEBUG]";
                 case LogEventLevel.Error:
-                    return "[ERR]";
+                    return "[ERROR]";
                 case LogEventLevel.Fatal:
-                    return "[FTL]";
+                    return "[FATAL]";
                 case LogEventLevel.Verbose:
                     return "[VERBOSE]";
                 case LogEventLevel.Warning:
                     return "[WARNING]";
                 default:
-                    return "[INF]";
+                    return "[INFO]";
             }
         }
     }
