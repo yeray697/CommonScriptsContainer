@@ -1,26 +1,27 @@
-﻿using CommonScripts.Presenter;
+using CommonScripts.Logging;
 using CommonScripts.Model.Repository;
 using CommonScripts.Model.Repository.Interfaces;
 using CommonScripts.Model.Service;
 using CommonScripts.Model.Service.Interfaces;
+using CommonScripts.Presenter;
 using CommonScripts.View;
 using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 using System;
 using System.Windows.Forms;
-using Serilog.Events;
-using Serilog.Core;
-using CommonScripts.Logging;
 
 namespace CommonScripts
 {
     static class Program
     {
         /// <summary>
-        /// Punto de entrada principal para la aplicación.
+        ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Form mainForm = Injection();
