@@ -1,4 +1,5 @@
-﻿using CommonScripts.Model.Pojo.Base;
+﻿using CommonScripts.Model.Pojo;
+using CommonScripts.Model.Pojo.Base;
 using System.Collections.Generic;
 
 namespace CommonScripts.Model.Service.Interfaces
@@ -7,5 +8,7 @@ namespace CommonScripts.Model.Service.Interfaces
     {
         bool SaveScripts(List<ScriptAbs> scripts);
         List<ScriptAbs> GetScripts();
+        bool SaveSettings(Settings settings);
+        Settings GetSettings();
     }
 }

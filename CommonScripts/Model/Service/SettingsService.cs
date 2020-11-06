@@ -1,4 +1,5 @@
-﻿using CommonScripts.Model.Pojo.Base;
+﻿using CommonScripts.Model.Pojo;
+using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Model.Repository.Interfaces;
 using CommonScripts.Model.Service.Interfaces;
 using Serilog;
@@ -25,6 +26,18 @@ namespace CommonScripts.Model.Service
         {
             Log.Debug("Saving Scripts into json file");
             return _repository.SaveScripts(scripts);
+        }
+
+        public Settings GetSettings()
+        {
+            Log.Debug("Loading Settings from json file");
+            return _repository.GetSettings();
+        }
+
+        public bool SaveSettings(Settings settings)
+        {
+            Log.Debug("Saving Settings into json file");
+            return _repository.SaveSettings(settings);
         }
     }
 }

@@ -149,5 +149,14 @@ namespace CommonScripts.View
             this.WindowState = FormWindowState.Normal;
             
         }
+
+        public void ShowRunAtStartupDialog()
+        {
+            DialogResult r = MetroSetMessageBox.Show(this, null, "Do you want to set the app to run at startup?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            if (r == DialogResult.Yes)
+            {
+                Presenter.SetAppRunAtStartup();
+            }
+        }
     }
 }

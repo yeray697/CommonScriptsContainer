@@ -2,5 +2,6 @@
 {
     public class Settings
     {
+        public bool DoNotAskAgainRunStartup = false;
     }
 }

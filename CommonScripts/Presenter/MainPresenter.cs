@@ -10,15 +10,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
+using Microsoft.Win32;
 
 namespace CommonScripts.Presenter
 {
     public class MainPresenter : IMainPresenter
     {
+        private Settings _settings;
         private IMainView _view;
         private ISettingsService _settingsService;
         private IRunScriptService _runScriptService;
-        private List<ScriptAbs> Scripts;
+        private List<ScriptAbs> _scripts;
         private ListenKeysService _listenKeysService;
         private JobListener _oneOffJobListener;
 
@@ -45,21 +47,24 @@ namespace CommonScripts.Presenter
 
         private ScriptAbs GetScriptById(string scriptId)
         {
-            return Scripts?.FirstOrDefault(s => s.Id == scriptId);
+            return _scripts?.FirstOrDefault(s => s.Id == scriptId);
         }
 
         public void LoadSettings()
         {
-            Scripts = _settingsService.GetScripts();
+            _settings = _settingsService.GetSettings();
+            _scripts = _settingsService.GetScripts();
             CheckScriptStatus();
-            _view.ShowScripts(Scripts);
+            _view.ShowScripts(_scripts);
+            if (!_settings.DoNotAskAgainRunStartup && !IsAppRunningAtStartup())
+                _view.ShowRunAtStartupDialog();
         }
 
         public bool AddScript(ScriptAbs script)
         {
             script.Id = Guid.NewGuid().ToString();
-            Scripts.Add(script);
-            _settingsService.SaveScripts(Scripts);
+            _scripts.Add(script);
+            _settingsService.SaveScripts(_scripts);
 
             Log.Debug("Adding Script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
             return true;
@@ -71,8 +76,8 @@ namespace CommonScripts.Presenter
 
             if (RemoveScript(script.Id, false))
             {
-                Scripts.Add(script);
-                successful = _settingsService.SaveScripts(Scripts);
+                _scripts.Add(script);
+                successful = _settingsService.SaveScripts(_scripts);
                 Log.Debug("Edit Script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
             }
 
@@ -122,7 +127,7 @@ namespace CommonScripts.Presenter
                     await _runScriptService.StopScript(script);
             }
 
-            _settingsService.SaveScripts(Scripts);
+            _settingsService.SaveScripts(_scripts);
 
             return newStatus != oldStatus;
         }
@@ -134,18 +139,18 @@ namespace CommonScripts.Presenter
 
         private IEnumerable<ScriptListenKey> GetScriptListenKeyScripts()
         {
-            return Scripts?.OfType<ScriptListenKey>();
+            return _scripts?.OfType<ScriptListenKey>();
         }
 
         private bool RemoveScript(string scriptId, bool save)
         {
             bool successful = false;
-            int originalCount = Scripts.Count;
-            Scripts = Scripts.Where(s => s.Id != scriptId).ToList();
+            int originalCount = _scripts.Count;
+            _scripts = _scripts.Where(s => s.Id != scriptId).ToList();
 
-            if (originalCount > Scripts.Count)
+            if (originalCount > _scripts.Count)
             {
-                successful = save ? _settingsService.SaveScripts(Scripts) : true;
+                successful = save ? _settingsService.SaveScripts(_scripts) : true;
             }
 
             return successful;
@@ -168,9 +173,9 @@ namespace CommonScripts.Presenter
         private void CheckScriptStatus()
         {
             bool shouldListenForKeys = false;
-            if (Scripts != null) {
+            if (_scripts != null) {
                 
-                var runningScripts = Scripts.Where(s => s.ScriptStatus == ScriptStatus.Running);
+                var runningScripts = _scripts.Where(s => s.ScriptStatus == ScriptStatus.Running);
 
                 if (runningScripts.Any())
                     _runScriptService.Run();
@@ -194,6 +199,41 @@ namespace CommonScripts.Presenter
                 _listenKeysService.Run();
             else
                 _listenKeysService.Stop();
+        }
+
+        public void DoNotAskAgainRunAtStartup()
+        {
+            _settings.DoNotAskAgainRunStartup = true;
+            _settingsService.SaveSettings(_settings);
+        }
+
+        private bool IsAppRunningAtStartup()
+        {
+            var key = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run",
+             "CommonScripts"
+             ,null);
+
+            return key != null;
+        }
+        
+        public bool SetAppRunAtStartup()
+        {
+            string exePath = System.Windows.Forms.Application.StartupPath + "CommonScripts.Exe";
+            string args = "-hide";
+            bool result = true;
+            try
+            {
+                Registry.SetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run",
+                 "CommonScripts",
+                 exePath + " " + args);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error while saving the windows registry.");
+                result = false;
+            }
+
+            return result;
         }
     }
 }

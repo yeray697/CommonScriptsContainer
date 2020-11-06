@@ -1,5 +1,4 @@
-﻿using CommonScripts.Model.Pojo;
-using CommonScripts.Model.Pojo.Base;
+﻿using CommonScripts.Model.Pojo.Base;
 using System.Threading.Tasks;
 
 namespace CommonScripts.Presenter.Interfaces
@@ -11,5 +10,7 @@ namespace CommonScripts.Presenter.Interfaces
         bool EditScript(ScriptAbs script);
         bool RemoveScript(string scriptId);
         Task<bool> ChangeScriptStatus(ScriptAbs script);
+        void DoNotAskAgainRunAtStartup();
+        bool SetAppRunAtStartup();
     }
 }
