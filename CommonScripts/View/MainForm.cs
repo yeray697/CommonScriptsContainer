@@ -108,6 +108,8 @@ namespace CommonScripts.View
             DialogResult r = MetroSetMessageBox.Show(this, null, "Do you want to set the app to run at startup?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (r == DialogResult.Yes)
                 Presenter.SetAppRunAtStartup();
+            else
+                Presenter.DoNotAskAgainRunAtStartup();
         }
         public void ChangeScriptStatusThreadSafe(ScriptAbs script)
         {
