@@ -1,8 +1,8 @@
 ﻿using CommonScripts.Model.Pojo.Base;
 using Quartz;
 using Serilog;
-using System.Diagnostics;
 using System.IO;
+using System.Management.Automation;
 using System.Threading.Tasks;
 
 namespace CommonScripts.Model.Service.Job
@@ -28,13 +28,9 @@ namespace CommonScripts.Model.Service.Job
             if (File.Exists(_script.ScriptPath))
             {
                 Log.Information("Executing {@ScriptName}", _script.ScriptName);
-                var process = new Process();
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.FileName = @"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe";
-                process.StartInfo.Arguments = "-File \""+ _script.ScriptPath + "\"";
-
-                process.Start();
-                process.WaitForExit();
+                string psScript = File.ReadAllText(_script.ScriptPath);
+                var powerShell = PowerShell.Create().AddScript(psScript);
+                powerShell.Invoke();
             } else
             {
                 Log.Warning("Script {@ScriptName} could not run. Script Path not found {@ScriptPath}", _script.ScriptName, _script.ScriptPath);
