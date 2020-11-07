@@ -21,25 +21,6 @@ namespace CommonScripts.Logging
 
             LogEmitted?.Invoke(msg);
         }
-
-        static string LevelToSeverity(LogEvent logEvent)
-        {
-            switch (logEvent.Level)
-            {
-                case LogEventLevel.Debug:
-                    return "[DBG]";
-                case LogEventLevel.Error:
-                    return "[ERR]";
-                case LogEventLevel.Fatal:
-                    return "[FTL]";
-                case LogEventLevel.Verbose:
-                    return "[VERBOSE]";
-                case LogEventLevel.Warning:
-                    return "[WARNING]";
-                default:
-                    return "[INF]";
-            }
-        }
     }
 
     public struct LogMsg

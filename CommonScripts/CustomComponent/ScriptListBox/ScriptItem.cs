@@ -25,32 +25,27 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             PaintUI();
         }
 
-        public void SetWidth(int width)
+        #region Events
+        private void pbxEdit_Click(object sender, System.EventArgs e)
         {
-            Width = width;
-            this.Anchor = ((AnchorStyles.Top | AnchorStyles.Left) | AnchorStyles.Right);
+            EditClicked?.Invoke(this);
         }
-
-        public bool ModifyScript(ScriptAbs editScript, bool hasScriptTypeChanged)
+        private void pbxRemove_Click(object sender, System.EventArgs e)
         {
-            bool hasNameBeenModified = false;
-
-            hasNameBeenModified = ModifyScriptName(editScript.ScriptName);
-            if (hasScriptTypeChanged)
-            {
-                ScriptTypeChanged(editScript);
-            }
-            Script = editScript;
-
-            return hasNameBeenModified;
+            RemoveClicked?.Invoke(this);
         }
+        private void pbxStatus_Click(object sender, System.EventArgs e)
+        {
+            StatusClicked?.Invoke(this);
+        }
+        #endregion
 
+        #region Private Methods
         private void ScriptTypeChanged(ScriptAbs newItem)
         {
             Script = newItem;
             PaintScriptType();
         }
-
         private bool ModifyScriptName(string name)
         {
             bool hasChanged = false;
@@ -62,7 +57,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             }
             return hasChanged;
         }
-
         private void PaintUI()
         {
             UpdateMetroStyles();
@@ -73,7 +67,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
                 PaintScriptType();
             }
         }
-
         private void UpdateMetroStyles()
         {
             lblScriptName.StyleManager = _styleManager;
@@ -85,12 +78,32 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             lblScriptType.Style = _styleManager.Style;
 
         }
-
         private void PaintScriptName()
         {
             lblScriptName.Text = Script.ScriptName;
         }
+        private void PaintScriptType()
+        {
+            lblScriptType.Text = Script.ScriptType.ToString();
+        }
+        #endregion
 
+        #region Public Methods
+        public void SetWidth(int width)
+        {
+            Width = width;
+            this.Anchor = ((AnchorStyles.Top | AnchorStyles.Left) | AnchorStyles.Right);
+        }
+        public bool ModifyScript(ScriptAbs editScript, bool hasScriptTypeChanged)
+        {
+            bool hasNameBeenModified = ModifyScriptName(editScript.ScriptName);
+            if (hasScriptTypeChanged)
+            {
+                ScriptTypeChanged(editScript);
+            }
+            Script = editScript;
+            return hasNameBeenModified;
+        }
         public void PaintScriptStatus()
         {
             switch (Script.ScriptStatus)
@@ -107,27 +120,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
                     break;
             }
             pbxStatus.Refresh();
-
         }
-
-        private void PaintScriptType()
-        {
-            lblScriptType.Text = Script.ScriptType.ToString();
-        }
-
-        private void pbxEdit_Click(object sender, System.EventArgs e)
-        {
-            EditClicked?.Invoke(this);
-        }
-
-        private void pbxRemove_Click(object sender, System.EventArgs e)
-        {
-            RemoveClicked?.Invoke(this);
-        }
-
-        private void pbxStatus_Click(object sender, System.EventArgs e)
-        {
-            StatusClicked?.Invoke(this);
-        }
+        #endregion
     }
 }

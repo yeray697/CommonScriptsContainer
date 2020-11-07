@@ -15,17 +15,14 @@ namespace CommonScripts.View
 {
     public partial class MainForm : MetroSetForm, IMainView
     {
-        private LogEventLevel MinimumLoggingLevelGUIConsole = LogEventLevel.Information;
+        private const LogEventLevel MINIMUM_LOG_LEVEL_GUI_CONSOLE = LogEventLevel.Information;
+        private ScriptListAdapter _scriptListAdapter;
         public MainPresenter Presenter { get; set; }
-        private ScriptListAdapter scriptListAdapter;
 
         public MainForm()
         {
             InitializeComponent();
-            scriptListAdapter = new ScriptListAdapter(StyleManager, pnlScripts);
-            scriptListAdapter.EditClicked += EditScript;
-            scriptListAdapter.RemoveClicked += RemoveScript;
-            scriptListAdapter.StatusClicked += ChangeScriptStatus;
+            InitScriptListAdapter();
         }
 
         //Helps with the refresh of the UI when resizing the window
@@ -45,28 +42,99 @@ namespace CommonScripts.View
             base.OnLoad(e);
             Presenter.LoadSettings();
         }
-
         private void AddScript(object sender, EventArgs e)
         {
             ShowScriptForm(null, (ScriptAbs addedScript, bool hasScriptTypeChanged /*Unused, just used when editting*/) => {
                 if (Presenter.AddScript(addedScript))
                 {
-                    scriptListAdapter.AddItem(addedScript);
+                    _scriptListAdapter.AddItem(addedScript);
                 }
             });
         }
-
+        private void EditScript(ScriptAbs script)
+        {
+            ShowScriptForm(script, (ScriptAbs editedScript, bool hasScriptTypeChanged) => {
+                if (Presenter.EditScript(editedScript))
+                {
+                    _scriptListAdapter.EditItem(editedScript, hasScriptTypeChanged);
+                }
+            });
+        }
+        private void RemoveScript(ScriptAbs script)
+        {
+            DialogResult r = MetroSetMessageBox.Show(this, "Do you want to remove the script?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            if (r == DialogResult.Yes)
+            {
+                string scriptId = script.Id;
+                if (Presenter.RemoveScript(scriptId))
+                {
+                    _scriptListAdapter.RemoveItem(scriptId);
+                }
+            }
+        }
+        private void ChangeScriptStatus(ScriptAbs script)
+        {
+            bool hasStatusChanged = Presenter.ChangeScriptStatus(script).Result;
+            if (hasStatusChanged)
+                _scriptListAdapter.ChangeScriptStatus(script.Id);
+        }
+        private void appNotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+                Hide();
+        }
         public void LogEmitted(LogMsg log)
         {
-            if (log.Lvl >= MinimumLoggingLevelGUIConsole)
+            if (log.Lvl >= MINIMUM_LOG_LEVEL_GUI_CONSOLE)
             {
                 Color color = GetConsoleTextColor(log.Lvl);
                 rtbConsole.AppendTextThreadSafe(log.ToString(), color, true);
             }
         }
+        #endregion
 
+        #region Public Methods
+        public void ShowScripts(IList<ScriptAbs> scripts)
+        {
+            _scriptListAdapter.CreateWithList(scripts);
+        }
+        public void ShowRunAtStartupDialog()
+        {
+            DialogResult r = MetroSetMessageBox.Show(this, null, "Do you want to set the app to run at startup?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            if (r == DialogResult.Yes)
+                Presenter.SetAppRunAtStartup();
+        }
+        public void ChangeScriptStatusThreadSafe(ScriptAbs script)
+        {
+            this.Invoke((MethodInvoker)delegate () { ChangeScriptStatus(script); });
+        }
+        #endregion
+
+        #region Private Methods
+        private void ShowScriptForm(ScriptAbs script, Action<ScriptAbs, bool> postAction)
+        {
+            ScriptForm scriptForm = new ScriptForm(styleManager, script);
+            if (scriptForm.ShowDialog() == DialogResult.OK)
+            {
+                bool hasScriptTypeChanged = script != null && scriptForm.HasScriptTypeChanged;
+                postAction(scriptForm.GetScript(), hasScriptTypeChanged);
+            }
+        }
+        private void InitScriptListAdapter()
+        {
+            _scriptListAdapter = new ScriptListAdapter(StyleManager, pnlScripts);
+            _scriptListAdapter.EditClicked += EditScript;
+            _scriptListAdapter.RemoveClicked += RemoveScript;
+            _scriptListAdapter.StatusClicked += ChangeScriptStatus;
+        }
         private Color GetConsoleTextColor(LogEventLevel logLevel)
         {
+            //ToDo: Implementing dark mode
             Color color;
             switch (logLevel)
             {
@@ -85,78 +153,6 @@ namespace CommonScripts.View
             }
             return color;
         }
-
-        private void ChangeScriptStatus(ScriptAbs script)
-        {
-            bool hasStatusChanged = Presenter.ChangeScriptStatus(script).Result;
-            if (hasStatusChanged)
-                scriptListAdapter.ChangeScriptStatus(script.Id);
-        }
-
-        public void ChangeScriptStatusThreadSafe(ScriptAbs script)
-        {
-            this.Invoke((MethodInvoker)delegate () { ChangeScriptStatus(script); });
-        }
-
-        private void RemoveScript(ScriptAbs script)
-        {
-            DialogResult r = MetroSetMessageBox.Show(this, "Do you want to remove the script?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-            if (r == DialogResult.Yes)
-            {
-                string scriptId = script.Id;
-                if (Presenter.RemoveScript(scriptId))
-                {
-                    scriptListAdapter.RemoveItem(scriptId);
-                }
-            }
-        }
-
-        private void EditScript(ScriptAbs script)
-        {
-            ShowScriptForm(script, (ScriptAbs editedScript, bool hasScriptTypeChanged) => {
-                if (Presenter.EditScript(editedScript))
-                {
-                    scriptListAdapter.EditItem(editedScript, hasScriptTypeChanged);
-                }
-            });
-        }
         #endregion
-
-        private void ShowScriptForm(ScriptAbs script, Action<ScriptAbs, bool> postAction)
-        {
-            ScriptForm scriptForm = new ScriptForm(styleManager, script);
-            if (scriptForm.ShowDialog() == DialogResult.OK)
-            {
-                bool hasScriptTypeChanged = script != null && scriptForm.HasScriptTypeChanged;
-                postAction(scriptForm.GetScript(), hasScriptTypeChanged);
-            }
-        }
-
-        public void ShowScripts(IList<ScriptAbs> scripts)
-        {
-            scriptListAdapter.CreateWithList(scripts);
-        }
-
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
-                Hide();
-        }
-
-        private void appNotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            Show();
-            this.WindowState = FormWindowState.Normal;
-            
-        }
-
-        public void ShowRunAtStartupDialog()
-        {
-            DialogResult r = MetroSetMessageBox.Show(this, null, "Do you want to set the app to run at startup?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-            if (r == DialogResult.Yes)
-            {
-                Presenter.SetAppRunAtStartup();
-            }
-        }
     }
 }

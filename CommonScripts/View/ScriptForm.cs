@@ -13,12 +13,10 @@ namespace CommonScripts.View
 {
     public partial class ScriptForm : MetroSetForm
     {
-        private ScriptAbs _script;
-        private bool _listeningKeys = false;
-
         public bool HasScriptTypeChanged { get; internal set; }
 
-        public ScriptAbs GetScript() => _script;
+        private ScriptAbs _script;
+        private bool _listeningKeys = false;
 
         public ScriptForm(StyleManager styleManager, ScriptAbs script)
         {
@@ -41,23 +39,12 @@ namespace CommonScripts.View
             LoadSpecificScriptFields();
         }
 
-        private void UpdateMetroStyles(StyleManager styleManager)
-        {
-            this.StyleManager = styleManager.Clone(this);
-        }
-
-        private void ShowPathSelector(object sender, EventArgs e)
-        {
-            if (ofdScriptPath.ShowDialog() == DialogResult.OK)
-                tbxScriptPath.Text = ofdScriptPath.FileName;
-        }
-
+        #region Events
         private void Cancel(object sender, EventArgs e)
         {
             _script = null;
             Close();
         }
-
         private void Save(object sender, EventArgs e)
         {
             ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue);
@@ -68,7 +55,7 @@ namespace CommonScripts.View
             _script.ScriptPath = tbxScriptPath.Text;
             _script.ScriptStatus = ScriptStatus.Stopped;
 
-            switch (scriptType) 
+            switch (scriptType)
             {
                 case ScriptType.OneOff:
                     break;
@@ -78,7 +65,7 @@ namespace CommonScripts.View
                     ((ScriptScheduled)_script).ScheduledHour = st;
                     break;
                 case ScriptType.ListenKey:
-                    ((ScriptListenKey)_script).TriggerKey = (KeyPressed) tbxKeyPressed.Tag;
+                    ((ScriptListenKey)_script).TriggerKey = (KeyPressed)tbxKeyPressed.Tag;
                     break;
                 default:
                     break;
@@ -87,17 +74,42 @@ namespace CommonScripts.View
             DialogResult = DialogResult.OK;
             Close();
         }
-
+        private void ShowPathSelector(object sender, EventArgs e)
+        {
+            if (ofdScriptPath.ShowDialog() == DialogResult.OK)
+                tbxScriptPath.Text = ofdScriptPath.FileName;
+        }
+        private void ListenKeysService_KeyUpClicked(KeyPressed keyPressed)
+        {
+            Log.Debug("ScriptForm: SingleKeyUpClicked event received");
+            tbxKeyPressed.Text = keyPressed.ToString();
+            tbxKeyPressed.Tag = keyPressed;
+            StopListeningKeys();
+        }
         private void cbxScriptType_SelectedValueChanged(object sender, EventArgs e)
         {
-
             ScriptType scriptType;
             Enum.TryParse<ScriptType>(cbxScriptType.SelectedValue.ToString(), out scriptType);
 
             StopListeningKeys();
             DisplaySpecificScriptFields();
         }
+        private void pbxRemoveKeyPressed_Click(object sender, EventArgs e)
+        {
+            StopListeningKeys();
+            tbxKeyPressed.Text = "Undefined";
+        }
+        private void pbxEditKeyPressed_Click(object sender, EventArgs e)
+        {
+            StartListeningKeys();
+        }
+        #endregion
 
+        #region Private Methods
+        private void UpdateMetroStyles(StyleManager styleManager)
+        {
+            this.StyleManager = styleManager.Clone(this);
+        }
         private void DisplayScriptListeningKeyText()
         {
             tbxKeyPressed.Text = "Undefined";
@@ -111,7 +123,6 @@ namespace CommonScripts.View
                     tbxKeyPressed.Text = triggerKey.ToString();
             }
         }
-
         private void DisplaySpecificScriptFields()
         {
             ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue);
@@ -136,7 +147,6 @@ namespace CommonScripts.View
                     break;
             }
         }
-
         private void LoadSpecificScriptFields()
         {
             if (_script != null)
@@ -160,7 +170,6 @@ namespace CommonScripts.View
 
             DisplaySpecificScriptFields();
         }
-
         private void AssignDateTimePickerValue()
         {
             DateTime value = DateTime.Now.Date;
@@ -169,7 +178,6 @@ namespace CommonScripts.View
 
             dtpScriptScheduled.Value = value;
         }
-
         private void HideScheduledScriptFields(bool hide)
         {
             if (hide)
@@ -183,7 +191,6 @@ namespace CommonScripts.View
                 dtpScriptScheduled.Show();
             }
         }
-
         private void HideListenKeyScriptFields(bool hide)
         {
             if (hide)
@@ -200,18 +207,6 @@ namespace CommonScripts.View
                 tbxKeyPressed.Show();
             }
         }
-
-        private void pbxRemoveKeyPressed_Click(object sender, EventArgs e)
-        {
-            StopListeningKeys();
-            tbxKeyPressed.Text = "Undefined";
-        }
-
-        private void pbxEditKeyPressed_Click(object sender, EventArgs e)
-        {
-            StartListeningKeys();
-        }
-
         private void StartListeningKeys()
         {
             _listeningKeys = true;
@@ -221,18 +216,14 @@ namespace CommonScripts.View
             listenKeysService.SingleKeyUpClicked += ListenKeysService_KeyUpClicked;
             listenKeysService.Run(true);
         }
-
-        private void ListenKeysService_KeyUpClicked(KeyPressed keyPressed)
-        {
-            Log.Debug("ScriptForm: SingleKeyUpClicked event received");
-            tbxKeyPressed.Text = keyPressed.ToString();
-            tbxKeyPressed.Tag = keyPressed;
-            StopListeningKeys();
-        }
-
         private void StopListeningKeys()
         {
             _listeningKeys = false;
         }
+        #endregion
+
+        #region Public Methods
+        public ScriptAbs GetScript() => _script;
+        #endregion
     }
 }

@@ -5,7 +5,7 @@ namespace CommonScripts.Model.Pojo
 {
     public class KeyPressed : IEquatable<KeyPressed>
     {
-        private const string PlusToString = " + ";
+        private const string PLUS_TO_STRING = " + ";
         private Keys? _key;
 
         public bool IsShiftPressed { get; set; }
@@ -78,7 +78,7 @@ namespace CommonScripts.Model.Pojo
 
         private string GetPlusSignIfRequired(string currentRepresentation)
         {
-            return (currentRepresentation == "" ? "" : PlusToString); 
+            return (currentRepresentation == "" ? "" : PLUS_TO_STRING); 
         }
 
         public override bool Equals(object obj)
