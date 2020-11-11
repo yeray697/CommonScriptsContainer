@@ -1,6 +1,7 @@
 ﻿using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Model.Repository.Interfaces;
+using CommonScripts.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -62,9 +63,10 @@ namespace CommonScripts.Model.Repository
             T t = new T();
             try
             {
-                if (File.Exists(fileName))
+                string realPath = FileUtils.GetAbsolutePath(fileName);
+                if (File.Exists(realPath))
                 {
-                    string json = File.ReadAllText(fileName);
+                    string json = File.ReadAllText(realPath);
                     t = JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.All

@@ -1,4 +1,5 @@
 ﻿using CommonScripts.Model.Pojo.Base;
+using CommonScripts.Utils;
 using Quartz;
 using Serilog;
 using System.IO;
@@ -25,15 +26,17 @@ namespace CommonScripts.Model.Service.Job
 
         private void RunScript()
         {
-            if (File.Exists(_script.ScriptPath))
+            string realPath = FileUtils.GetAbsolutePath(_script.ScriptPath);
+            
+            if (File.Exists(realPath))
             {
                 Log.Information("Executing {@ScriptName}", _script.ScriptName);
-                string psScript = File.ReadAllText(_script.ScriptPath);
+                string psScript = File.ReadAllText(realPath);
                 var powerShell = PowerShell.Create().AddScript(psScript);
                 powerShell.Invoke();
             } else
             {
-                Log.Warning("Script {@ScriptName} could not run. Script Path not found {@ScriptPath}", _script.ScriptName, _script.ScriptPath);
+                Log.Warning("Script {@ScriptName} could not run. Script Path not found {@ScriptPath}", _script.ScriptName, realPath);
             }
             Log.Information("Job {@ScriptName} finished", _script.ScriptName);
         }
