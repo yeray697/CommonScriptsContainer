@@ -1,5 +1,4 @@
-﻿using CommonScripts.Model.Pojo;
-using CommonScripts.Model.Pojo.Base;
+﻿using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Model.Repository.Interfaces;
 using CommonScripts.Utils;
 using Newtonsoft.Json;
@@ -27,16 +26,6 @@ namespace CommonScripts.Model.Repository
         public List<ScriptAbs> GetScripts()
         {
             return Load<List<ScriptAbs>>(ScriptFile);
-        }
-
-        public bool SaveSettings(Settings settings)
-        {
-            return Save(settings, SettingsFile);
-        }
-
-        public Settings GetSettings()
-        {
-            return Load<Settings>(SettingsFile);
         }
 
         private bool Save<T>(T pSettings, string fileName)

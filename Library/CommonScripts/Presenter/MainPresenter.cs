@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
 using Microsoft.Win32;
+using CommonScripts.Settings;
 
 namespace CommonScripts.Presenter
 {
@@ -19,7 +20,6 @@ namespace CommonScripts.Presenter
         private const string WINDOWS_REGISTRY_STARTUP_PATH = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run";
         private const string WINDOWS_REGISTRY_STARTUP_KEY = "CommonScripts";
 
-        private Settings _settings;
         private IMainView _view;
         private ISettingsService _settingsService;
         private IRunScriptService _runScriptService;
@@ -156,11 +156,10 @@ namespace CommonScripts.Presenter
         #region Public Methods
         public void LoadSettings()
         {
-            _settings = _settingsService.GetSettings();
             _scripts = _settingsService.GetScripts();
             CheckScriptStatus();
             _view.ShowScripts(_scripts);
-            if (!_settings.DoNotAskAgainRunStartup && !IsAppRunningAtStartup())
+            if (!AppSettingsManager.AskToRunAppAtStartup() && !IsAppRunningAtStartup())
                 _view.ShowRunAtStartupDialog();
         }
         public bool AddScript(ScriptAbs script)
@@ -213,8 +212,7 @@ namespace CommonScripts.Presenter
         }
         public void DoNotAskAgainRunAtStartup()
         {
-            _settings.DoNotAskAgainRunStartup = true;
-            _settingsService.SaveSettings(_settings);
+            AppSettingsManager.SetAskToRunAppAtStartup(true);
         }
         public bool SetAppRunAtStartup()
         {
