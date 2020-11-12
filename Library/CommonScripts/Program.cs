@@ -42,10 +42,11 @@ namespace CommonScripts
             ISettingsRepository settingsRepository = new SettingsRepository();
             ISettingsService settingsService = new SettingsService(settingsRepository);
             IRunScriptService runScriptService = new RunScriptService();
+            IWindowsRegistryService windowsRegistryService = new WindowsRegistryService();
             MainForm view = new MainForm();
             sink.LogEmitted += view.LogEmitted;
 
-            var presenter = new MainPresenter(view, settingsService, runScriptService);
+            var presenter = new MainPresenter(view, settingsService, runScriptService, windowsRegistryService);
 
             return view;
         }

@@ -17,22 +17,21 @@ namespace CommonScripts.Presenter
 {
     public class MainPresenter : IMainPresenter
     {
-        private const string WINDOWS_REGISTRY_STARTUP_PATH = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run";
-        private const string WINDOWS_REGISTRY_STARTUP_KEY = "CommonScripts";
-
         private IMainView _view;
         private ISettingsService _settingsService;
         private IRunScriptService _runScriptService;
+        private IWindowsRegistryService _windowsRegistryService;
         private List<ScriptAbs> _scripts;
         private ListenKeysService _listenKeysService;
         private JobListener _oneOffJobListener;
 
-        public MainPresenter(IMainView view, ISettingsService settingsService, IRunScriptService runScriptService)
+        public MainPresenter(IMainView view, ISettingsService settingsService, IRunScriptService runScriptService, IWindowsRegistryService windowsRegistryService)
         {
             _view = view;
             _view.Presenter = this; // Poor Man's DI
             _settingsService = settingsService;
             _runScriptService = runScriptService;
+            _windowsRegistryService = windowsRegistryService;
 
             InitListenKeyService();
             InitOneOffJobListener();
@@ -144,13 +143,6 @@ namespace CommonScripts.Presenter
             else
                 _listenKeysService.Stop();
         }
-        private bool IsAppRunningAtStartup()
-        {
-            var key = Registry.GetValue(WINDOWS_REGISTRY_STARTUP_PATH,
-             WINDOWS_REGISTRY_STARTUP_KEY
-             , null);
-            return key != null;
-        }
         #endregion
 
         #region Public Methods
@@ -159,7 +151,7 @@ namespace CommonScripts.Presenter
             _scripts = _settingsService.GetScripts();
             CheckScriptStatus();
             _view.ShowScripts(_scripts);
-            if (!AppSettingsManager.AskToRunAppAtStartup() && !IsAppRunningAtStartup())
+            if (!AppSettingsManager.AskToRunAppAtStartup() && !_windowsRegistryService.IsAppSetToRunAtStartup())
                 _view.ShowRunAtStartupDialog();
         }
         public bool AddScript(ScriptAbs script)
@@ -216,22 +208,7 @@ namespace CommonScripts.Presenter
         }
         public bool SetAppRunAtStartup()
         {
-            string exePath = System.Windows.Forms.Application.StartupPath + "CommonScripts.Exe";
-            string args = "-hide";
-            bool result = true;
-            try
-            {
-                Registry.SetValue(WINDOWS_REGISTRY_STARTUP_PATH,
-                 WINDOWS_REGISTRY_STARTUP_KEY,
-                 exePath + " " + args);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Error while saving the windows registry.");
-                result = false;
-            }
-
-            return result;
+            return _windowsRegistryService.SetAppToRunAtStartup();
         }
         #endregion
     }
