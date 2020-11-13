@@ -19,13 +19,31 @@ namespace CommonScripts
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            bool startAppHidden = false;
+            ParseArgs(args, out startAppHidden);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Form mainForm = Injection();
+            if (startAppHidden)
+            {
+                mainForm.WindowState = FormWindowState.Minimized;
+                mainForm.Hide();
+                mainForm.ShowInTaskbar = false;
+            }
             Application.Run(mainForm);
+        }
+
+        private static void ParseArgs(string[] args, out bool startAppHidden)
+        {
+            startAppHidden = false;
+            if (args != null && args.Length == 1)
+            {
+                if (args[0] == "-hide")
+                    startAppHidden = true;
+            }
         }
 
         private static Form Injection()

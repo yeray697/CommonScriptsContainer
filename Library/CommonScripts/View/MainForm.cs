@@ -82,11 +82,15 @@ namespace CommonScripts.View
         {
             Show();
             this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
         }
         private void MainForm_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
+            {
                 Hide();
+                this.ShowInTaskbar = false;
+            }
         }
         public void LogEmitted(LogMsg log)
         {
