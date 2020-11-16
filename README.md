@@ -7,7 +7,7 @@ This is a container for scripts so you can schedule them, run once, or run based
 ![Image of the Add window](./img/AddOneOffScript.png)
 
 ### How to use it
-1 - Download the release v1.1 and extract it.
+1 - Download the release v1.1.1 and extract it.
 
 2 - Place it in the desired installation path.
 
