@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonScripts.Settings;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -24,13 +25,12 @@ namespace CommonScripts.Utils
                     path = "\\" + path;
                 path = GetProjectPath() + path;
             }
-
             return path;
         }
 
         public static string GetProjectPath()
         {
-            return System.Configuration.ConfigurationManager.AppSettings["installationPath"];
+            return AppSettingsManager.GetProjectInstallationPath();
         }
     }
 }
