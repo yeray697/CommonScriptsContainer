@@ -116,7 +116,7 @@ namespace CommonScripts.View
             if (_listeningKeys)
             {
                 tbxKeyPressed.Text = "Listening...";
-            } else if (_script != null)
+            } else if (_script != null && _script is ScriptListenKey)
             {
                 KeyPressed triggerKey = ((ScriptListenKey)_script).TriggerKey;
                 if (triggerKey != null)
@@ -173,9 +173,9 @@ namespace CommonScripts.View
         private void AssignDateTimePickerValue()
         {
             DateTime value = DateTime.Now.Date;
-            if (_script != null)
+            if (_script != null && _script is ScriptScheduled)
                 value += ((ScriptScheduled)_script).ScheduledHour;
-
+            
             dtpScriptScheduled.Value = value;
         }
         private void HideScheduledScriptFields(bool hide)
