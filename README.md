@@ -1,7 +1,5 @@
 # Common Scripts Container
 
-[toc]
-
 ## Description
 
 This is a container for scripts so you can schedule them, run once, or run based on a macro key.
