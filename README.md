@@ -1,6 +1,6 @@
 # Common Scripts Container
 
-[[toc]]
+[toc]
 
 ## Description
 
