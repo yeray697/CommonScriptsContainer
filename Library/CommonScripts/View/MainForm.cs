@@ -44,7 +44,7 @@ namespace CommonScripts.View
         }
         private void AddScript(object sender, EventArgs e)
         {
-            ShowScriptForm(null, (ScriptAbs addedScript, bool hasScriptTypeChanged /*Unused, just used when editting*/) => {
+            ShowScriptForm(null, (ScriptAbs addedScript) => {
                 if (Presenter.AddScript(addedScript))
                 {
                     _scriptListAdapter.AddItem(addedScript);
@@ -53,8 +53,9 @@ namespace CommonScripts.View
         }
         private void EditScript(ScriptAbs script)
         {
-            ShowScriptForm(script, (ScriptAbs editedScript, bool hasScriptTypeChanged) => {
-                if (Presenter.EditScript(editedScript))
+            ShowScriptForm(script, (ScriptAbs editedScript) => {
+                bool hasScriptTypeChanged = script != null && ScriptAbs.HasScriptTypeChanged(script.ScriptType, editedScript.ScriptType);
+                if (Presenter.EditScript(editedScript, hasScriptTypeChanged))
                 {
                     _scriptListAdapter.EditItem(editedScript, hasScriptTypeChanged);
                 }
@@ -122,13 +123,12 @@ namespace CommonScripts.View
         #endregion
 
         #region Private Methods
-        private void ShowScriptForm(ScriptAbs script, Action<ScriptAbs, bool> postAction)
+        private void ShowScriptForm(ScriptAbs script, Action<ScriptAbs> postAction)
         {
             ScriptForm scriptForm = new ScriptForm(styleManager, script);
             if (scriptForm.ShowDialog() == DialogResult.OK)
             {
-                bool hasScriptTypeChanged = script != null && scriptForm.HasScriptTypeChanged;
-                postAction(scriptForm.GetScript(), hasScriptTypeChanged);
+                postAction(scriptForm.GetScript());
             }
         }
         private void InitScriptListAdapter()

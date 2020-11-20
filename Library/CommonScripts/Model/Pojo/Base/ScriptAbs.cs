@@ -31,8 +31,9 @@ namespace CommonScripts.Model.Pojo.Base
 
         object ICloneable.Clone() => Clone();
 
-        public static ScriptAbs GetInstance(ScriptAbs oldScript, ScriptType scriptType, bool hasScriptTypeChanged)
+        public static ScriptAbs GetInstance(ScriptAbs oldScript, ScriptType scriptType)
         {
+            bool hasScriptTypeChanged = oldScript != null && HasScriptTypeChanged(oldScript.ScriptType, scriptType);
             ScriptAbs newScript = null;
             if (oldScript == null || hasScriptTypeChanged)
             {
@@ -58,5 +59,6 @@ namespace CommonScripts.Model.Pojo.Base
 
             return newScript != null ? newScript : oldScript;
         }
+        public static bool HasScriptTypeChanged(ScriptType oldScriptType, ScriptType newScriptType) => oldScriptType != newScriptType;
     }
 }

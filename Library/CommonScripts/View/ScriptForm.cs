@@ -13,8 +13,6 @@ namespace CommonScripts.View
 {
     public partial class ScriptForm : MetroSetForm
     {
-        public bool HasScriptTypeChanged { get; internal set; }
-
         private ScriptAbs _script;
         private bool _listeningKeys = false;
 
@@ -48,12 +46,11 @@ namespace CommonScripts.View
         private void Save(object sender, EventArgs e)
         {
             ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue);
-
-            HasScriptTypeChanged = _script != null && (scriptType != _script.ScriptType);
-            _script = ScriptAbs.GetInstance(_script, scriptType, HasScriptTypeChanged);
+            ScriptStatus scriptStatus = _script?.ScriptStatus ?? ScriptStatus.Stopped;
+            _script = ScriptAbs.GetInstance(_script, scriptType);
             _script.ScriptName = tbxScriptName.Text;
             _script.ScriptPath = tbxScriptPath.Text;
-            _script.ScriptStatus = ScriptStatus.Stopped;
+            _script.ScriptStatus = scriptStatus;
 
             switch (scriptType)
             {
