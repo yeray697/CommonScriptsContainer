@@ -100,6 +100,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             if (hasScriptTypeChanged)
             {
                 ScriptTypeChanged(editScript);
+                PaintScriptStatus();
             }
             Script = editScript;
             return hasNameBeenModified;

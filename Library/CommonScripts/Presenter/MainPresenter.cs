@@ -161,7 +161,7 @@ namespace CommonScripts.Presenter
             _scripts.Add(script);
             return _settingsService.SaveScripts(_scripts);
         }
-        public bool EditScript(ScriptAbs script)
+        public bool EditScript(ScriptAbs script, bool hasScriptTypeChanged)
         {
             Log.Debug("Editing Script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
             bool successful = false;
@@ -169,6 +169,14 @@ namespace CommonScripts.Presenter
             {
                 _scripts.Add(script);
                 successful = _settingsService.SaveScripts(_scripts);
+                if (successful && script.ScriptStatus == ScriptStatus.Running && hasScriptTypeChanged)
+                {
+                    _runScriptService.StopScript(script);
+                    if (script.ScriptType != ScriptType.OneOff)
+                        _runScriptService.RunScript(script);
+                    else
+                        _view.ChangeScriptStatusThreadSafe(script);
+                }
             }
             return successful;
         }
