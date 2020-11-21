@@ -3,6 +3,7 @@ using CommonScripts.Extension;
 using CommonScripts.Logging;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Presenter;
+using CommonScripts.View.Base;
 using CommonScripts.View.Interfaces;
 using MetroSet_UI.Forms;
 using Serilog.Events;
@@ -13,7 +14,7 @@ using System.Windows.Forms;
 
 namespace CommonScripts.View
 {
-    public partial class MainForm : MetroSetForm, IMainView
+    public partial class MainForm : BaseForm, IMainView
     {
         private const LogEventLevel MINIMUM_LOG_LEVEL_GUI_CONSOLE = LogEventLevel.Information;
         private ScriptListAdapter _scriptListAdapter;
@@ -23,17 +24,6 @@ namespace CommonScripts.View
         {
             InitializeComponent();
             InitScriptListAdapter();
-        }
-
-        //Helps with the refresh of the UI when resizing the window
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
-                return cp;
-            }
         }
 
         #region Events

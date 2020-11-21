@@ -1,25 +1,23 @@
-﻿using CommonScripts.Extension;
-using CommonScripts.Model.Pojo;
+﻿using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Model.Service;
 using CommonScripts.Utils;
+using CommonScripts.View.Base;
 using MetroSet_UI.Components;
-using MetroSet_UI.Forms;
 using Serilog;
 using System;
 using System.Windows.Forms;
 
 namespace CommonScripts.View
 {
-    public partial class ScriptForm : MetroSetForm
+    public partial class ScriptForm : BaseInnerForm
     {
         private ScriptAbs _script;
         private bool _listeningKeys = false;
 
-        public ScriptForm(StyleManager styleManager, ScriptAbs script)
+        public ScriptForm(StyleManager styleManager, ScriptAbs script) : base(styleManager)
         {
             InitializeComponent();
-            UpdateMetroStyles(styleManager);
             string formTitle = "Add Script";
             if (script != null)
             {
@@ -103,10 +101,6 @@ namespace CommonScripts.View
         #endregion
 
         #region Private Methods
-        private void UpdateMetroStyles(StyleManager styleManager)
-        {
-            this.StyleManager = styleManager.Clone(this);
-        }
         private void DisplayScriptListeningKeyText()
         {
             tbxKeyPressed.Text = "Undefined";

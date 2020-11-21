@@ -37,12 +37,15 @@
             this.lblRunAddScript = new MetroSet_UI.Controls.MetroSetLabel();
             this.mtpConsole = new MetroSet_UI.Child.MetroSetSetTabPage();
             this.rtbConsole = new System.Windows.Forms.RichTextBox();
-            this.metroSetControlBox1 = new MetroSet_UI.Controls.MetroSetControlBox();
             this.appNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.mtcMain.SuspendLayout();
             this.mtpRun.SuspendLayout();
             this.mtpConsole.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // metroSetControlBox1
+            // 
+            this.metroSetControlBox1.StyleManager = this.styleManager;
             // 
             // mtcMain
             // 
@@ -63,6 +66,7 @@
             this.mtcMain.SelectedTextColor = System.Drawing.Color.White;
             this.mtcMain.Size = new System.Drawing.Size(644, 351);
             this.mtcMain.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.mtcMain.Speed = 100;
             this.mtcMain.Style = MetroSet_UI.Enums.Style.Light;
             this.mtcMain.StyleManager = this.styleManager;
             this.mtcMain.TabIndex = 0;
@@ -70,6 +74,7 @@
             this.mtcMain.ThemeAuthor = "Narwin";
             this.mtcMain.ThemeName = "MetroLite";
             this.mtcMain.UnselectedTextColor = System.Drawing.Color.Gray;
+            this.mtcMain.UseAnimation = false;
             // 
             // mtpRun
             // 
@@ -124,7 +129,7 @@
             this.lblRunAddScript.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblRunAddScript.AutoSize = true;
             this.lblRunAddScript.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblRunAddScript.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblRunAddScript.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblRunAddScript.IsDerivedStyle = true;
             this.lblRunAddScript.Location = new System.Drawing.Point(3, 288);
             this.lblRunAddScript.Name = "lblRunAddScript";
@@ -162,7 +167,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbConsole.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.rtbConsole.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.rtbConsole.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.rtbConsole.Location = new System.Drawing.Point(3, 3);
             this.rtbConsole.MaxLength = 32767;
             this.rtbConsole.Name = "rtbConsole";
@@ -170,32 +175,6 @@
             this.rtbConsole.Size = new System.Drawing.Size(630, 279);
             this.rtbConsole.TabIndex = 0;
             this.rtbConsole.Text = "";
-            // 
-            // metroSetControlBox1
-            // 
-            this.metroSetControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.metroSetControlBox1.CloseHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.metroSetControlBox1.CloseHoverForeColor = System.Drawing.Color.White;
-            this.metroSetControlBox1.CloseNormalForeColor = System.Drawing.Color.Gray;
-            this.metroSetControlBox1.DisabledForeColor = System.Drawing.Color.DimGray;
-            this.metroSetControlBox1.IsDerivedStyle = true;
-            this.metroSetControlBox1.Location = new System.Drawing.Point(573, 1);
-            this.metroSetControlBox1.MaximizeBox = true;
-            this.metroSetControlBox1.MaximizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.metroSetControlBox1.MaximizeHoverForeColor = System.Drawing.Color.Gray;
-            this.metroSetControlBox1.MaximizeNormalForeColor = System.Drawing.Color.Gray;
-            this.metroSetControlBox1.MinimizeBox = true;
-            this.metroSetControlBox1.MinimizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.metroSetControlBox1.MinimizeHoverForeColor = System.Drawing.Color.Gray;
-            this.metroSetControlBox1.MinimizeNormalForeColor = System.Drawing.Color.Gray;
-            this.metroSetControlBox1.Name = "metroSetControlBox1";
-            this.metroSetControlBox1.Size = new System.Drawing.Size(100, 25);
-            this.metroSetControlBox1.Style = MetroSet_UI.Enums.Style.Light;
-            this.metroSetControlBox1.StyleManager = this.styleManager;
-            this.metroSetControlBox1.TabIndex = 1;
-            this.metroSetControlBox1.Text = "metroSetControlBox1";
-            this.metroSetControlBox1.ThemeAuthor = "Narwin";
-            this.metroSetControlBox1.ThemeName = "MetroLite";
             // 
             // appNotifyIcon
             // 
@@ -207,16 +186,15 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(674, 451);
-            this.Controls.Add(this.metroSetControlBox1);
             this.Controls.Add(this.mtcMain);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(12, 90, 12, 12);
-            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StyleManager = this.styleManager;
             this.Text = "Common Scripts";
-            this.ThemeName = "MetroLight";
             this.Resize += new System.EventHandler(this.MainForm_Resize);
+            this.Controls.SetChildIndex(this.mtcMain, 0);
+            this.Controls.SetChildIndex(this.metroSetControlBox1, 0);
             this.mtcMain.ResumeLayout(false);
             this.mtpRun.ResumeLayout(false);
             this.mtpRun.PerformLayout();
@@ -233,7 +211,6 @@
         private MetroSet_UI.Controls.MetroSetLabel lblRunAddScript;
         private MetroSet_UI.Controls.MetroSetPanel pnlScripts;
         private MetroSet_UI.Components.StyleManager styleManager;
-        private MetroSet_UI.Controls.MetroSetControlBox metroSetControlBox1;
         private System.Windows.Forms.NotifyIcon appNotifyIcon;
         private System.Windows.Forms.RichTextBox rtbConsole;
     }
