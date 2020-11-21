@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.metroSetControlBox1 = new MetroSet_UI.Controls.MetroSetControlBox();
             this.lblScriptName = new MetroSet_UI.Controls.MetroSetLabel();
             this.lblScriptPath = new MetroSet_UI.Controls.MetroSetLabel();
             this.tbxScriptName = new MetroSet_UI.Controls.MetroSetTextBox();
@@ -51,32 +50,12 @@
             // 
             // metroSetControlBox1
             // 
-            this.metroSetControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.metroSetControlBox1.CloseHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.metroSetControlBox1.CloseHoverForeColor = System.Drawing.Color.White;
-            this.metroSetControlBox1.CloseNormalForeColor = System.Drawing.Color.Gray;
-            this.metroSetControlBox1.DisabledForeColor = System.Drawing.Color.DimGray;
-            this.metroSetControlBox1.Location = new System.Drawing.Point(550, 0);
-            this.metroSetControlBox1.MaximizeBox = true;
-            this.metroSetControlBox1.MaximizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.metroSetControlBox1.MaximizeHoverForeColor = System.Drawing.Color.Gray;
-            this.metroSetControlBox1.MaximizeNormalForeColor = System.Drawing.Color.Gray;
-            this.metroSetControlBox1.MinimizeBox = true;
-            this.metroSetControlBox1.MinimizeHoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.metroSetControlBox1.MinimizeHoverForeColor = System.Drawing.Color.Gray;
-            this.metroSetControlBox1.MinimizeNormalForeColor = System.Drawing.Color.Gray;
-            this.metroSetControlBox1.Name = "metroSetControlBox1";
-            this.metroSetControlBox1.Size = new System.Drawing.Size(100, 25);
-            this.metroSetControlBox1.Style = MetroSet_UI.Enums.Style.Light;
-            this.metroSetControlBox1.StyleManager = null;
-            this.metroSetControlBox1.TabIndex = 0;
-            this.metroSetControlBox1.Text = "metroSetControlBox1";
-            this.metroSetControlBox1.ThemeAuthor = "Narwin";
-            this.metroSetControlBox1.ThemeName = "MetroLite";
+            this.metroSetControlBox1.Location = new System.Drawing.Point(549, 0);
             // 
             // lblScriptName
             // 
-            this.lblScriptName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblScriptName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblScriptName.IsDerivedStyle = true;
             this.lblScriptName.Location = new System.Drawing.Point(15, 95);
             this.lblScriptName.Name = "lblScriptName";
             this.lblScriptName.Size = new System.Drawing.Size(100, 26);
@@ -90,7 +69,8 @@
             // 
             // lblScriptPath
             // 
-            this.lblScriptPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblScriptPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblScriptPath.IsDerivedStyle = true;
             this.lblScriptPath.Location = new System.Drawing.Point(15, 131);
             this.lblScriptPath.Name = "lblScriptPath";
             this.lblScriptPath.Size = new System.Drawing.Size(100, 26);
@@ -113,9 +93,10 @@
             this.tbxScriptName.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.tbxScriptName.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.tbxScriptName.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.tbxScriptName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.tbxScriptName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tbxScriptName.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.tbxScriptName.Image = null;
+            this.tbxScriptName.IsDerivedStyle = true;
             this.tbxScriptName.Lines = null;
             this.tbxScriptName.Location = new System.Drawing.Point(121, 95);
             this.tbxScriptName.MaxLength = 32767;
@@ -138,10 +119,11 @@
             this.btnPathSelector.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnPathSelector.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnPathSelector.DisabledForeColor = System.Drawing.Color.Gray;
-            this.btnPathSelector.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.btnPathSelector.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnPathSelector.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnPathSelector.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnPathSelector.HoverTextColor = System.Drawing.Color.White;
+            this.btnPathSelector.IsDerivedStyle = true;
             this.btnPathSelector.Location = new System.Drawing.Point(609, 131);
             this.btnPathSelector.Name = "btnPathSelector";
             this.btnPathSelector.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
@@ -170,9 +152,10 @@
             this.tbxScriptPath.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.tbxScriptPath.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.tbxScriptPath.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.tbxScriptPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.tbxScriptPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tbxScriptPath.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.tbxScriptPath.Image = null;
+            this.tbxScriptPath.IsDerivedStyle = true;
             this.tbxScriptPath.Lines = null;
             this.tbxScriptPath.Location = new System.Drawing.Point(121, 131);
             this.tbxScriptPath.MaxLength = 32767;
@@ -195,10 +178,11 @@
             this.btnCancel.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnCancel.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnCancel.DisabledForeColor = System.Drawing.Color.Gray;
-            this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnCancel.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnCancel.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnCancel.HoverTextColor = System.Drawing.Color.White;
+            this.btnCancel.IsDerivedStyle = true;
             this.btnCancel.Location = new System.Drawing.Point(479, 212);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
@@ -222,10 +206,11 @@
             this.btnSave.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnSave.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
             this.btnSave.DisabledForeColor = System.Drawing.Color.Gray;
-            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnSave.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnSave.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(207)))), ((int)(((byte)(255)))));
             this.btnSave.HoverTextColor = System.Drawing.Color.White;
+            this.btnSave.IsDerivedStyle = true;
             this.btnSave.Location = new System.Drawing.Point(560, 212);
             this.btnSave.Name = "btnSave";
             this.btnSave.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
@@ -245,7 +230,8 @@
             // 
             // lblScriptType
             // 
-            this.lblScriptType.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblScriptType.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblScriptType.IsDerivedStyle = true;
             this.lblScriptType.Location = new System.Drawing.Point(15, 167);
             this.lblScriptType.Name = "lblScriptType";
             this.lblScriptType.Size = new System.Drawing.Size(100, 26);
@@ -272,8 +258,9 @@
             this.cbxScriptType.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
             this.cbxScriptType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbxScriptType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxScriptType.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.cbxScriptType.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cbxScriptType.FormattingEnabled = true;
+            this.cbxScriptType.IsDerivedStyle = true;
             this.cbxScriptType.ItemHeight = 20;
             this.cbxScriptType.Location = new System.Drawing.Point(121, 167);
             this.cbxScriptType.Name = "cbxScriptType";
@@ -301,9 +288,10 @@
             this.tbxKeyPressed.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.tbxKeyPressed.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.tbxKeyPressed.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.tbxKeyPressed.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.tbxKeyPressed.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tbxKeyPressed.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
             this.tbxKeyPressed.Image = null;
+            this.tbxKeyPressed.IsDerivedStyle = true;
             this.tbxKeyPressed.Lines = null;
             this.tbxKeyPressed.Location = new System.Drawing.Point(396, 167);
             this.tbxKeyPressed.MaxLength = 32767;
@@ -324,7 +312,8 @@
             // lblListenKey
             // 
             this.lblListenKey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblListenKey.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblListenKey.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblListenKey.IsDerivedStyle = true;
             this.lblListenKey.Location = new System.Drawing.Point(242, 167);
             this.lblListenKey.Name = "lblListenKey";
             this.lblListenKey.Size = new System.Drawing.Size(148, 26);
@@ -350,7 +339,8 @@
             // lblScriptSchedule
             // 
             this.lblScriptSchedule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblScriptSchedule.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblScriptSchedule.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblScriptSchedule.IsDerivedStyle = true;
             this.lblScriptSchedule.Location = new System.Drawing.Point(264, 167);
             this.lblScriptSchedule.Name = "lblScriptSchedule";
             this.lblScriptSchedule.Size = new System.Drawing.Size(50, 26);
@@ -368,7 +358,6 @@
             this.pbxRemoveKeyPressed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxRemoveKeyPressed.BackColor = System.Drawing.Color.Transparent;
             this.pbxRemoveKeyPressed.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbxRemoveKeyPressed.Image = global::CommonScripts.Properties.Resources.delete;
             this.pbxRemoveKeyPressed.Location = new System.Drawing.Point(609, 167);
             this.pbxRemoveKeyPressed.Name = "pbxRemoveKeyPressed";
             this.pbxRemoveKeyPressed.Size = new System.Drawing.Size(26, 26);
@@ -382,7 +371,6 @@
             this.pbxEditKeyPressed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxEditKeyPressed.BackColor = System.Drawing.Color.Transparent;
             this.pbxEditKeyPressed.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbxEditKeyPressed.Image = global::CommonScripts.Properties.Resources.edit;
             this.pbxEditKeyPressed.Location = new System.Drawing.Point(577, 167);
             this.pbxEditKeyPressed.Name = "pbxEditKeyPressed";
             this.pbxEditKeyPressed.Size = new System.Drawing.Size(26, 26);
@@ -411,11 +399,26 @@
             this.Controls.Add(this.tbxScriptName);
             this.Controls.Add(this.lblScriptPath);
             this.Controls.Add(this.lblScriptName);
-            this.Controls.Add(this.metroSetControlBox1);
             this.MaximumSize = new System.Drawing.Size(1024, 250);
             this.MinimumSize = new System.Drawing.Size(650, 250);
             this.Name = "ScriptForm";
             this.Text = "ScriptForm";
+            this.Controls.SetChildIndex(this.lblScriptName, 0);
+            this.Controls.SetChildIndex(this.lblScriptPath, 0);
+            this.Controls.SetChildIndex(this.tbxScriptName, 0);
+            this.Controls.SetChildIndex(this.btnPathSelector, 0);
+            this.Controls.SetChildIndex(this.tbxScriptPath, 0);
+            this.Controls.SetChildIndex(this.btnCancel, 0);
+            this.Controls.SetChildIndex(this.btnSave, 0);
+            this.Controls.SetChildIndex(this.lblScriptType, 0);
+            this.Controls.SetChildIndex(this.cbxScriptType, 0);
+            this.Controls.SetChildIndex(this.lblListenKey, 0);
+            this.Controls.SetChildIndex(this.tbxKeyPressed, 0);
+            this.Controls.SetChildIndex(this.dtpScriptScheduled, 0);
+            this.Controls.SetChildIndex(this.lblScriptSchedule, 0);
+            this.Controls.SetChildIndex(this.pbxEditKeyPressed, 0);
+            this.Controls.SetChildIndex(this.pbxRemoveKeyPressed, 0);
+            this.Controls.SetChildIndex(this.metroSetControlBox1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.pbxRemoveKeyPressed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEditKeyPressed)).EndInit();
             this.ResumeLayout(false);
@@ -424,7 +427,6 @@
 
         #endregion
 
-        private MetroSet_UI.Controls.MetroSetControlBox metroSetControlBox1;
         private MetroSet_UI.Controls.MetroSetLabel lblScriptName;
         private MetroSet_UI.Controls.MetroSetLabel lblScriptPath;
         private MetroSet_UI.Controls.MetroSetTextBox tbxScriptName;
