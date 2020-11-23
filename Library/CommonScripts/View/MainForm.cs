@@ -3,6 +3,7 @@ using CommonScripts.Extension;
 using CommonScripts.Logging;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Presenter;
+using CommonScripts.Settings;
 using CommonScripts.View.Base;
 using CommonScripts.View.Interfaces;
 using MetroSet_UI.Forms;
@@ -16,21 +17,24 @@ namespace CommonScripts.View
 {
     public partial class MainForm : BaseForm, IMainView
     {
-        private const LogEventLevel MINIMUM_LOG_LEVEL_GUI_CONSOLE = LogEventLevel.Information;
         private ScriptListAdapter _scriptListAdapter;
+        private bool _isDarkMode;
         public MainPresenter Presenter { get; set; }
 
         public MainForm()
         {
             InitializeComponent();
             InitScriptListAdapter();
+            SetSettingsImage();
         }
 
         #region Events
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            Presenter.LoadScripts();
             Presenter.LoadSettings();
+            ReloadStyles(AppSettingsManager.IsDarkMode());
         }
         private void AddScript(object sender, EventArgs e)
         {
@@ -85,11 +89,36 @@ namespace CommonScripts.View
         }
         public void LogEmitted(LogMsg log)
         {
-            if (log.Lvl >= MINIMUM_LOG_LEVEL_GUI_CONSOLE)
+            Color color = GetConsoleTextColor(log.Lvl);
+            rtbConsole.AppendTextThreadSafe(log.ToString(), color, true);
+        }
+        private void pbxSettings_Click(object sender, EventArgs e)
+        {
+            Settings settingsForm = new Settings(styleManager);
+            if (settingsForm.ShowDialog() == DialogResult.OK)
             {
-                Color color = GetConsoleTextColor(log.Lvl);
-                rtbConsole.AppendTextThreadSafe(log.ToString(), color, true);
+                ReloadStyles(settingsForm.AppSettings.IsDarkMode);
+                Presenter.SaveSettings(settingsForm.AppSettings);
             }
+        }
+        private void ReloadStyles(bool isDarkMode)
+        {
+            if (_isDarkMode != isDarkMode)
+            {
+                _isDarkMode = isDarkMode;
+                styleManager.Style = isDarkMode ? MetroSet_UI.Enums.Style.Dark : MetroSet_UI.Enums.Style.Light;
+                _scriptListAdapter.RefreshMetroStyles();
+            }
+        }
+
+        private void pbxSettings_MouseEnter(object sender, EventArgs e)
+        {
+            SetSettingsImage(true);
+        }
+
+        private void pbxSettings_MouseLeave(object sender, EventArgs e)
+        {
+            SetSettingsImage();
         }
         #endregion
 
@@ -148,6 +177,13 @@ namespace CommonScripts.View
                     break;
             }
             return color;
+        }
+        private void SetSettingsImage(bool hover = false)
+        {
+            if (hover)
+                pbxSettings.Image = Properties.Resources.settings_hover;
+            else
+                pbxSettings.Image = Properties.Resources.settings;
         }
         #endregion
     }

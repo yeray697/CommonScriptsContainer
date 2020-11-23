@@ -65,6 +65,14 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         {
             FindById(scriptId)?.PaintScriptStatus();
         }
+
+        public void RefreshMetroStyles()
+        {
+            foreach (var item in _controlList)
+            {
+                item.RefreshMetroStyles();
+            }
+        }
         #endregion
 
         #region Private methods

@@ -43,7 +43,7 @@ namespace CommonScripts.View
         }
         private void Save(object sender, EventArgs e)
         {
-            ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue);
+            ScriptType scriptType = EnumUtils.Parse<ScriptType>(cbxScriptType.SelectedValue);
             ScriptStatus scriptStatus = _script?.ScriptStatus ?? ScriptStatus.Stopped;
             _script = ScriptAbs.GetInstance(_script, scriptType);
             _script.ScriptName = tbxScriptName.Text;
@@ -116,7 +116,7 @@ namespace CommonScripts.View
         }
         private void DisplaySpecificScriptFields()
         {
-            ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue);
+            ScriptType scriptType = EnumUtils.Parse<ScriptType>(cbxScriptType.SelectedValue);
 
             switch (scriptType)
             {
@@ -142,7 +142,7 @@ namespace CommonScripts.View
         {
             if (_script != null)
             {
-                ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue);
+                ScriptType scriptType = EnumUtils.Parse<ScriptType>(cbxScriptType.SelectedValue);
 
                 switch (scriptType)
                 {

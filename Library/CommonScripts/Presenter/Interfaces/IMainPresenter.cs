@@ -1,10 +1,12 @@
-﻿using CommonScripts.Model.Pojo.Base;
+﻿using CommonScripts.Model.Pojo;
+using CommonScripts.Model.Pojo.Base;
 using System.Threading.Tasks;
 
 namespace CommonScripts.Presenter.Interfaces
 {
     public interface IMainPresenter
     {
+        void LoadScripts();
         void LoadSettings();
         bool AddScript(ScriptAbs script);
         bool EditScript(ScriptAbs script, bool hasScriptTypeChanged);
@@ -12,5 +14,6 @@ namespace CommonScripts.Presenter.Interfaces
         Task<bool> ChangeScriptStatus(ScriptAbs script);
         void DoNotAskAgainRunAtStartup();
         bool SetAppRunAtStartup();
+        bool SaveSettings(AppSettings settings);
     }
 }

@@ -16,7 +16,7 @@ namespace CommonScripts.Utils
 
             T enumType;
 
-            return Enum.TryParse(value.ToString(), out enumType) ? enumType : defaultValue;
+            return Enum.TryParse(value?.ToString(), out enumType) ? enumType : defaultValue;
         }
         public static string GetEnumValueAsString<T>(T enumerationValue)
             where T : struct
