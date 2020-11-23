@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
-using Microsoft.Win32;
 using CommonScripts.Settings;
 
 namespace CommonScripts.Presenter
@@ -146,13 +145,17 @@ namespace CommonScripts.Presenter
         #endregion
 
         #region Public Methods
-        public void LoadSettings()
+        public void LoadScripts()
         {
             _scripts = _settingsService.GetScripts();
             CheckScriptStatus();
             _view.ShowScripts(_scripts);
             if (!AppSettingsManager.AskToRunAppAtStartup() && !_windowsRegistryService.IsAppSetToRunAtStartup())
                 _view.ShowRunAtStartupDialog();
+        }
+        public void LoadSettings()
+        {
+            AppSettingsManager.LoadSettings();
         }
         public bool AddScript(ScriptAbs script)
         {
@@ -217,6 +220,11 @@ namespace CommonScripts.Presenter
         public bool SetAppRunAtStartup()
         {
             return _windowsRegistryService.SetAppToRunAtStartup();
+        }
+        public bool SaveSettings(AppSettings settings)
+        {
+            AppSettingsManager.SaveSettings(settings);
+            return true;
         }
         #endregion
     }

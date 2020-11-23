@@ -59,24 +59,13 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         }
         private void PaintUI()
         {
-            UpdateMetroStyles();
+            RefreshMetroStyles();
             if (Script != null)
             {
                 PaintScriptName();
                 PaintScriptStatus();
                 PaintScriptType();
             }
-        }
-        private void UpdateMetroStyles()
-        {
-            lblScriptName.StyleManager = _styleManager;
-            lblScriptType.StyleManager = _styleManager;
-
-            //Little hack to make the style of a component created programmatically to be applied
-            //The Style property call the private method 'ApplyTheme', which refreshes the style https://github.com/N-a-r-w-i-n/MetroSet-UI/blob/4939610696619884f5596ef63965e3b1898c4ff0/MetroSet%20UI/Controls/
-            lblScriptName.Style = _styleManager.Style;
-            lblScriptType.Style = _styleManager.Style;
-
         }
         private void PaintScriptName()
         {
@@ -121,6 +110,17 @@ namespace CommonScripts.CustomComponent.ScriptListBox
                     break;
             }
             pbxStatus.Refresh();
+        }
+        public void RefreshMetroStyles()
+        {
+            lblScriptName.StyleManager = _styleManager;
+            lblScriptType.StyleManager = _styleManager;
+
+            //Little hack to make the style of a component created programmatically to be applied
+            //The Style property call the private method 'ApplyTheme', which refreshes the style https://github.com/N-a-r-w-i-n/MetroSet-UI/blob/4939610696619884f5596ef63965e3b1898c4ff0/MetroSet%20UI/Controls/
+            lblScriptName.Style = _styleManager.Style;
+            lblScriptType.Style = _styleManager.Style;
+
         }
         #endregion
     }

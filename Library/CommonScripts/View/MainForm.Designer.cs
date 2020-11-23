@@ -38,9 +38,11 @@
             this.mtpConsole = new MetroSet_UI.Child.MetroSetSetTabPage();
             this.rtbConsole = new System.Windows.Forms.RichTextBox();
             this.appNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.pbxSettings = new System.Windows.Forms.PictureBox();
             this.mtcMain.SuspendLayout();
             this.mtpRun.SuspendLayout();
             this.mtpConsole.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSettings)).BeginInit();
             this.SuspendLayout();
             // 
             // metroSetControlBox1
@@ -182,10 +184,26 @@
             this.appNotifyIcon.Visible = true;
             this.appNotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.appNotifyIcon_MouseDoubleClick);
             // 
+            // pbxSettings
+            // 
+            this.pbxSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxSettings.BackColor = System.Drawing.Color.Transparent;
+            this.pbxSettings.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxSettings.Location = new System.Drawing.Point(554, 8);
+            this.pbxSettings.Name = "pbxSettings";
+            this.pbxSettings.Size = new System.Drawing.Size(18, 18);
+            this.pbxSettings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxSettings.TabIndex = 2;
+            this.pbxSettings.TabStop = false;
+            this.pbxSettings.Click += new System.EventHandler(this.pbxSettings_Click);
+            this.pbxSettings.MouseEnter += new System.EventHandler(this.pbxSettings_MouseEnter);
+            this.pbxSettings.MouseLeave += new System.EventHandler(this.pbxSettings_MouseLeave);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(674, 451);
+            this.Controls.Add(this.pbxSettings);
             this.Controls.Add(this.mtcMain);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(12, 90, 12, 12);
@@ -194,11 +212,13 @@
             this.Text = "Common Scripts";
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.Controls.SetChildIndex(this.mtcMain, 0);
+            this.Controls.SetChildIndex(this.pbxSettings, 0);
             this.Controls.SetChildIndex(this.metroSetControlBox1, 0);
             this.mtcMain.ResumeLayout(false);
             this.mtpRun.ResumeLayout(false);
             this.mtpRun.PerformLayout();
             this.mtpConsole.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSettings)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -213,6 +233,7 @@
         private MetroSet_UI.Components.StyleManager styleManager;
         private System.Windows.Forms.NotifyIcon appNotifyIcon;
         private System.Windows.Forms.RichTextBox rtbConsole;
+        private System.Windows.Forms.PictureBox pbxSettings;
     }
 }
 
