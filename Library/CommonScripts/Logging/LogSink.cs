@@ -1,4 +1,5 @@
-﻿using Serilog.Core;
+﻿using CommonScripts.Settings;
+using Serilog.Core;
 using Serilog.Events;
 using System;
 
@@ -11,15 +12,18 @@ namespace CommonScripts.Logging
 
         public void Emit(LogEvent logEvent)
         {
-            var t = logEvent.Timestamp;
-            LogMsg msg = new LogMsg()
+            if (logEvent.Level >= AppSettingsManager.GetConsoleMinLogLevel())
             {
-                Text = logEvent.RenderMessage(),
-                Lvl = logEvent.Level,
-                TimeStamp = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff") + " -" + t.Offset.ToString(@"hh\:mm"),
-            };
+                var t = logEvent.Timestamp;
+                LogMsg msg = new LogMsg()
+                {
+                    Text = logEvent.RenderMessage(),
+                    Lvl = logEvent.Level,
+                    TimeStamp = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff") + " -" + t.Offset.ToString(@"hh\:mm"),
+                };
 
-            LogEmitted?.Invoke(msg);
+                LogEmitted?.Invoke(msg);
+            }
         }
     }
 
