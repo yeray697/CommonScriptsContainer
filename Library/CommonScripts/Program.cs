@@ -6,8 +6,6 @@ using CommonScripts.Model.Service.Interfaces;
 using CommonScripts.Presenter;
 using CommonScripts.View;
 using Serilog;
-using Serilog.Core;
-using Serilog.Events;
 using System;
 using System.Windows.Forms;
 
@@ -21,8 +19,7 @@ namespace CommonScripts
         [STAThread]
         static void Main(string[] args)
         {
-            bool startAppHidden = false;
-            ParseArgs(args, out startAppHidden);
+            ParseArgs(args, out bool startAppHidden);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -48,13 +45,12 @@ namespace CommonScripts
 
         private static Form Injection()
         {
-            var sink = new LogSink();
-            InstanceLogger(sink);
+            LogManager.InstanceLogger();
             //Poor Man's DI
-            return InjectMainForm(sink);
+            return InjectMainForm();
         }
 
-        private static Form InjectMainForm(LogSink sink)
+        private static Form InjectMainForm()
         {
             Log.Information("Starting application...");
             ISettingsRepository settingsRepository = new SettingsRepository();
@@ -62,26 +58,12 @@ namespace CommonScripts
             IRunScriptService runScriptService = new RunScriptService();
             IWindowsRegistryService windowsRegistryService = new WindowsRegistryService();
             MainForm view = new MainForm();
-            sink.LogEmitted += view.LogEmitted;
+            
+            LogManager.GetConsoleSink().LogEmitted += view.LogEmitted;
 
             var presenter = new MainPresenter(view, settingsService, runScriptService, windowsRegistryService);
 
             return view;
-        }
-
-        private static void InstanceLogger(ILogEventSink sink)
-        {
-            var logPath = @"logs\CommonScripts.log";
-            var loggerConfiguration = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Quartz", LogEventLevel.Warning);
-
-            loggerConfiguration
-                .WriteTo.Console()
-                .WriteTo.File(logPath)
-                .WriteTo.Sink(sink);
-
-            Log.Logger = loggerConfiguration.CreateLogger();
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
 using CommonScripts.Settings;
+using CommonScripts.Logging;
 
 namespace CommonScripts.Presenter
 {
@@ -223,6 +224,8 @@ namespace CommonScripts.Presenter
         }
         public bool SaveSettings(AppSettings settings)
         {
+            if (settings.FileMinimumLoggingLevel != AppSettingsManager.GetFileMinLogLevel())
+                LogManager.ChangeMinLoggingLevel(settings.FileMinimumLoggingLevel);
             AppSettingsManager.SaveSettings(settings);
             return true;
         }
