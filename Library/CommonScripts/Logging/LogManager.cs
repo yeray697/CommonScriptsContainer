@@ -16,7 +16,8 @@ namespace CommonScripts.Logging
             _levelSwitch = new LoggingLevelSwitch(AppSettingsManager.GetFileMinLogLevel());
             var loggerConfiguration = new LoggerConfiguration()
                 .MinimumLevel.ControlledBy(_levelSwitch)
-                .MinimumLevel.Override("Quartz", LogEventLevel.Warning);
+                .MinimumLevel.Override("Quartz", LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning);
 
             loggerConfiguration
                 .WriteTo.Console()
