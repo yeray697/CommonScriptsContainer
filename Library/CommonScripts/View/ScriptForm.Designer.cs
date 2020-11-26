@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScriptForm));
             this.lblScriptName = new MetroSet_UI.Controls.MetroSetLabel();
             this.lblScriptPath = new MetroSet_UI.Controls.MetroSetLabel();
             this.tbxScriptName = new MetroSet_UI.Controls.MetroSetTextBox();
@@ -347,6 +348,7 @@
             this.pbxRemoveKeyPressed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxRemoveKeyPressed.BackColor = System.Drawing.Color.Transparent;
             this.pbxRemoveKeyPressed.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxRemoveKeyPressed.Image = ((System.Drawing.Image)(resources.GetObject("pbxRemoveKeyPressed.Image")));
             this.pbxRemoveKeyPressed.Location = new System.Drawing.Point(609, 167);
             this.pbxRemoveKeyPressed.Name = "pbxRemoveKeyPressed";
             this.pbxRemoveKeyPressed.Size = new System.Drawing.Size(26, 26);
@@ -360,6 +362,7 @@
             this.pbxEditKeyPressed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxEditKeyPressed.BackColor = System.Drawing.Color.Transparent;
             this.pbxEditKeyPressed.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxEditKeyPressed.Image = ((System.Drawing.Image)(resources.GetObject("pbxEditKeyPressed.Image")));
             this.pbxEditKeyPressed.Location = new System.Drawing.Point(577, 167);
             this.pbxEditKeyPressed.Name = "pbxEditKeyPressed";
             this.pbxEditKeyPressed.Size = new System.Drawing.Size(26, 26);
@@ -401,6 +404,22 @@
             this.MinimumSize = new System.Drawing.Size(650, 250);
             this.Name = "ScriptForm";
             this.Text = "ScriptForm";
+            this.Controls.SetChildIndex(this.lblScriptName, 0);
+            this.Controls.SetChildIndex(this.lblScriptPath, 0);
+            this.Controls.SetChildIndex(this.tbxScriptName, 0);
+            this.Controls.SetChildIndex(this.btnPathSelector, 0);
+            this.Controls.SetChildIndex(this.tbxScriptPath, 0);
+            this.Controls.SetChildIndex(this.btnCancel, 0);
+            this.Controls.SetChildIndex(this.btnSave, 0);
+            this.Controls.SetChildIndex(this.lblScriptType, 0);
+            this.Controls.SetChildIndex(this.cbxScriptType, 0);
+            this.Controls.SetChildIndex(this.lblListenKey, 0);
+            this.Controls.SetChildIndex(this.tbxKeyPressed, 0);
+            this.Controls.SetChildIndex(this.lblScriptSchedule, 0);
+            this.Controls.SetChildIndex(this.pbxEditKeyPressed, 0);
+            this.Controls.SetChildIndex(this.pbxRemoveKeyPressed, 0);
+            this.Controls.SetChildIndex(this.tbxScriptScheduled, 0);
+            this.Controls.SetChildIndex(this.metroSetControlBox1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.pbxRemoveKeyPressed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEditKeyPressed)).EndInit();
             this.ResumeLayout(false);
