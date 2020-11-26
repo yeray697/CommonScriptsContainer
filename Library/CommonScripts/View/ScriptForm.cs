@@ -1,9 +1,11 @@
-﻿using CommonScripts.Model.Pojo;
+﻿using CommonScripts.Extension;
+using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Model.Service;
 using CommonScripts.Utils;
 using CommonScripts.View.Base;
 using MetroSet_UI.Components;
+using MetroSet_UI.Forms;
 using Serilog;
 using System;
 using System.Windows.Forms;
@@ -15,9 +17,10 @@ namespace CommonScripts.View
         private ScriptAbs _script;
         private bool _listeningKeys = false;
 
-        public ScriptForm(StyleManager styleManager, ScriptAbs script) : base(styleManager)
+        public ScriptForm(StyleManager styleManager, ScriptAbs script) : base()
         {
             InitializeComponent();
+            UpdateMetroStyles(styleManager);
             string formTitle = "Add Script";
             if (script != null)
             {
@@ -43,31 +46,34 @@ namespace CommonScripts.View
         }
         private void Save(object sender, EventArgs e)
         {
-            ScriptType scriptType = EnumUtils.Parse<ScriptType>(cbxScriptType.SelectedValue);
-            ScriptStatus scriptStatus = _script?.ScriptStatus ?? ScriptStatus.Stopped;
-            _script = ScriptAbs.GetInstance(_script, scriptType);
-            _script.ScriptName = tbxScriptName.Text;
-            _script.ScriptPath = tbxScriptPath.Text;
-            _script.ScriptStatus = scriptStatus;
-
-            switch (scriptType)
+            if (ValidateBeforeSaving())
             {
-                case ScriptType.OneOff:
-                    break;
-                case ScriptType.Scheduled:
-                    DateTime dt = dtpScriptScheduled.Value;
-                    TimeSpan st = new TimeSpan(dt.Hour, dt.Minute, dt.Second);
-                    ((ScriptScheduled)_script).ScheduledHour = st;
-                    break;
-                case ScriptType.ListenKey:
-                    ((ScriptListenKey)_script).TriggerKey = (KeyPressed)tbxKeyPressed.Tag;
-                    break;
-                default:
-                    break;
-            }
+                ScriptType scriptType = EnumUtils.Parse<ScriptType>(cbxScriptType.SelectedValue);
+                ScriptStatus scriptStatus = _script?.ScriptStatus ?? ScriptStatus.Stopped;
+                _script = ScriptAbs.GetInstance(_script, scriptType);
+                _script.ScriptName = tbxScriptName.Text;
+                _script.ScriptPath = tbxScriptPath.Text;
+                _script.ScriptStatus = scriptStatus;
 
-            DialogResult = DialogResult.OK;
-            Close();
+                switch (scriptType)
+                {
+                    case ScriptType.OneOff:
+                        break;
+                    case ScriptType.Scheduled:
+                        DateTime dt = DateTime.Parse(tbxScriptScheduled.Text);
+                        TimeSpan st = new TimeSpan(dt.Hour, dt.Minute, dt.Second);
+                        ((ScriptScheduled)_script).ScheduledHour = st;
+                        break;
+                    case ScriptType.ListenKey:
+                        ((ScriptListenKey)_script).TriggerKey = (KeyPressed)tbxKeyPressed.Tag;
+                        break;
+                    default:
+                        break;
+                }
+
+                DialogResult = DialogResult.OK;
+                Close();
+            }
         }
         private void ShowPathSelector(object sender, EventArgs e)
         {
@@ -166,20 +172,20 @@ namespace CommonScripts.View
             DateTime value = DateTime.Now.Date;
             if (_script != null && _script is ScriptScheduled)
                 value += ((ScriptScheduled)_script).ScheduledHour;
-            
-            dtpScriptScheduled.Value = value;
+
+            tbxScriptScheduled.Text = value.ToString("HH:mm");
         }
         private void HideScheduledScriptFields(bool hide)
         {
             if (hide)
             {
                 lblScriptSchedule.Hide();
-                dtpScriptScheduled.Hide();
+                tbxScriptScheduled.Hide();
             }
             else
             {
                 lblScriptSchedule.Show();
-                dtpScriptScheduled.Show();
+                tbxScriptScheduled.Show();
             }
         }
         private void HideListenKeyScriptFields(bool hide)
@@ -211,9 +217,38 @@ namespace CommonScripts.View
         {
             _listeningKeys = false;
         }
+        private bool IsMaskDatetimeValid(string maskedText)
+        {
+            int hour;
+            int minute;
+
+            string value = maskedText.Replace(":", "").Trim();
+
+            return (value != String.Empty && value.Length == 4
+                && int.TryParse(value.Substring(0, 2), out hour) && int.TryParse(value.Substring(2, 2), out minute)
+                && hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59);
+        }
+        private bool ValidateBeforeSaving()
+        {
+            bool isValid = true;
+            ScriptType scriptType = EnumUtils.Parse<ScriptType>(cbxScriptType.SelectedValue);
+            if (scriptType == ScriptType.Scheduled && !IsMaskDatetimeValid(tbxScriptScheduled.Text))
+            {
+                isValid = false;
+                MetroSetMessageBox.Show(this, "The Scheduled Time is not in valid format (00:00). Please change the value before saving it."
+                    , "Error validating the script fields", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return isValid;
+        }
         #endregion
 
         #region Public Methods
+        public override void UpdateMetroStyles(StyleManager styleManager)
+        {
+            base.UpdateMetroStyles(styleManager);
+            tbxScriptScheduled.ApplyTheme(styleManager.Style);
+        }
         public ScriptAbs GetScript() => _script;
         #endregion
     }
