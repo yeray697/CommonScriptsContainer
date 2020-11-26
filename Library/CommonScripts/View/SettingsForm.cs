@@ -17,9 +17,10 @@ namespace CommonScripts.View
         {
             InitializeComponent();
         }
-        public Settings(StyleManager styleManager) : base(styleManager)
+        public Settings(StyleManager styleManager) : base()
         {
             InitializeComponent();
+            UpdateMetroStyles(styleManager);
             AppSettings = (AppSettings) AppSettingsManager.GetSettings().Clone();
             DisplaySettings();
         }

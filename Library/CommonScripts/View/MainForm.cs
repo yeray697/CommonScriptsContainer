@@ -4,6 +4,7 @@ using CommonScripts.Logging;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Presenter;
 using CommonScripts.Settings;
+using CommonScripts.Utils;
 using CommonScripts.View.Base;
 using CommonScripts.View.Interfaces;
 using MetroSet_UI.Forms;
@@ -32,9 +33,9 @@ namespace CommonScripts.View
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Presenter.LoadScripts();
             Presenter.LoadSettings();
             ReloadStyles(AppSettingsManager.IsDarkMode());
+            Presenter.LoadScripts();
         }
         private void AddScript(object sender, EventArgs e)
         {
@@ -101,21 +102,10 @@ namespace CommonScripts.View
                 Presenter.SaveSettings(settingsForm.AppSettings);
             }
         }
-        private void ReloadStyles(bool isDarkMode)
-        {
-            if (_isDarkMode != isDarkMode)
-            {
-                _isDarkMode = isDarkMode;
-                styleManager.Style = isDarkMode ? MetroSet_UI.Enums.Style.Dark : MetroSet_UI.Enums.Style.Light;
-                _scriptListAdapter.RefreshMetroStyles();
-            }
-        }
-
         private void pbxSettings_MouseEnter(object sender, EventArgs e)
         {
             SetSettingsImage(true);
         }
-
         private void pbxSettings_MouseLeave(object sender, EventArgs e)
         {
             SetSettingsImage();
@@ -165,15 +155,15 @@ namespace CommonScripts.View
             {
                 case LogEventLevel.Error:
                 case LogEventLevel.Fatal:
-                    color = Color.DarkRed;
+                    color = ColorUtils.CONSOLE_ERROR_COLOR;
                     break;
                 case LogEventLevel.Warning:
-                    color = Color.Orange;
+                    color = ColorUtils.CONSOLE_WARNING_COLOR;
                     break;
                 case LogEventLevel.Debug:
                 case LogEventLevel.Verbose:
                 default:
-                    color = Color.Black;
+                    color = _isDarkMode ? ColorUtils.CONSOLE_DEFAULT_DARK_COLOR : ColorUtils.CONSOLE_DEFAULT_LIGHT_COLOR;
                     break;
             }
             return color;
@@ -184,6 +174,46 @@ namespace CommonScripts.View
                 pbxSettings.Image = Properties.Resources.settings_hover;
             else
                 pbxSettings.Image = Properties.Resources.settings;
+        }
+        private void ReloadStyles(bool isDarkMode)
+        {
+            if (_isDarkMode != isDarkMode)
+            {
+                _isDarkMode = isDarkMode;
+                styleManager.Style = isDarkMode ? MetroSet_UI.Enums.Style.Dark : MetroSet_UI.Enums.Style.Light;
+                _scriptListAdapter.RefreshMetroStyles();
+                ReloadConsoleStyle();
+            }
+        }
+        private void ReloadConsoleStyle()
+        {
+            rtbConsole.ApplyTheme(_isDarkMode ? MetroSet_UI.Enums.Style.Dark : MetroSet_UI.Enums.Style.Light);
+            ReloadConsoleTextLines();
+        }
+        private void ReloadConsoleTextLines()
+        {
+            int lineCount = 0;
+            Color color = Color.White;
+            bool changeLine = true;
+            foreach (string line in rtbConsole.Lines)
+            {
+                if (line.Contains("[ERROR]") || line.Contains("[FATAL]"))
+                {
+                    color = ColorUtils.CONSOLE_ERROR_COLOR;
+                }
+                else if (line.Contains("[WARNING]"))
+                {
+                    color = ColorUtils.CONSOLE_WARNING_COLOR;
+                }
+                else
+                {
+                    changeLine = false;
+                }
+                if (changeLine)
+                    rtbConsole.ColorLineThreadSafe(lineCount, line.Length, color);
+                lineCount++;
+                changeLine = true;
+            }
         }
         #endregion
     }

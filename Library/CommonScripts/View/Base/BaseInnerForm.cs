@@ -1,7 +1,5 @@
 ﻿using CommonScripts.Extension;
 using MetroSet_UI.Components;
-using MetroSet_UI.Forms;
-using System;
 
 namespace CommonScripts.View.Base
 {
@@ -11,13 +9,7 @@ namespace CommonScripts.View.Base
         {
             InitializeComponent();
         }
-        public BaseInnerForm(StyleManager styleManager) : base()
-        {
-            InitializeComponent();
-            UpdateMetroStyles(styleManager);
-        }
-
-        private void UpdateMetroStyles(StyleManager styleManager)
+        public virtual void UpdateMetroStyles(StyleManager styleManager)
         {
             this.StyleManager = styleManager.Clone(this);
         }

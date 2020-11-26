@@ -40,10 +40,10 @@
             this.ofdScriptPath = new System.Windows.Forms.OpenFileDialog();
             this.tbxKeyPressed = new MetroSet_UI.Controls.MetroSetTextBox();
             this.lblListenKey = new MetroSet_UI.Controls.MetroSetLabel();
-            this.dtpScriptScheduled = new System.Windows.Forms.DateTimePicker();
             this.lblScriptSchedule = new MetroSet_UI.Controls.MetroSetLabel();
             this.pbxRemoveKeyPressed = new System.Windows.Forms.PictureBox();
             this.pbxEditKeyPressed = new System.Windows.Forms.PictureBox();
+            this.tbxScriptScheduled = new System.Windows.Forms.MaskedTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbxRemoveKeyPressed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEditKeyPressed)).BeginInit();
             this.SuspendLayout();
@@ -325,17 +325,6 @@
             this.lblListenKey.ThemeAuthor = "Narwin";
             this.lblListenKey.ThemeName = "MetroLite";
             // 
-            // dtpScriptScheduled
-            // 
-            this.dtpScriptScheduled.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtpScriptScheduled.CustomFormat = "HH:mm";
-            this.dtpScriptScheduled.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpScriptScheduled.Location = new System.Drawing.Point(320, 166);
-            this.dtpScriptScheduled.Name = "dtpScriptScheduled";
-            this.dtpScriptScheduled.ShowUpDown = true;
-            this.dtpScriptScheduled.Size = new System.Drawing.Size(86, 27);
-            this.dtpScriptScheduled.TabIndex = 14;
-            // 
             // lblScriptSchedule
             // 
             this.lblScriptSchedule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -379,15 +368,24 @@
             this.pbxEditKeyPressed.TabStop = false;
             this.pbxEditKeyPressed.Click += new System.EventHandler(this.pbxEditKeyPressed_Click);
             // 
+            // tbxScriptScheduled
+            // 
+            this.tbxScriptScheduled.Location = new System.Drawing.Point(320, 166);
+            this.tbxScriptScheduled.Mask = "00:00";
+            this.tbxScriptScheduled.Name = "tbxScriptScheduled";
+            this.tbxScriptScheduled.Size = new System.Drawing.Size(48, 27);
+            this.tbxScriptScheduled.TabIndex = 18;
+            this.tbxScriptScheduled.ValidatingType = typeof(System.DateTime);
+            // 
             // ScriptForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(650, 250);
+            this.Controls.Add(this.tbxScriptScheduled);
             this.Controls.Add(this.pbxRemoveKeyPressed);
             this.Controls.Add(this.pbxEditKeyPressed);
             this.Controls.Add(this.lblScriptSchedule);
-            this.Controls.Add(this.dtpScriptScheduled);
             this.Controls.Add(this.tbxKeyPressed);
             this.Controls.Add(this.lblListenKey);
             this.Controls.Add(this.cbxScriptType);
@@ -403,25 +401,10 @@
             this.MinimumSize = new System.Drawing.Size(650, 250);
             this.Name = "ScriptForm";
             this.Text = "ScriptForm";
-            this.Controls.SetChildIndex(this.lblScriptName, 0);
-            this.Controls.SetChildIndex(this.lblScriptPath, 0);
-            this.Controls.SetChildIndex(this.tbxScriptName, 0);
-            this.Controls.SetChildIndex(this.btnPathSelector, 0);
-            this.Controls.SetChildIndex(this.tbxScriptPath, 0);
-            this.Controls.SetChildIndex(this.btnCancel, 0);
-            this.Controls.SetChildIndex(this.btnSave, 0);
-            this.Controls.SetChildIndex(this.lblScriptType, 0);
-            this.Controls.SetChildIndex(this.cbxScriptType, 0);
-            this.Controls.SetChildIndex(this.lblListenKey, 0);
-            this.Controls.SetChildIndex(this.tbxKeyPressed, 0);
-            this.Controls.SetChildIndex(this.dtpScriptScheduled, 0);
-            this.Controls.SetChildIndex(this.lblScriptSchedule, 0);
-            this.Controls.SetChildIndex(this.pbxEditKeyPressed, 0);
-            this.Controls.SetChildIndex(this.pbxRemoveKeyPressed, 0);
-            this.Controls.SetChildIndex(this.metroSetControlBox1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.pbxRemoveKeyPressed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEditKeyPressed)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -439,9 +422,9 @@
         private System.Windows.Forms.OpenFileDialog ofdScriptPath;
         private MetroSet_UI.Controls.MetroSetTextBox tbxKeyPressed;
         private MetroSet_UI.Controls.MetroSetLabel lblListenKey;
-        private System.Windows.Forms.DateTimePicker dtpScriptScheduled;
         private MetroSet_UI.Controls.MetroSetLabel lblScriptSchedule;
         private System.Windows.Forms.PictureBox pbxRemoveKeyPressed;
         private System.Windows.Forms.PictureBox pbxEditKeyPressed;
+        private System.Windows.Forms.MaskedTextBox tbxScriptScheduled;
     }
 }
