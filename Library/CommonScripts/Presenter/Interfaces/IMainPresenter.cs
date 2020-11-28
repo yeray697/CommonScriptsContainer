@@ -6,6 +6,8 @@ namespace CommonScripts.Presenter.Interfaces
 {
     public interface IMainPresenter
     {
+        bool AppConfigExists();
+        void InitializeAppConfig(string installationPath);
         void LoadScripts();
         void LoadSettings();
         bool AddScript(ScriptAbs script);

@@ -2,12 +2,16 @@
 using CommonScripts.Model.Pojo;
 using CommonScripts.Utils;
 using Serilog.Events;
+using System;
 using System.Configuration;
+using System.IO;
+using System.Text;
 
 namespace CommonScripts.Settings
 {
     public static class AppSettingsManager
     {
+        private const string COMMON_SCRIPTS_FOLDER_NAME = "CommonScripts";
         private const string APP_CONFIG_NAME = "app.config";
         private const string APP_SETTINGS_SECTION = "appSettings";
         private const string SETTING_INSTALLATION_PATH = "installationPath";
@@ -18,11 +22,8 @@ namespace CommonScripts.Settings
         private const string FALSE_BOOL_STRING = "false";
 
         private static AppSettings _settings;
-        private static Configuration GetAppConfigFile()
-        {
-            ExeConfigurationFileMap map = new ExeConfigurationFileMap { ExeConfigFilename = APP_CONFIG_NAME };
-            return  ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
-        }
+
+        #region Public Getters
         public static string GetProjectInstallationPath()
         {
             if (_settings != null)
@@ -53,6 +54,8 @@ namespace CommonScripts.Settings
                 return _settings.ConsoleMinimumLoggingLevel;
             return EnumUtils.Parse<LogEventLevel>(GetSetting(SETTING_CONSOLE_MIN_LOG_LEVEL));
         }
+        #endregion
+        #region Public Setters
         public static void SetInstallationPath(string installationPath)
         {
             SetSettingValue(SETTING_INSTALLATION_PATH, installationPath);
@@ -78,21 +81,7 @@ namespace CommonScripts.Settings
             SetSettingValue(SETTING_CONSOLE_MIN_LOG_LEVEL, minLogLevel.NameToString());
             _settings.ConsoleMinimumLoggingLevel = minLogLevel;
         }
-        private static void SetSettingValue(string key, string value)
-        {
-            Configuration configuration = GetAppConfigFile();
-            if (configuration.AppSettings.Settings[key] != null)
-                configuration.AppSettings.Settings[key].Value = value;
-            else
-                configuration.AppSettings.Settings.Add(key, value);
-            configuration.Save();
-
-            ConfigurationManager.RefreshSection(APP_SETTINGS_SECTION);
-        }
-        private static object GetSetting(string key)
-        {
-            return GetAppConfigFile().AppSettings.Settings[key]?.Value;
-        }
+        #endregion
         public static void LoadSettings()
         {
             _settings = new AppSettings(GetProjectInstallationPath(), IsDarkMode(), AskToRunAppAtStartup(), GetConsoleMinLogLevel(), GetFileMinLogLevel());
@@ -110,6 +99,58 @@ namespace CommonScripts.Settings
             SetFileMinLogLevel(settings.FileMinimumLoggingLevel);
             SetInstallationPath(settings.InstallationPath);
             SetIsDarkMode(settings.IsDarkMode);
+        }
+        public static bool AppConfigExists()
+        {
+            string appConfigDirectory = GetAppConfigDirectory();
+            return Directory.Exists(appConfigDirectory) && File.Exists(Path.Combine(appConfigDirectory, APP_CONFIG_NAME));
+        }
+        public static void CreateAppConfig(string installationPath)
+        {
+            string appConfigDirectory = GetAppConfigDirectory();
+            Directory.CreateDirectory(appConfigDirectory);
+            File.WriteAllText(Path.Combine(appConfigDirectory, APP_CONFIG_NAME), GetAppConfigText(installationPath));
+        }
+        private static string GetAppConfigDirectory()
+        {
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            return Path.Combine(folder, COMMON_SCRIPTS_FOLDER_NAME);
+        }
+        private static string GetAppConfigText(string installationPath)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+            sb.AppendLine("<configuration>");
+            sb.AppendLine(" <appSettings>");
+            sb.AppendLine("  <add key=\"" + SETTING_INSTALLATION_PATH + "\" value=\"" + installationPath + "\"/>");
+            sb.AppendLine("  <add key=\"" + SETTING_DO_NOT_ASK_RUN_STARTUP + "\" value=\"false\"/>");
+            sb.AppendLine("  <add key=\"" + SETTING_CONSOLE_MIN_LOG_LEVEL + "\" value=\"Information\"/>");
+            sb.AppendLine("  <add key=\"" + SETTING_FILE_MIN_LOG_LEVEL + "\" value=\"Information\"/>");
+            sb.AppendLine("  <add key=\"" + SETTING_DARK_MODE + "\" value=\"true\"/>");
+            sb.AppendLine(" </appSettings>");
+            sb.AppendLine("</configuration> ");
+
+            return sb.ToString();
+        }
+        private static void SetSettingValue(string key, string value)
+        {
+            Configuration configuration = GetAppConfigFile();
+            if (configuration.AppSettings.Settings[key] != null)
+                configuration.AppSettings.Settings[key].Value = value;
+            else
+                configuration.AppSettings.Settings.Add(key, value);
+            configuration.Save();
+
+            ConfigurationManager.RefreshSection(APP_SETTINGS_SECTION);
+        }
+        private static object GetSetting(string key)
+        {
+            return GetAppConfigFile().AppSettings.Settings[key]?.Value;
+        }
+        private static Configuration GetAppConfigFile()
+        {
+            ExeConfigurationFileMap map = new ExeConfigurationFileMap { ExeConfigFilename = Path.Combine(GetAppConfigDirectory(), APP_CONFIG_NAME) };
+            return ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
         }
     }
 }

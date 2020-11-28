@@ -33,6 +33,14 @@ namespace CommonScripts.View
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            if (!Presenter.AppConfigExists())
+            {
+                SetInstallationPathForm installationPathForm = new SetInstallationPathForm(styleManager);
+                if (installationPathForm.ShowDialog() == DialogResult.OK)
+                {
+                    Presenter.InitializeAppConfig(installationPathForm.InstallationPath);
+                }
+            }
             Presenter.LoadSettings();
             ReloadStyles(AppSettingsManager.IsDarkMode());
             Presenter.LoadScripts();

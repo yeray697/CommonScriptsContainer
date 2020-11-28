@@ -229,6 +229,14 @@ namespace CommonScripts.Presenter
             AppSettingsManager.SaveSettings(settings);
             return true;
         }
+        public bool AppConfigExists()
+        {
+            return AppSettingsManager.AppConfigExists();
+        }
+        public void InitializeAppConfig(string installationPath)
+        {
+            AppSettingsManager.CreateAppConfig(installationPath);
+        }
         #endregion
     }
 }
