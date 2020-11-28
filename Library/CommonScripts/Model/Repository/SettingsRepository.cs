@@ -11,7 +11,6 @@ namespace CommonScripts.Model.Repository
     public class SettingsRepository : ISettingsRepository
     {
         private const string ScriptFile = "scripts.json";
-        private const string SettingsFile = "settings.json";
 
         public SettingsRepository()
         {
@@ -36,7 +35,7 @@ namespace CommonScripts.Model.Repository
                 {
                     TypeNameHandling = TypeNameHandling.All
                 });
-                File.WriteAllText(fileName, json);
+                File.WriteAllText(FileUtils.GetAbsolutePath(fileName), json);
             }
             catch (Exception e)
             {
