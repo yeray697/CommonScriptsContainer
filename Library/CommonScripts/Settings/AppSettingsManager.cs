@@ -9,70 +9,75 @@ namespace CommonScripts.Settings
     public static class AppSettingsManager
     {
         private const string APP_CONFIG_NAME = "app.config";
+        private const string APP_SETTINGS_SECTION = "appSettings";
+        private const string SETTING_INSTALLATION_PATH = "installationPath";
+        private const string SETTING_DO_NOT_ASK_RUN_STARTUP = "doNotAskAgainRunStartup";
+        private const string SETTING_DARK_MODE = "isDarkMode";
+        private const string SETTING_FILE_MIN_LOG_LEVEL = "fileMinimumLoggingLevel";
+        private const string SETTING_CONSOLE_MIN_LOG_LEVEL = "consoleMinimumLoggingLevel";
+        private const string FALSE_BOOL_STRING = "false";
+
         private static AppSettings _settings;
         private static Configuration GetAppConfigFile()
         {
             ExeConfigurationFileMap map = new ExeConfigurationFileMap { ExeConfigFilename = APP_CONFIG_NAME };
             return  ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
         }
-
         public static string GetProjectInstallationPath()
         {
             if (_settings != null)
                 return _settings.InstallationPath;
-            return GetSetting("installationPath").ToString();
+            return GetSetting(SETTING_INSTALLATION_PATH).ToString();
         }
         public static bool AskToRunAppAtStartup()
         {
             if (_settings != null)
                 return _settings.DoNotAskAgainRunStartup;
-            return bool.Parse(GetSetting("doNotAskAgainRunStartup").ToString());
+            return bool.Parse(GetSetting(SETTING_DO_NOT_ASK_RUN_STARTUP).ToString());
         }
         public static bool IsDarkMode()
         {
             if (_settings != null)
                 return _settings.IsDarkMode;
-            return bool.Parse(GetSetting("isDarkMode")?.ToString() ?? "false");
+            return bool.Parse(GetSetting(SETTING_DARK_MODE)?.ToString() ?? FALSE_BOOL_STRING);
         }
         public static LogEventLevel GetFileMinLogLevel()
         {
             if (_settings != null)
                 return _settings.FileMinimumLoggingLevel;
-            return EnumUtils.Parse<LogEventLevel>(GetSetting("fileMinimumLoggingLevel"));
+            return EnumUtils.Parse<LogEventLevel>(GetSetting(SETTING_FILE_MIN_LOG_LEVEL));
         }
         public static LogEventLevel GetConsoleMinLogLevel()
         {
             if (_settings != null)
                 return _settings.ConsoleMinimumLoggingLevel;
-            return EnumUtils.Parse<LogEventLevel>(GetSetting("consoleMinimumLoggingLevel"));
+            return EnumUtils.Parse<LogEventLevel>(GetSetting(SETTING_CONSOLE_MIN_LOG_LEVEL));
         }
-
         public static void SetInstallationPath(string installationPath)
         {
-            SetSettingValue("installationPath", installationPath);
+            SetSettingValue(SETTING_INSTALLATION_PATH, installationPath);
             _settings.InstallationPath = installationPath;
         }
         public static void SetAskToRunAppAtStartup(bool runAtStartup)
         {
-            SetSettingValue("doNotAskAgainRunStartup", runAtStartup.ToString());
+            SetSettingValue(SETTING_DO_NOT_ASK_RUN_STARTUP, runAtStartup.ToString());
             _settings.DoNotAskAgainRunStartup = runAtStartup;
         }
         public static void SetIsDarkMode(bool isDarkMode)
         {
-            SetSettingValue("isDarkMode", isDarkMode.ToString());
+            SetSettingValue(SETTING_DARK_MODE, isDarkMode.ToString());
             _settings.IsDarkMode = isDarkMode;
         }
         public static void SetFileMinLogLevel(LogEventLevel minLogLevel)
         {
-            SetSettingValue("fileMinimumLoggingLevel", minLogLevel.NameToString());
+            SetSettingValue(SETTING_FILE_MIN_LOG_LEVEL, minLogLevel.NameToString());
             _settings.FileMinimumLoggingLevel = minLogLevel;
         }
         public static void SetConsoleMinLogLevel(LogEventLevel minLogLevel)
         {
-            SetSettingValue("consoleMinimumLoggingLevel", minLogLevel.NameToString());
+            SetSettingValue(SETTING_CONSOLE_MIN_LOG_LEVEL, minLogLevel.NameToString());
             _settings.ConsoleMinimumLoggingLevel = minLogLevel;
         }
-
         private static void SetSettingValue(string key, string value)
         {
             Configuration configuration = GetAppConfigFile();
@@ -82,13 +87,12 @@ namespace CommonScripts.Settings
                 configuration.AppSettings.Settings.Add(key, value);
             configuration.Save();
 
-            ConfigurationManager.RefreshSection("appSettings");
+            ConfigurationManager.RefreshSection(APP_SETTINGS_SECTION);
         }
         private static object GetSetting(string key)
         {
             return GetAppConfigFile().AppSettings.Settings[key]?.Value;
         }
-
         public static void LoadSettings()
         {
             _settings = new AppSettings(GetProjectInstallationPath(), IsDarkMode(), AskToRunAppAtStartup(), GetConsoleMinLogLevel(), GetFileMinLogLevel());
@@ -99,7 +103,6 @@ namespace CommonScripts.Settings
                 LoadSettings();
             return _settings;
         }
-
         public static void SaveSettings(AppSettings settings)
         {
             SetAskToRunAppAtStartup(settings.DoNotAskAgainRunStartup);
