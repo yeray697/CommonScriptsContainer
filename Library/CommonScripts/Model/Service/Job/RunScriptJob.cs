@@ -1,4 +1,5 @@
 ﻿using CommonScripts.Model.Pojo.Base;
+using CommonScripts.Settings;
 using CommonScripts.Utils;
 using Quartz;
 using Serilog;
@@ -31,7 +32,8 @@ namespace CommonScripts.Model.Service.Job
             if (File.Exists(realPath))
             {
                 Log.Information("Executing {@ScriptName}", _script.ScriptName);
-                string psScript = File.ReadAllText(realPath);
+                string psScript = "Set-Location \"" + AppSettingsManager.GetProjectInstallationPath() + "\"\r\n";
+                psScript += File.ReadAllText(realPath);
                 var powerShell = PowerShell.Create().AddScript(psScript);
                 powerShell.Invoke();
             } else
