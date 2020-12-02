@@ -17,10 +17,10 @@ namespace CommonScripts.Presenter
 {
     public class MainPresenter : IMainPresenter
     {
-        private IMainView _view;
-        private ISettingsService _settingsService;
-        private IRunScriptService _runScriptService;
-        private IWindowsRegistryService _windowsRegistryService;
+        private readonly IMainView _view;
+        private readonly ISettingsService _settingsService;
+        private readonly IRunScriptService _runScriptService;
+        private readonly IWindowsRegistryService _windowsRegistryService;
         private List<ScriptAbs> _scripts;
         private ListenKeysService _listenKeysService;
         private JobListener _oneOffJobListener;
@@ -80,7 +80,6 @@ namespace CommonScripts.Presenter
             switch (oldStatus)
             {
                 case ScriptStatus.Running:
-                case ScriptStatus.Resuming:
                     newStatus = ScriptStatus.Stopped;
                     break;
                 case ScriptStatus.Undefined:

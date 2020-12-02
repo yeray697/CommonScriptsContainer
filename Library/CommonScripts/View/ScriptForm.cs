@@ -17,14 +17,19 @@ namespace CommonScripts.View
         private ScriptAbs _script;
         private bool _listeningKeys = false;
 
+        private const string FORM_TITLE_ADD = "Add Script";
+        private const string FORM_TITLE_EDIT = "Update Script";
+        private const string KEY_PRESSED_UNDEFINED_TEXT = "Undefined";
+        private const string KEY_PRESSED_LISTENING_TEXT = "Listening...";
+
         public ScriptForm(StyleManager styleManager, ScriptAbs script) : base()
         {
             InitializeComponent();
             UpdateMetroStyles(styleManager);
-            string formTitle = "Add Script";
+            string formTitle = FORM_TITLE_ADD;
             if (script != null)
             {
-                formTitle = "Update Script";
+                formTitle = FORM_TITLE_EDIT;
                 _script = script.Clone();
                 tbxScriptName.Text = _script.ScriptName;
                 tbxScriptPath.Text = _script.ScriptPath;
@@ -87,20 +92,18 @@ namespace CommonScripts.View
             tbxKeyPressed.Tag = keyPressed;
             StopListeningKeys();
         }
-        private void cbxScriptType_SelectedValueChanged(object sender, EventArgs e)
+        private void ScriptTypeChanged(object sender, EventArgs e)
         {
-            ScriptType scriptType;
-            Enum.TryParse<ScriptType>(cbxScriptType.SelectedValue.ToString(), out scriptType);
-
             StopListeningKeys();
             DisplaySpecificScriptFields();
         }
-        private void pbxRemoveKeyPressed_Click(object sender, EventArgs e)
+        private void RemoveKeyMappingClicked(object sender, EventArgs e)
         {
             StopListeningKeys();
-            tbxKeyPressed.Text = "Undefined";
+            tbxKeyPressed.Text = KEY_PRESSED_UNDEFINED_TEXT;
+            tbxKeyPressed.Tag = null;
         }
-        private void pbxEditKeyPressed_Click(object sender, EventArgs e)
+        private void EditKeyMappingClicked(object sender, EventArgs e)
         {
             StartListeningKeys();
         }
@@ -109,15 +112,20 @@ namespace CommonScripts.View
         #region Private Methods
         private void DisplayScriptListeningKeyText()
         {
-            tbxKeyPressed.Text = "Undefined";
+            tbxKeyPressed.Text = KEY_PRESSED_UNDEFINED_TEXT;
+            tbxKeyPressed.Tag = null;
             if (_listeningKeys)
             {
-                tbxKeyPressed.Text = "Listening...";
-            } else if (_script != null && _script is ScriptListenKey)
+                tbxKeyPressed.Text = KEY_PRESSED_LISTENING_TEXT;
+            }
+            else if (_script != null && _script is ScriptListenKey scriptListenKey)
             {
-                KeyPressed triggerKey = ((ScriptListenKey)_script).TriggerKey;
+                KeyPressed triggerKey = scriptListenKey.TriggerKey;
                 if (triggerKey != null)
+                {
                     tbxKeyPressed.Text = triggerKey.ToString();
+                    tbxKeyPressed.Tag = triggerKey;
+                }
             }
         }
         private void DisplaySpecificScriptFields()
@@ -133,12 +141,10 @@ namespace CommonScripts.View
                 case ScriptType.Scheduled:
                     HideScheduledScriptFields(false);
                     HideListenKeyScriptFields(true);
-                    AssignDateTimePickerValue();
                     break;
                 case ScriptType.ListenKey:
                     HideScheduledScriptFields(true);
                     HideListenKeyScriptFields(false);
-                    DisplayScriptListeningKeyText();
                     break;
                 default:
                     break;
@@ -170,8 +176,8 @@ namespace CommonScripts.View
         private void AssignDateTimePickerValue()
         {
             DateTime value = DateTime.Now.Date;
-            if (_script != null && _script is ScriptScheduled)
-                value += ((ScriptScheduled)_script).ScheduledHour;
+            if (_script != null && _script is ScriptScheduled scriptScheduled)
+                value += scriptScheduled.ScheduledHour;
 
             tbxScriptScheduled.Text = value.ToString("HH:mm");
         }
@@ -219,13 +225,10 @@ namespace CommonScripts.View
         }
         private bool IsMaskDatetimeValid(string maskedText)
         {
-            int hour;
-            int minute;
-
             string value = maskedText.Replace(":", "").Trim();
 
             return (value != String.Empty && value.Length == 4
-                && int.TryParse(value.Substring(0, 2), out hour) && int.TryParse(value.Substring(2, 2), out minute)
+                && int.TryParse(value.Substring(0, 2), out int hour) && int.TryParse(value.Substring(2, 2), out int minute)
                 && hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59);
         }
         private bool ValidateBeforeSaving()

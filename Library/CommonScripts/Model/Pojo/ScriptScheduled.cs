@@ -12,12 +12,10 @@ namespace CommonScripts.Model.Pojo
         {
 
         }
-
         protected ScriptScheduled(ScriptScheduled script) : base(script)
         {
             ScheduledHour = script.ScheduledHour;
         }
-
         public override ScriptAbs Clone() => new ScriptScheduled(this);
     }
 }

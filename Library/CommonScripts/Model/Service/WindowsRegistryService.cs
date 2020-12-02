@@ -1,7 +1,9 @@
 ﻿using CommonScripts.Model.Service.Interfaces;
+using CommonScripts.Settings;
 using Microsoft.Win32;
 using Serilog;
 using System;
+using System.IO;
 
 namespace CommonScripts.Model.Service
 {
@@ -9,6 +11,8 @@ namespace CommonScripts.Model.Service
     {
         private const string WINDOWS_REGISTRY_STARTUP_PATH = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run";
         private const string WINDOWS_REGISTRY_STARTUP_KEY = "CommonScripts";
+        private const string APP_EXE_NAME = "CommonScripts.Exe";
+        private const string APP_ARGS = "-hide";
 
         public bool IsAppSetToRunAtStartup()
         {
@@ -19,8 +23,8 @@ namespace CommonScripts.Model.Service
         }
         public bool SetAppToRunAtStartup()
         {
-            string exePath = System.Windows.Forms.Application.StartupPath + "CommonScripts.Exe";
-            string args = "-hide";
+            string exePath = Path.Combine(AppSettingsManager.GetProjectInstallationPath(), APP_EXE_NAME);
+            string args = APP_ARGS;
             bool result = true;
             try
             {

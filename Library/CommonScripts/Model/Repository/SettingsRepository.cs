@@ -16,17 +16,14 @@ namespace CommonScripts.Model.Repository
         {
 
         }
-
         public bool SaveScripts(List<ScriptAbs> scripts)
         {
             return Save(scripts, ScriptFile);
         }
-
         public List<ScriptAbs> GetScripts()
         {
             return Load<List<ScriptAbs>>(ScriptFile);
         }
-
         private bool Save<T>(T pSettings, string fileName)
         {
             try
@@ -45,7 +42,6 @@ namespace CommonScripts.Model.Repository
 
             return true;
         }
-
         public static T Load<T>(string fileName) where T : new()
         {
             T t = new T();

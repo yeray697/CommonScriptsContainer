@@ -11,12 +11,10 @@ namespace CommonScripts.Model.Pojo
         {
 
         }
-
         protected ScriptListenKey(ScriptListenKey script) : base(script)
         {
             TriggerKey = script.TriggerKey;
         }
-
         public override ScriptAbs Clone() => new ScriptListenKey(this);
     }
 }

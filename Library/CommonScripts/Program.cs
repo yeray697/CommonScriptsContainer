@@ -32,7 +32,6 @@ namespace CommonScripts
             }
             Application.Run(mainForm);
         }
-
         private static void ParseArgs(string[] args, out bool startAppHidden)
         {
             startAppHidden = false;
@@ -42,14 +41,12 @@ namespace CommonScripts
                     startAppHidden = true;
             }
         }
-
         private static Form Injection()
         {
             LogManager.InstanceLogger();
             //Poor Man's DI
             return InjectMainForm();
         }
-
         private static Form InjectMainForm()
         {
             Log.Information("Starting application...");

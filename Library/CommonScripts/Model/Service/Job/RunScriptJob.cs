@@ -18,13 +18,11 @@ namespace CommonScripts.Model.Service.Job
             GetScript(context);
             RunScript();
         }
-
         private void GetScript(IJobExecutionContext context)
         {
             var dataMap = context.MergedJobDataMap;
             _script = (ScriptAbs)dataMap["script"];
         }
-
         private void RunScript()
         {
             string realPath = FileUtils.GetAbsolutePath(_script.ScriptPath);

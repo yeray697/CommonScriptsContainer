@@ -13,7 +13,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         public event ItemClickHandler EditClicked;
         public event ItemClickHandler StatusClicked;
 
-        private StyleManager _styleManager;
+        private readonly StyleManager _styleManager;
 
         public ScriptAbs Script { get; private set; }
 
@@ -26,15 +26,15 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         }
 
         #region Events
-        private void pbxEdit_Click(object sender, System.EventArgs e)
+        private void EditButtonClicked(object sender, System.EventArgs e)
         {
             EditClicked?.Invoke(this);
         }
-        private void pbxRemove_Click(object sender, System.EventArgs e)
+        private void RemoveButtonClicked(object sender, System.EventArgs e)
         {
             RemoveClicked?.Invoke(this);
         }
-        private void pbxStatus_Click(object sender, System.EventArgs e)
+        private void StatusButtonClicked(object sender, System.EventArgs e)
         {
             StatusClicked?.Invoke(this);
         }
@@ -99,7 +99,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             switch (Script.ScriptStatus)
             {
                 case ScriptStatus.Running:
-                case ScriptStatus.Resuming:
                     pbxStatus.Image = Properties.Resources.pause;
                     break;
                 case ScriptStatus.Undefined:

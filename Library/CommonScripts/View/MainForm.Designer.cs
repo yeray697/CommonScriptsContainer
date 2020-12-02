@@ -195,9 +195,9 @@
             this.pbxSettings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxSettings.TabIndex = 2;
             this.pbxSettings.TabStop = false;
-            this.pbxSettings.Click += new System.EventHandler(this.pbxSettings_Click);
-            this.pbxSettings.MouseEnter += new System.EventHandler(this.pbxSettings_MouseEnter);
-            this.pbxSettings.MouseLeave += new System.EventHandler(this.pbxSettings_MouseLeave);
+            this.pbxSettings.Click += new System.EventHandler(this.SettingsClicked);
+            this.pbxSettings.MouseEnter += new System.EventHandler(this.Settings_MouseEnter);
+            this.pbxSettings.MouseLeave += new System.EventHandler(this.Settings_MouseLeave);
             // 
             // MainForm
             // 

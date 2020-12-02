@@ -7,7 +7,7 @@ namespace CommonScripts.Logging
 {
     public class LogSink : ILogEventSink
     {
-        public delegate void LogHandler(LogMsg log);
+        public delegate void LogHandler(LogMessage log);
         public event LogHandler LogEmitted;
 
         public void Emit(LogEvent logEvent)
@@ -15,7 +15,7 @@ namespace CommonScripts.Logging
             if (logEvent.Level >= AppSettingsManager.GetConsoleMinLogLevel())
             {
                 var t = logEvent.Timestamp;
-                LogMsg msg = new LogMsg()
+                LogMessage msg = new LogMessage()
                 {
                     Text = logEvent.RenderMessage(),
                     Lvl = logEvent.Level,
@@ -23,37 +23,6 @@ namespace CommonScripts.Logging
                 };
 
                 LogEmitted?.Invoke(msg);
-            }
-        }
-    }
-
-    public struct LogMsg
-    {
-        public LogEventLevel Lvl;
-        public string Text;
-        public string TimeStamp;
-
-        public override string ToString()
-        {
-            return TimeStamp + " " + LevelToSeverity() + " " + Text;
-        }
-
-        private string LevelToSeverity()
-        {
-            switch (Lvl)
-            {
-                case LogEventLevel.Debug:
-                    return "[DEBUG]";
-                case LogEventLevel.Error:
-                    return "[ERROR]";
-                case LogEventLevel.Fatal:
-                    return "[FATAL]";
-                case LogEventLevel.Verbose:
-                    return "[VERBOSE]";
-                case LogEventLevel.Warning:
-                    return "[WARNING]";
-                default:
-                    return "[INFO]";
             }
         }
     }

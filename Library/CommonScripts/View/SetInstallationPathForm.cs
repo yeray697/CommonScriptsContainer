@@ -13,7 +13,6 @@ namespace CommonScripts.View
             InitializeComponent();
             UpdateMetroStyles(styleManager);
         }
-
         private void Save(object sender, EventArgs e)
         {
             InstallationPath = tbxInstallationPath.Text;
