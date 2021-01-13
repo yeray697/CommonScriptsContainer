@@ -82,7 +82,7 @@ namespace CommonScripts.View
             if (hasStatusChanged)
                 _scriptListAdapter.RefreshScriptStatus(script.Id);
         }
-        private void appNotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void AppTrayIcon_DoubleClick(object sender, MouseEventArgs e)
         {
             Show();
             this.WindowState = FormWindowState.Normal;

@@ -37,7 +37,7 @@ namespace CommonScripts
             startAppHidden = false;
             if (args != null && args.Length == 1)
             {
-                if (args[0] == "-hide")
+                if (args[0] == WindowsRegistryService.APP_HIDE_ARG)
                     startAppHidden = true;
             }
         }

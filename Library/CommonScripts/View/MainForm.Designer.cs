@@ -182,7 +182,7 @@
             // 
             this.appNotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("appNotifyIcon.Icon")));
             this.appNotifyIcon.Visible = true;
-            this.appNotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.appNotifyIcon_MouseDoubleClick);
+            this.appNotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.AppTrayIcon_DoubleClick);
             // 
             // pbxSettings
             // 
