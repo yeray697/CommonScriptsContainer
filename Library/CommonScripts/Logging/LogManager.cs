@@ -1,4 +1,4 @@
-﻿using CommonScripts.Settings;
+using CommonScripts.Settings;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;

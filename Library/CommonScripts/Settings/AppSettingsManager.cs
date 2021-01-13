@@ -112,7 +112,7 @@ namespace CommonScripts.Settings
             Directory.CreateDirectory(appConfigDirectory);
             File.WriteAllText(Path.Combine(appConfigDirectory, APP_CONFIG_NAME), GetAppConfigText(installationPath));
         }
-        private static string GetAppConfigDirectory()
+        public static string GetAppConfigDirectory()
         {
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             return Path.Combine(folder, COMMON_SCRIPTS_FOLDER_NAME);
