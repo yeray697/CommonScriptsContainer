@@ -55,6 +55,7 @@ namespace CommonScripts.Settings
             return EnumUtils.Parse<LogEventLevel>(GetSetting(SETTING_CONSOLE_MIN_LOG_LEVEL));
         }
         #endregion
+
         #region Public Setters
         public static void SetInstallationPath(string installationPath)
         {

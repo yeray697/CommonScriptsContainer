@@ -7,9 +7,10 @@ namespace CommonScripts.Extension
     {
         public static StyleManager Clone(this StyleManager styleManager, MetroSetForm form = null)
         {
-            StyleManager newStyleManager = new StyleManager();
-
-            newStyleManager.CustomTheme = styleManager.CustomTheme;
+            StyleManager newStyleManager = new StyleManager
+            {
+                CustomTheme = styleManager.CustomTheme
+            };
             if (form != null) newStyleManager.MetroForm = form;
             newStyleManager.Style = styleManager.Style;
             newStyleManager.ThemeAuthor = styleManager.ThemeAuthor;

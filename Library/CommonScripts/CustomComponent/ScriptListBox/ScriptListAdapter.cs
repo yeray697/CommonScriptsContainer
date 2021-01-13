@@ -17,8 +17,8 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         public event ScriptClickHandler EditClicked;
         public event ScriptClickHandler StatusClicked;
 
-        private StyleManager _styleManager;
-        private MetroSetPanel _pnlScripts;
+        private readonly StyleManager _styleManager;
+        private readonly MetroSetPanel _pnlScripts;
         private List<ScriptItem> _controlList;
 
         public ScriptListAdapter(StyleManager styleManager, MetroSet_UI.Controls.MetroSetPanel pnlScripts)
@@ -34,7 +34,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             CreateUIElements(list);
             PaintUI();
         }
-
         public void AddItem(ScriptAbs item)
         {
             ScriptItem scriptItem = GetScriptItemInstance(item);
@@ -42,14 +41,12 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             AddItemToPanel(scriptItem);
             SortControls();
         }
-
         public void EditItem(ScriptAbs editItem, bool hasScriptTypeChanged)
         {
             var item = FindById(editItem.Id);
             if (item != null && item.ModifyScript(editItem, hasScriptTypeChanged))
                 SortControls();
         }
-
         public void RemoveItem(string scriptId)
         {
             var item = FindById(scriptId);
@@ -60,12 +57,10 @@ namespace CommonScripts.CustomComponent.ScriptListBox
                 SortControls();
             }
         }
-
-        public void ChangeScriptStatus(string scriptId)
+        public void RefreshScriptStatus(string scriptId)
         {
             FindById(scriptId)?.PaintScriptStatus();
         }
-
         public void RefreshMetroStyles()
         {
             foreach (var item in _controlList)
@@ -83,7 +78,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
                 foreach (var item in list)
                     _controlList.Add(GetScriptItemInstance(item));
         }
-
         private ScriptItem GetScriptItemInstance(ScriptAbs script)
         {
             ScriptItem item = new ScriptItem(script, _styleManager);
@@ -93,7 +87,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
 
             return item;
         }
-
         private void PaintUI()
         {
             if (_pnlScripts != null)
@@ -107,18 +100,15 @@ namespace CommonScripts.CustomComponent.ScriptListBox
                 SortControls();
             }
         }
-
         private void AddItemToPanel(ScriptItem item)
         {
             item.SetWidth(_pnlScripts.Width);
             _pnlScripts.Controls.Add(item);
         }
-
         private int GetListCount()
         {
             return _controlList?.Count ?? 0;
         }
-
         private void SortControls()
         {
             //TODO This may change based on the type of the script and the status
@@ -132,12 +122,10 @@ namespace CommonScripts.CustomComponent.ScriptListBox
                 }
             }
         }
-
         private ScriptItem FindById(string id)
         {
             return !IsEmptyList() ? _controlList.Find(s => s.Script.Id == id) : null;
         }
-
         private bool IsEmptyList()
         {
             return GetListCount() == 0;
@@ -149,12 +137,10 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         {
             RemoveClicked?.Invoke(source.Script);
         }
-
         private void Script_EditClicked(ScriptItem source)
         {
             EditClicked?.Invoke(source.Script);
         }
-
         private void Script_StatusClicked(ScriptItem source)
         {
             StatusClicked?.Invoke(source.Script);

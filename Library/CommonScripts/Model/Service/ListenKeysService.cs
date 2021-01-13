@@ -9,7 +9,6 @@ namespace CommonScripts.Model.Service
     public class ListenKeysService
     {
         public delegate void KeyUpHandler(KeyPressed keyPressed);
-
         public event KeyUpHandler SingleKeyUpClicked;
         public event KeyUpHandler KeyUpClicked;
 
@@ -22,7 +21,6 @@ namespace CommonScripts.Model.Service
         {
             _running = false;
         }
-
         public static ListenKeysService GetInstance()
         {
             if (_instance == null)
@@ -30,13 +28,11 @@ namespace CommonScripts.Model.Service
 
             return _instance;
         }
-
         public void Run(bool singleKeyListen)
         {
             _singleKeyListen = singleKeyListen;
             Run();
         }
-
         public void Run()
         {
             if (!_running)
@@ -46,7 +42,6 @@ namespace CommonScripts.Model.Service
                 Subscribe();
             }
         }
-
         public void Stop()
         {
             if (_running)
@@ -56,8 +51,6 @@ namespace CommonScripts.Model.Service
                 Unsubscribe();
             }
         }
-
-
         private void Subscribe()
         {
             if (_globalHook == null)
@@ -66,7 +59,6 @@ namespace CommonScripts.Model.Service
                 _globalHook.KeyUp += GlobalHookKeyUp;
             }
         }
-
         private void GlobalHookKeyUp(object sender, KeyEventArgs e)
         {
             KeyPressed keyPressed = new KeyPressed(e);
@@ -83,7 +75,6 @@ namespace CommonScripts.Model.Service
                 KeyUpClicked?.Invoke(keyPressed);
             }
         }
-
         private void Unsubscribe()
         {
             if (_globalHook != null)

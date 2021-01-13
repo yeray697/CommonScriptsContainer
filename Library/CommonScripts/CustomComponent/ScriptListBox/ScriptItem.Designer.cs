@@ -69,7 +69,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.pbxStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxStatus.TabIndex = 1;
             this.pbxStatus.TabStop = false;
-            this.pbxStatus.Click += new System.EventHandler(this.pbxStatus_Click);
+            this.pbxStatus.Click += new System.EventHandler(this.StatusButtonClicked);
             // 
             // pbxEdit
             // 
@@ -83,7 +83,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.pbxEdit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxEdit.TabIndex = 2;
             this.pbxEdit.TabStop = false;
-            this.pbxEdit.Click += new System.EventHandler(this.pbxEdit_Click);
+            this.pbxEdit.Click += new System.EventHandler(this.EditButtonClicked);
             // 
             // pbxRemove
             // 
@@ -97,7 +97,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             this.pbxRemove.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxRemove.TabIndex = 3;
             this.pbxRemove.TabStop = false;
-            this.pbxRemove.Click += new System.EventHandler(this.pbxRemove_Click);
+            this.pbxRemove.Click += new System.EventHandler(this.RemoveButtonClicked);
             // 
             // lblScriptType
             // 

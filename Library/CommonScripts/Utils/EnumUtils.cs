@@ -8,7 +8,6 @@ namespace CommonScripts.Utils
         {
             return ParseOrDefault(value, default(T));
         }
-
         public static T ParseOrDefault<T>(object value, T defaultValue) where T : struct, IConvertible
         {
             if (!typeof(T).IsEnum)

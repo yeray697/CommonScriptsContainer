@@ -273,7 +273,7 @@
             this.cbxScriptType.TabIndex = 10;
             this.cbxScriptType.ThemeAuthor = "Narwin";
             this.cbxScriptType.ThemeName = "MetroLite";
-            this.cbxScriptType.SelectedValueChanged += new System.EventHandler(this.cbxScriptType_SelectedValueChanged);
+            this.cbxScriptType.SelectedValueChanged += new System.EventHandler(this.ScriptTypeChanged);
             // 
             // ofdScriptPath
             // 
@@ -355,7 +355,7 @@
             this.pbxRemoveKeyPressed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxRemoveKeyPressed.TabIndex = 17;
             this.pbxRemoveKeyPressed.TabStop = false;
-            this.pbxRemoveKeyPressed.Click += new System.EventHandler(this.pbxRemoveKeyPressed_Click);
+            this.pbxRemoveKeyPressed.Click += new System.EventHandler(this.RemoveKeyMappingClicked);
             // 
             // pbxEditKeyPressed
             // 
@@ -369,7 +369,7 @@
             this.pbxEditKeyPressed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxEditKeyPressed.TabIndex = 16;
             this.pbxEditKeyPressed.TabStop = false;
-            this.pbxEditKeyPressed.Click += new System.EventHandler(this.pbxEditKeyPressed_Click);
+            this.pbxEditKeyPressed.Click += new System.EventHandler(this.EditKeyMappingClicked);
             // 
             // tbxScriptScheduled
             // 

@@ -80,9 +80,9 @@ namespace CommonScripts.View
         {
             bool hasStatusChanged = Presenter.ChangeScriptStatus(script).Result;
             if (hasStatusChanged)
-                _scriptListAdapter.ChangeScriptStatus(script.Id);
+                _scriptListAdapter.RefreshScriptStatus(script.Id);
         }
-        private void appNotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void AppTrayIcon_DoubleClick(object sender, MouseEventArgs e)
         {
             Show();
             this.WindowState = FormWindowState.Normal;
@@ -96,12 +96,12 @@ namespace CommonScripts.View
                 this.ShowInTaskbar = false;
             }
         }
-        public void LogEmitted(LogMsg log)
+        internal void LogEmitted(LogMessage log)
         {
             Color color = GetConsoleTextColor(log.Lvl);
             rtbConsole.AppendTextThreadSafe(log.ToString(), color, true);
         }
-        private void pbxSettings_Click(object sender, EventArgs e)
+        private void SettingsClicked(object sender, EventArgs e)
         {
             Settings settingsForm = new Settings(styleManager);
             if (settingsForm.ShowDialog() == DialogResult.OK)
@@ -110,11 +110,11 @@ namespace CommonScripts.View
                 Presenter.SaveSettings(settingsForm.AppSettings);
             }
         }
-        private void pbxSettings_MouseEnter(object sender, EventArgs e)
+        private void Settings_MouseEnter(object sender, EventArgs e)
         {
             SetSettingsImage(true);
         }
-        private void pbxSettings_MouseLeave(object sender, EventArgs e)
+        private void Settings_MouseLeave(object sender, EventArgs e)
         {
             SetSettingsImage();
         }
@@ -205,18 +205,13 @@ namespace CommonScripts.View
             bool changeLine = true;
             foreach (string line in rtbConsole.Lines)
             {
-                if (line.Contains("[ERROR]") || line.Contains("[FATAL]"))
-                {
+                if (line.Contains(LogMessage.ERROR_STRING) || line.Contains(LogMessage.FATAL_STRING))
                     color = ColorUtils.CONSOLE_ERROR_COLOR;
-                }
-                else if (line.Contains("[WARNING]"))
-                {
+                else if (line.Contains(LogMessage.WARNING_STRING))
                     color = ColorUtils.CONSOLE_WARNING_COLOR;
-                }
                 else
-                {
                     changeLine = false;
-                }
+
                 if (changeLine)
                     rtbConsole.ColorLineThreadSafe(lineCount, line.Length, color);
                 lineCount++;

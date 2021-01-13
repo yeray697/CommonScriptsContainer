@@ -14,7 +14,6 @@ namespace CommonScripts.Utils
                 && Path.IsPathRooted(path)
                 && !Path.GetPathRoot(path).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
         }
-
         public static string GetAbsolutePath(string path)
         {
             if (!IsAbsolutePath(path))
@@ -27,7 +26,6 @@ namespace CommonScripts.Utils
             }
             return path;
         }
-
         public static string GetProjectPath()
         {
             return AppSettingsManager.GetProjectInstallationPath();

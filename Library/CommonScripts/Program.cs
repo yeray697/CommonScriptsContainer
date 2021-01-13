@@ -32,24 +32,21 @@ namespace CommonScripts
             }
             Application.Run(mainForm);
         }
-
         private static void ParseArgs(string[] args, out bool startAppHidden)
         {
             startAppHidden = false;
             if (args != null && args.Length == 1)
             {
-                if (args[0] == "-hide")
+                if (args[0] == WindowsRegistryService.APP_HIDE_ARG)
                     startAppHidden = true;
             }
         }
-
         private static Form Injection()
         {
             LogManager.InstanceLogger();
             //Poor Man's DI
             return InjectMainForm();
         }
-
         private static Form InjectMainForm()
         {
             Log.Information("Starting application...");

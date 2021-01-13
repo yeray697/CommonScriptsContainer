@@ -35,7 +35,6 @@ namespace CommonScripts.Model.Service
                 await Scheduler.Start();
             }
         }
-
         public async Task RunScript(ScriptAbs script)
         {
             await Run();
@@ -54,7 +53,6 @@ namespace CommonScripts.Model.Service
                 await Scheduler.ScheduleJob(job, trigger);
             }
         }
-
         public async Task StopScript(ScriptAbs script)
         {
             if (Scheduler != null)
@@ -63,7 +61,6 @@ namespace CommonScripts.Model.Service
                 await Scheduler.PauseJob(GetJobKeyForScript(script));
             }
         }
-
         public async Task Stop()
         {
             if (Scheduler != null)
@@ -72,19 +69,16 @@ namespace CommonScripts.Model.Service
                 Log.Information("Stopping RunScriptService...");
             }
         }
-
         public void SetOneOffJobListener(IJobListener jobListenerOneOff)
         {
             _jobListenerOneOff = jobListenerOneOff;
             AddJobListener(_jobListenerOneOff, ScriptType.OneOff.ToString());
         }
-
         private void AddJobListener(IJobListener jobListener, string jobGroup)
         {
             if (Scheduler != null)
                 Scheduler.ListenerManager.AddJobListener(jobListener, GroupMatcher<JobKey>.GroupEquals(jobGroup));
         }
-
         private IJobDetail CreateJob(ScriptAbs script)
         {
             return JobBuilder
@@ -93,17 +87,16 @@ namespace CommonScripts.Model.Service
                 .WithDescription(script.ToString())
                 .Build();
         }
-
         private ITrigger CreateTrigger(ScriptAbs script)
         {
             TriggerBuilder triggerBuilder = TriggerBuilder
                 .Create()
                 .WithIdentity(GetTriggerKeyForScript(script));
 
-            if (script is ScriptScheduled)
+            if (script is ScriptScheduled scriptScheduled)
             {
                 triggerBuilder
-                    .StartAt(GetTriggerStartAt(((ScriptScheduled)script).ScheduledHour))
+                    .StartAt(GetTriggerStartAt(scriptScheduled.ScheduledHour))
                     .WithSimpleSchedule(x => x
                         .WithIntervalInHours(24)
                         .RepeatForever()
@@ -114,7 +107,6 @@ namespace CommonScripts.Model.Service
 
             return triggerBuilder.Build();
         }
-
         private DateTimeOffset GetTriggerStartAt(TimeSpan scheduledHour)
         {
             DateTimeOffset startAt = DateTimeOffset.Now.Date + scheduledHour;
@@ -124,12 +116,10 @@ namespace CommonScripts.Model.Service
 
             return startAt;
         }
-
         private JobKey GetJobKeyForScript(ScriptAbs script)
         {
             return new JobKey(script.Id, script.ScriptType.ToString());
         }
-
         private TriggerKey GetTriggerKeyForScript(ScriptAbs script)
         {
             return new TriggerKey($"{script.Id}.trigger", script.ScriptType.ToString());

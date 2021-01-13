@@ -10,12 +10,10 @@ namespace CommonScripts.Model.Pojo
         {
 
         }
-
         protected ScriptOneOff(ScriptOneOff script) : base(script)
         {
 
         }
-
         public override ScriptAbs Clone() => new ScriptOneOff(this);
     }
 }

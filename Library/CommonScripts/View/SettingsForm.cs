@@ -24,7 +24,6 @@ namespace CommonScripts.View
             AppSettings = (AppSettings) AppSettingsManager.GetSettings().Clone();
             DisplaySettings();
         }
-
         private void DisplaySettings()
         {
             swtIsDarkMode.Switched = AppSettings.IsDarkMode;
@@ -35,7 +34,6 @@ namespace CommonScripts.View
             cbxFileMinLevel.DataSource = Enum.GetValues(typeof(LogEventLevel));
             cbxFileMinLevel.SelectedItem = AppSettings.FileMinimumLoggingLevel;
         }
-
         private void Cancel(object sender, EventArgs e)
         {
             AppSettings = null;

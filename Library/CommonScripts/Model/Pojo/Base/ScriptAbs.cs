@@ -4,7 +4,6 @@ namespace CommonScripts.Model.Pojo.Base
 {
     public abstract class ScriptAbs : ICloneable, IScript
     {
-
         public string Id { get; set; }
         public string ScriptName { get; set; }
         public abstract ScriptType ScriptType { get; }
@@ -18,7 +17,6 @@ namespace CommonScripts.Model.Pojo.Base
             ScriptStatus = ScriptStatus.Undefined;
             ScriptPath = "";
         }
-
         protected ScriptAbs(ScriptAbs script)
         {
             Id = script.Id;
@@ -26,38 +24,28 @@ namespace CommonScripts.Model.Pojo.Base
             ScriptStatus = script.ScriptStatus;
             ScriptPath = script.ScriptPath;
         }
-
         public abstract ScriptAbs Clone();
-
         object ICloneable.Clone() => Clone();
-
         public static ScriptAbs GetInstance(ScriptAbs oldScript, ScriptType scriptType)
         {
             bool hasScriptTypeChanged = oldScript != null && HasScriptTypeChanged(oldScript.ScriptType, scriptType);
             ScriptAbs newScript = null;
             if (oldScript == null || hasScriptTypeChanged)
             {
-                switch (scriptType)
+                newScript = scriptType switch
                 {
-                    case ScriptType.OneOff:
-                        newScript = new ScriptOneOff();
-                        break;
-                    case ScriptType.Scheduled:
-                        newScript = new ScriptScheduled();
-                        break;
-                    case ScriptType.ListenKey:
-                        newScript = new ScriptListenKey();
-                        break;
-                    default:
-                        throw new Exception();
-                }
+                    ScriptType.OneOff => new ScriptOneOff(),
+                    ScriptType.Scheduled => new ScriptScheduled(),
+                    ScriptType.ListenKey => new ScriptListenKey(),
+                    _ => throw new Exception(),
+                };
                 if (hasScriptTypeChanged)
                 {
                     newScript.Id = oldScript.Id;
                 }
             }
 
-            return newScript != null ? newScript : oldScript;
+            return newScript ?? oldScript;
         }
         public static bool HasScriptTypeChanged(ScriptType oldScriptType, ScriptType newScriptType) => oldScriptType != newScriptType;
     }

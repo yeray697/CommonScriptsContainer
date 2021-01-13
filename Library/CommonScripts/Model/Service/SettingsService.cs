@@ -14,13 +14,11 @@ namespace CommonScripts.Model.Service
         {
             _repository = repository;
         }
-
         public List<ScriptAbs> GetScripts()
         {
             Log.Debug("Loading Scripts from json file");
             return _repository.GetScripts();
         }
-
         public bool SaveScripts(List<ScriptAbs> scripts)
         {
             Log.Debug("Saving Scripts into json file");
