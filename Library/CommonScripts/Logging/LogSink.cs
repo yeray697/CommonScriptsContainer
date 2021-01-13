@@ -20,6 +20,7 @@ namespace CommonScripts.Logging
                     Text = logEvent.RenderMessage(),
                     Lvl = logEvent.Level,
                     TimeStamp = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff") + " -" + t.Offset.ToString(@"hh\:mm"),
+                    Exception = logEvent.Exception
                 };
 
                 LogEmitted?.Invoke(msg);

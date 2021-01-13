@@ -1,4 +1,5 @@
 ﻿using Serilog.Events;
+using System;
 
 namespace CommonScripts.Logging
 {
@@ -14,10 +15,16 @@ namespace CommonScripts.Logging
         public LogEventLevel Lvl;
         public string Text;
         public string TimeStamp;
+        public Exception Exception;
 
         public override string ToString()
         {
-            return TimeStamp + " " + LevelToSeverity() + " " + Text;
+            string text = TimeStamp + " " + LevelToSeverity() + " " + Text;
+
+            if (Lvl == LogEventLevel.Error && Exception != null)
+                text += "\r\n" + Exception;
+            
+            return text;
         }
         private string LevelToSeverity()
         {
