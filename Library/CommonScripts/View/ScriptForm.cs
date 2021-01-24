@@ -145,6 +145,7 @@ namespace CommonScripts.View
                 case ScriptType.ListenKey:
                     HideScheduledScriptFields(true);
                     HideListenKeyScriptFields(false);
+                    DisplayScriptListeningKeyText();
                     break;
                 default:
                     break;
