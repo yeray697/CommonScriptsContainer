@@ -19,6 +19,7 @@ namespace CommonScripts.View
     public partial class MainForm : BaseForm, IMainView
     {
         private ScriptListAdapter _scriptListAdapter;
+        private TrayContextMenu _trayContextMenu;
         private bool _isDarkMode;
         public MainPresenter Presenter { get; set; }
 
@@ -27,6 +28,7 @@ namespace CommonScripts.View
             InitializeComponent();
             InitScriptListAdapter();
             SetSettingsImage();
+            InitTrayContextMenu();
         }
 
         #region Events
@@ -80,14 +82,12 @@ namespace CommonScripts.View
         {
             bool hasStatusChanged = Presenter.ChangeScriptStatus(script).Result;
             if (hasStatusChanged)
+            {
                 _scriptListAdapter.RefreshScriptStatus(script.Id);
+                _trayContextMenu.RefreshScriptStatus(script);
+            }
         }
-        private void AppTrayIcon_DoubleClick(object sender, MouseEventArgs e)
-        {
-            Show();
-            this.WindowState = FormWindowState.Normal;
-            this.ShowInTaskbar = true;
-        }
+        private void AppTrayIcon_DoubleClick(object sender, MouseEventArgs e) => ShowForm();
         private void MainForm_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -110,19 +110,17 @@ namespace CommonScripts.View
                 Presenter.SaveSettings(settingsForm.AppSettings);
             }
         }
-        private void Settings_MouseEnter(object sender, EventArgs e)
-        {
-            SetSettingsImage(true);
-        }
-        private void Settings_MouseLeave(object sender, EventArgs e)
-        {
-            SetSettingsImage();
-        }
+        private void Settings_MouseEnter(object sender, EventArgs e) => SetSettingsImage(true);
+        private void Settings_MouseLeave(object sender, EventArgs e) => SetSettingsImage();
+        private void ContextMenu_Open_Click() => ShowForm();
+        private void ContextMenu_Close_Click() => Application.Exit();
+        private void ContextMenu_StatusClick(ScriptAbs script) => ChangeScriptStatus(script);
         #endregion
 
         #region Public Methods
         public void ShowScripts(IList<ScriptAbs> scripts)
         {
+            TrayMenuContextScriptList(scripts);
             _scriptListAdapter.CreateWithList(scripts);
         }
         public void ShowRunAtStartupDialog()
@@ -157,7 +155,6 @@ namespace CommonScripts.View
         }
         private Color GetConsoleTextColor(LogEventLevel logLevel)
         {
-            //ToDo: Implementing dark mode
             Color color;
             switch (logLevel)
             {
@@ -217,6 +214,24 @@ namespace CommonScripts.View
                 lineCount++;
                 changeLine = true;
             }
+        }
+        private void TrayMenuContextScriptList(IList<ScriptAbs> scripts)
+        {
+            _trayContextMenu.LoadScriptList(scripts);
+        }
+        private void InitTrayContextMenu()
+        {
+            _trayContextMenu = new TrayContextMenu();
+            _trayContextMenu.CloseClicked += ContextMenu_Close_Click;
+            _trayContextMenu.OpenClicked += ContextMenu_Open_Click;
+            _trayContextMenu.ScriptStatusClicked += ContextMenu_StatusClick;
+            this.appNotifyIcon.ContextMenuStrip = _trayContextMenu;
+        }
+        private void ShowForm()
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
         }
         #endregion
     }
