@@ -10,7 +10,7 @@ This is a container for scripts so you can schedule them, run once, or run based
 
 ## How to use it
 
-1. Download the release v1.1.1 and extract it.
+1. Download the release v1.1.2 and extract it.
 2. Place it in the desired installation path.
 3. Open the App.config file, and change the value of the key '_installationPath_' with the location where it is installed.
 4. Save it and run the app.
