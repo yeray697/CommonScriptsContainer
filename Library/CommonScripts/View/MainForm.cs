@@ -53,6 +53,7 @@ namespace CommonScripts.View
                 if (Presenter.AddScript(addedScript))
                 {
                     _scriptListAdapter.AddItem(addedScript);
+                    _trayContextMenu.AddScript(addedScript);
                 }
             });
         }
@@ -63,6 +64,7 @@ namespace CommonScripts.View
                 if (Presenter.EditScript(editedScript, hasScriptTypeChanged))
                 {
                     _scriptListAdapter.EditItem(editedScript, hasScriptTypeChanged);
+                    _trayContextMenu.EditScript(editedScript);
                 }
             });
         }
@@ -75,6 +77,7 @@ namespace CommonScripts.View
                 if (Presenter.RemoveScript(scriptId))
                 {
                     _scriptListAdapter.RemoveItem(scriptId);
+                    _trayContextMenu.RemoveScript(scriptId);
                 }
             }
         }

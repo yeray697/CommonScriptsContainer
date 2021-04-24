@@ -45,15 +45,9 @@ namespace CommonScripts.View
         #region Public methods
         public void LoadScriptList(IList<ScriptAbs> scripts)
         {
-            ToolStripMenuItem aux;
-            foreach (var item in scripts)
+            foreach (var script in scripts)
             {
-                aux = new ToolStripMenuItem(item.ScriptName, null
-                        , new ToolStripMenuItem(SCRIPT_STATUS_STOP_OPTION, null, ContextMenu_StatusClick) { Tag = item }
-                        , new ToolStripMenuItem(SCRIPT_STATUS_RUN_OPTION, null, ContextMenu_StatusClick) { Tag = item });
-                EnableDropDownItemsPerStatus(aux.DropDownItems, item.ScriptStatus);
-                ((ToolStripMenuItem)this.Items[2]).DropDownItems.Add(aux);
-                aux.Tag = item.Id;
+                AddScriptToContextMenu(script);
             }
         }
         public void RefreshScriptStatus(ScriptAbs script)
@@ -61,8 +55,38 @@ namespace CommonScripts.View
             var contextMenu = GetContextMenuByScriptId(script.Id);
             EnableDropDownItemsPerStatus(contextMenu.DropDownItems, script.ScriptStatus);
         }
+        public void AddScript(ScriptAbs script)
+        {
+            AddScriptToContextMenu(script);
+        }
+        public void EditScript(ScriptAbs script)
+        {
+            var contextMenu = GetContextMenuByScriptId(script.Id);
+            contextMenu.Text = script.ScriptName;
+            AttachScriptToContextMenu(contextMenu.DropDownItems, script);
+            EnableDropDownItemsPerStatus(contextMenu.DropDownItems, script.ScriptStatus);
+        }
+        public void RemoveScript(string scriptId)
+        {
+            ((ToolStripMenuItem)this.Items[2]).DropDownItems.Remove(GetContextMenuByScriptId(scriptId));
+        }
         #endregion
         #region Private methods
+        private void AddScriptToContextMenu(ScriptAbs script)
+        {
+            ToolStripMenuItem aux = new ToolStripMenuItem(script.ScriptName, null
+                    ,new ToolStripMenuItem(SCRIPT_STATUS_STOP_OPTION, null, ContextMenu_StatusClick)
+                    ,new ToolStripMenuItem(SCRIPT_STATUS_RUN_OPTION, null, ContextMenu_StatusClick));
+            AttachScriptToContextMenu(aux.DropDownItems, script);
+            EnableDropDownItemsPerStatus(aux.DropDownItems, script.ScriptStatus);
+            ((ToolStripMenuItem)this.Items[2]).DropDownItems.Add(aux);
+            aux.Tag = script.Id;
+        }
+        private void AttachScriptToContextMenu(ToolStripItemCollection dropDownItems, ScriptAbs script)
+        {
+            dropDownItems[0].Tag = script;
+            dropDownItems[1].Tag = script;
+        }
         private void EnableDropDownItemsPerStatus(ToolStripItemCollection dropDownItems, ScriptStatus scriptStatus)
         {
             dropDownItems[0].Enabled = scriptStatus == ScriptStatus.Running;
