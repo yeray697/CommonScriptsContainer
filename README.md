@@ -3,6 +3,7 @@
 ## Description
 
 This is a container for scripts so you can schedule them, run once, or run based on a macro key.
+It also have dark mode!
 
 ![Image of the Main window](./img/MainForm.png)
 
@@ -10,10 +11,10 @@ This is a container for scripts so you can schedule them, run once, or run based
 
 ## How to use it
 
-1. Download the release v1.1.2 and extract it.
+1. Download the [latest release](https://github.com/yeray697/CommonScriptsContainer/releases/latest) and extract it.
 2. Place it in the desired installation path.
-3. Open the App.config file, and change the value of the key '_installationPath_' with the location where it is installed.
-4. Save it and run the app.
+3. The first time you open it, a dialog will ask you for the installation path.
+4. Start adding your first scripts!
 
 ## Third-party libraries
 
