@@ -21,7 +21,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         private readonly MetroSetPanel _pnlScripts;
         private List<ScriptItem> _controlList;
 
-        public ScriptListAdapter(StyleManager styleManager, MetroSet_UI.Controls.MetroSetPanel pnlScripts)
+        public ScriptListAdapter(StyleManager styleManager, MetroSetPanel pnlScripts)
         {
             _controlList = new List<ScriptItem>();
             _styleManager = styleManager;
@@ -41,10 +41,11 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             AddItemToPanel(scriptItem);
             SortControls();
         }
-        public void EditItem(ScriptAbs editItem, bool hasScriptTypeChanged)
+        public void EditItem(ScriptAbs oldScript, ScriptAbs editedScript)
         {
-            var item = FindById(editItem.Id);
-            if (item != null && item.ModifyScript(editItem, hasScriptTypeChanged))
+            var item = FindById(editedScript.Id);
+            bool hasScriptTypeChanged = ScriptAbs.HasScriptTypeChanged(oldScript.ScriptType, editedScript.ScriptType);
+            if (item != null && item.ModifyScript(editedScript, hasScriptTypeChanged))
                 SortControls();
         }
         public void RemoveItem(string scriptId)

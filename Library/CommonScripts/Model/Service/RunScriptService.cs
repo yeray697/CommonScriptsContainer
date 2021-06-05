@@ -38,7 +38,10 @@ namespace CommonScripts.Model.Service
         public async Task RunScript(ScriptAbs script)
         {
             await Run();
-            Log.Information("Schedule Job for script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
+            if (script.ScriptType is ScriptType.Scheduled)
+                Log.Information("Schedule Job for script {@ScriptName} ({@ScriptType}) at {@ScheduledHour}", script.ScriptName, script.ScriptType, ((ScriptScheduled) script).ScheduledHour.ToString());
+            else
+                Log.Information("Schedule Job for script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
             JobKey jobKey = GetJobKeyForScript(script);
             if (await Scheduler.CheckExists(jobKey))
             {
@@ -58,7 +61,10 @@ namespace CommonScripts.Model.Service
             if (Scheduler != null)
             {
                 Log.Information("Stopping Job for script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
-                await Scheduler.PauseJob(GetJobKeyForScript(script));
+                if (script is ScriptScheduled)
+                    await Scheduler.UnscheduleJob(GetTriggerKeyForScript(script));
+                else
+                    await Scheduler.PauseJob(GetJobKeyForScript(script));
             }
         }
         public async Task Stop()

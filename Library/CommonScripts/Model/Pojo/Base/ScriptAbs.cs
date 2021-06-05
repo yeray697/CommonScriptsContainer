@@ -48,5 +48,8 @@ namespace CommonScripts.Model.Pojo.Base
             return newScript ?? oldScript;
         }
         public static bool HasScriptTypeChanged(ScriptType oldScriptType, ScriptType newScriptType) => oldScriptType != newScriptType;
+        public static bool HasScheduledTimeChanged(ScriptAbs script, ScriptAbs editedScript) =>
+            script.ScriptType == ScriptType.Scheduled
+            && ((ScriptScheduled)script).ScheduledHour != ((ScriptScheduled)editedScript).ScheduledHour;
     }
 }

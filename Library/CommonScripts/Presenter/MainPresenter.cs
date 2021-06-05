@@ -164,21 +164,22 @@ namespace CommonScripts.Presenter
             _scripts.Add(script);
             return _settingsService.SaveScripts(_scripts);
         }
-        public bool EditScript(ScriptAbs script, bool hasScriptTypeChanged)
+        public bool EditScript(ScriptAbs oldScript, ScriptAbs editedScript)
         {
-            Log.Debug("Editing Script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
+            Log.Debug("Editing Script {@ScriptName} ({@ScriptType})", editedScript.ScriptName, editedScript.ScriptType);
             bool successful = false;
-            if (RemoveScript(script.Id, false)) //ToDo this could be improved
+            bool rescheduleJob = ScriptAbs.HasScriptTypeChanged(oldScript.ScriptType, editedScript.ScriptType) || ScriptAbs.HasScheduledTimeChanged(oldScript, editedScript);
+            if (RemoveScript(editedScript.Id, false)) //ToDo this could be improved
             {
-                _scripts.Add(script);
+                _scripts.Add(editedScript);
                 successful = _settingsService.SaveScripts(_scripts);
-                if (successful && script.ScriptStatus == ScriptStatus.Running && hasScriptTypeChanged)
+                if (successful && editedScript.ScriptStatus == ScriptStatus.Running && rescheduleJob)
                 {
-                    _runScriptService.StopScript(script);
-                    if (script.ScriptType != ScriptType.OneOff)
-                        _runScriptService.RunScript(script);
+                    _runScriptService.StopScript(editedScript);
+                    if (editedScript.ScriptType != ScriptType.OneOff)
+                        _runScriptService.RunScript(editedScript);
                     else
-                        _view.ChangeScriptStatusThreadSafe(script);
+                        _view.ChangeScriptStatusThreadSafe(editedScript);
                 }
             }
             return successful;
