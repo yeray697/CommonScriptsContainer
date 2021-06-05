@@ -60,10 +60,9 @@ namespace CommonScripts.View
         private void EditScript(ScriptAbs script)
         {
             ShowScriptForm(script, (ScriptAbs editedScript) => {
-                bool hasScriptTypeChanged = script != null && ScriptAbs.HasScriptTypeChanged(script.ScriptType, editedScript.ScriptType);
-                if (Presenter.EditScript(editedScript, hasScriptTypeChanged))
+                if (Presenter.EditScript(script, editedScript))
                 {
-                    _scriptListAdapter.EditItem(editedScript, hasScriptTypeChanged);
+                    _scriptListAdapter.EditItem(script, editedScript);
                     _trayContextMenu.EditScript(editedScript);
                 }
             });

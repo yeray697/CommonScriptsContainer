@@ -11,7 +11,7 @@ namespace CommonScripts.Presenter.Interfaces
         void LoadScripts();
         void LoadSettings();
         bool AddScript(ScriptAbs script);
-        bool EditScript(ScriptAbs script, bool hasScriptTypeChanged);
+        bool EditScript(ScriptAbs oldScript, ScriptAbs editedScript);
         bool RemoveScript(string scriptId);
         Task<bool> ChangeScriptStatus(ScriptAbs script);
         void DoNotAskAgainRunAtStartup();
