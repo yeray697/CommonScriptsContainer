@@ -30,6 +30,14 @@ namespace CommonScripts.View
             SetSettingsImage();
             InitTrayContextMenu();
         }
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (m.Msg == NativeMethods.WM_SHOWME)
+            {
+                ShowForm();
+            }
+        }
 
         #region Events
         protected override void OnLoad(EventArgs e)
@@ -233,7 +241,15 @@ namespace CommonScripts.View
         {
             Show();
             this.WindowState = FormWindowState.Normal;
+           
             this.ShowInTaskbar = true;
+
+            // get our current "TopMost" value (ours will always be false though)
+            bool top = TopMost;
+            // make our form jump to the top of everything
+            TopMost = true;
+            // set it back to whatever it was
+            TopMost = top;
         }
         #endregion
     }
