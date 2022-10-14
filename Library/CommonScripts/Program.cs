@@ -16,7 +16,8 @@ namespace CommonScripts
     static class Program
     {
         static Mutex mutex = null;
-        static readonly string applicationMutex = @"Global\BcFFcd23-3456-6543-Fc44abcd1234";
+        static readonly string applicationMutex = @"Global\fcb9566c-9987-4095-805d-691fb98559e0";
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>

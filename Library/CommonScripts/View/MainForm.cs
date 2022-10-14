@@ -243,13 +243,10 @@ namespace CommonScripts.View
             this.WindowState = FormWindowState.Normal;
            
             this.ShowInTaskbar = true;
-
-            // get our current "TopMost" value (ours will always be false though)
-            bool top = TopMost;
-            // make our form jump to the top of everything
+            //Bring app to the foreground
+            bool currentTop = TopMost;
             TopMost = true;
-            // set it back to whatever it was
-            TopMost = top;
+            TopMost = currentTop;
         }
         #endregion
     }
