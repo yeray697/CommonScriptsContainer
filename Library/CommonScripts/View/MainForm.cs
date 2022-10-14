@@ -30,6 +30,14 @@ namespace CommonScripts.View
             SetSettingsImage();
             InitTrayContextMenu();
         }
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (m.Msg == NativeMethods.WM_SHOWME)
+            {
+                ShowForm();
+            }
+        }
 
         #region Events
         protected override void OnLoad(EventArgs e)
@@ -233,7 +241,12 @@ namespace CommonScripts.View
         {
             Show();
             this.WindowState = FormWindowState.Normal;
+           
             this.ShowInTaskbar = true;
+            //Bring app to the foreground
+            bool currentTop = TopMost;
+            TopMost = true;
+            TopMost = currentTop;
         }
         #endregion
     }
