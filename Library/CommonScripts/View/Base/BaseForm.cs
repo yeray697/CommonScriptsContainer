@@ -36,5 +36,11 @@ namespace CommonScripts.View.Base
                 return cp;
             }
         }
+
+        public DialogResult ShowDialogCenter(IWin32Window form)
+        {
+            StartPosition = FormStartPosition.CenterParent;
+            return this.ShowDialog(form);
+        }
     }
 }

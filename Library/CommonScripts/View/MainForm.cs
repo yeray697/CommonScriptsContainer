@@ -46,7 +46,7 @@ namespace CommonScripts.View
             if (!Presenter.AppConfigExists())
             {
                 SetInstallationPathForm installationPathForm = new SetInstallationPathForm(styleManager);
-                if (installationPathForm.ShowDialog() == DialogResult.OK)
+                if (installationPathForm.ShowDialogCenter(this) == DialogResult.OK)
                 {
                     Presenter.InitializeAppConfig(installationPathForm.InstallationPath);
                 }
@@ -114,7 +114,7 @@ namespace CommonScripts.View
         private void SettingsClicked(object sender, EventArgs e)
         {
             Settings settingsForm = new Settings(styleManager);
-            if (settingsForm.ShowDialog() == DialogResult.OK)
+            if (settingsForm.ShowDialogCenter(this) == DialogResult.OK)
             {
                 ReloadStyles(settingsForm.AppSettings.IsDarkMode);
                 Presenter.SaveSettings(settingsForm.AppSettings);
@@ -151,7 +151,7 @@ namespace CommonScripts.View
         private void ShowScriptForm(ScriptAbs script, Action<ScriptAbs> postAction)
         {
             ScriptForm scriptForm = new ScriptForm(styleManager, script);
-            if (scriptForm.ShowDialog() == DialogResult.OK)
+            if (scriptForm.ShowDialogCenter(this) == DialogResult.OK)
             {
                 postAction(scriptForm.GetScript());
             }
