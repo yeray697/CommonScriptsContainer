@@ -1,4 +1,6 @@
 ﻿using MetroSet_UI.Forms;
+using System;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace CommonScripts.View.Base
@@ -13,7 +15,13 @@ namespace CommonScripts.View.Base
         {
             InitializeComponent();
         }
-
+        protected override void OnLoad(EventArgs e)
+        {
+            //Override to leave default Form OnLoad method, as MetroSetForm implements an animation that cannot be disabled
+            var ptr = typeof(Form).GetMethod("OnLoad", BindingFlags.Instance | BindingFlags.NonPublic).MethodHandle.GetFunctionPointer();
+            var baseOnLoad = (Action<EventArgs>)Activator.CreateInstance(typeof(Action<EventArgs>), this, ptr);
+            baseOnLoad(e);
+        }
         protected override CreateParams CreateParams
         {
             get
