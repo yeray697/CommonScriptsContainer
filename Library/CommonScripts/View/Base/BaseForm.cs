@@ -14,6 +14,7 @@ namespace CommonScripts.View.Base
         public BaseForm()
         {
             InitializeComponent();
+            (new Utils.DropShadow()).ApplyShadows(this);
         }
         protected override void OnLoad(EventArgs e)
         {
