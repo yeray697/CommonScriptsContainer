@@ -64,6 +64,7 @@ namespace CommonScripts.View.Base
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(674, 451);
             this.Controls.Add(this.metroSetControlBox1);
+            this.DropShadowEffect = false;
             this.Name = "BaseForm";
             this.Text = "BaseForm";
             this.ResumeLayout(false);
