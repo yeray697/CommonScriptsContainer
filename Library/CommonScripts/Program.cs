@@ -27,6 +27,9 @@ namespace CommonScripts
             Application.ThreadExit += ThreadOnExit;
             mutex = new Mutex(true, applicationMutex);
             bool singleInstance = mutex.WaitOne(0, false);
+#if DEBUG
+            RunForm(args);
+#else
             if (!singleInstance)
             {
                 BringInstanceToForeground();
@@ -34,6 +37,7 @@ namespace CommonScripts
             } 
             else
                 RunForm(args);
+#endif
         }
         private static void ParseArgs(string[] args, out bool startAppHidden)
         {
