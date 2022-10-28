@@ -1,6 +1,5 @@
 ﻿using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
-using MetroSet_UI.Components;
 using System.Windows.Forms;
 
 namespace CommonScripts.CustomComponent.ScriptListBox
@@ -13,13 +12,11 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         public event ItemClickHandler EditClicked;
         public event ItemClickHandler StatusClicked;
 
-        private readonly StyleManager _styleManager;
 
         public ScriptAbs Script { get; private set; }
 
-        public ScriptItem(ScriptAbs script, StyleManager styleManager)
+        public ScriptItem(ScriptAbs script)
         {
-            _styleManager = styleManager;
             Script = script;
             InitializeComponent();
             PaintUI();
@@ -59,7 +56,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         }
         private void PaintUI()
         {
-            RefreshMetroStyles();
             if (Script != null)
             {
                 PaintScriptName();
@@ -109,17 +105,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
                     break;
             }
             pbxStatus.Refresh();
-        }
-        public void RefreshMetroStyles()
-        {
-            lblScriptName.StyleManager = _styleManager;
-            lblScriptType.StyleManager = _styleManager;
-
-            //Little hack to make the style of a component created programmatically to be applied
-            //The Style property call the private method 'ApplyTheme', which refreshes the style https://github.com/N-a-r-w-i-n/MetroSet-UI/blob/4939610696619884f5596ef63965e3b1898c4ff0/MetroSet%20UI/Controls/
-            lblScriptName.Style = _styleManager.Style;
-            lblScriptType.Style = _styleManager.Style;
-
         }
         #endregion
     }

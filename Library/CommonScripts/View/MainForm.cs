@@ -1,13 +1,14 @@
 ﻿using CommonScripts.CustomComponent.ScriptListBox;
 using CommonScripts.Extension;
 using CommonScripts.Logging;
+using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Presenter;
 using CommonScripts.Settings;
 using CommonScripts.Utils;
 using CommonScripts.View.Base;
 using CommonScripts.View.Interfaces;
-using MetroSet_UI.Forms;
+using MaterialSkin.Controls;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,14 @@ namespace CommonScripts.View
         private ScriptListAdapter _scriptListAdapter;
         private TrayContextMenu _trayContextMenu;
         private bool _isDarkMode;
+        private bool _preventTabSettingsFromLeaving;
+        private AppSettings _appSettings_SettingsTab;
         public MainPresenter Presenter { get; set; }
 
         public MainForm()
         {
             InitializeComponent();
             InitScriptListAdapter();
-            SetSettingsImage();
             InitTrayContextMenu();
         }
         protected override void WndProc(ref Message m)
@@ -42,13 +44,13 @@ namespace CommonScripts.View
             }
         }
 
-        #region Events
+#region Events
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             if (!Presenter.AppConfigExists())
             {
-                SetInstallationPathForm installationPathForm = new SetInstallationPathForm(styleManager);
+                SetInstallationPathForm installationPathForm = new SetInstallationPathForm();
                 if (installationPathForm.ShowDialogCenter(this) == DialogResult.OK)
                 {
                     Presenter.InitializeAppConfig(installationPathForm.InstallationPath);
@@ -80,8 +82,8 @@ namespace CommonScripts.View
         }
         private void RemoveScript(ScriptAbs script)
         {
-            DialogResult r = MetroSetMessageBox.Show(this, "Do you want to remove the script?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-            if (r == DialogResult.Yes)
+            MaterialDialog dialog = new MaterialDialog(this, "Remove", "Do you want to remove the script?", "Yes", true, "No");
+            if (dialog.ShowDialog(this) == DialogResult.OK)
             {
                 string scriptId = script.Id;
                 if (Presenter.RemoveScript(scriptId))
@@ -114,23 +116,56 @@ namespace CommonScripts.View
             Color color = GetConsoleTextColor(log.Lvl);
             rtbConsole.AppendTextThreadSafe(log.ToString(), color, true);
         }
-        private void SettingsClicked(object sender, EventArgs e)
-        {
-            Settings settingsForm = new Settings(styleManager);
-            if (settingsForm.ShowDialogCenter(this) == DialogResult.OK)
-            {
-                ReloadStyles(settingsForm.AppSettings.IsDarkMode);
-                Presenter.SaveSettings(settingsForm.AppSettings);
-            }
-        }
-        private void Settings_MouseEnter(object sender, EventArgs e) => SetSettingsImage(true);
-        private void Settings_MouseLeave(object sender, EventArgs e) => SetSettingsImage();
         private void ContextMenu_Open_Click() => ShowForm();
         private void ContextMenu_Close_Click() => Application.Exit();
         private void ContextMenu_StatusClick(ScriptAbs script) => ChangeScriptStatus(script);
+        private void SaveSettingsButtonClicked(object sender, EventArgs e)
+        {
+            MapSettingsFromControls();
+            Presenter.SaveSettings(_appSettings_SettingsTab);
+            ReloadStyles(_appSettings_SettingsTab.IsDarkMode);
+        }
+        private void OpenSettingsTab(object sender, EventArgs e)
+        {
+            _appSettings_SettingsTab = (AppSettings)AppSettingsManager.GetSettings().Clone();
+            swtIsDarkMode.Checked = _appSettings_SettingsTab.IsDarkMode;
+
+            cbxConsoleMinLevel.DataSource = Enum.GetValues(typeof(LogEventLevel));
+            cbxConsoleMinLevel.SelectedItem = _appSettings_SettingsTab.ConsoleMinimumLoggingLevel;
+
+            cbxFileMinLevel.DataSource = Enum.GetValues(typeof(LogEventLevel));
+            cbxFileMinLevel.SelectedItem = _appSettings_SettingsTab.FileMinimumLoggingLevel;
+        }
+        private void LeaveSettingsTab(object sender, EventArgs e)
+        {
+            MapSettingsFromControls();
+
+            if (_appSettings_SettingsTab.Equals(AppSettingsManager.GetSettings()))
+            {
+                _appSettings_SettingsTab = null;
+                return;
+            }
+            MaterialDialog dialog = new MaterialDialog(this, "Unsaved changes", "There are changes that were not saved. Do you want to leave?", "Yes", true, "No");
+            if (dialog.ShowDialog(this) == DialogResult.OK)
+            {
+                _appSettings_SettingsTab = null;
+            }
+            else
+            {
+                _preventTabSettingsFromLeaving = true;
+            }
+        }
+        private void TabSelectingEvent(object sender, TabControlCancelEventArgs e)
+        {
+            if (_preventTabSettingsFromLeaving)
+            {
+                e.Cancel = true;
+                _preventTabSettingsFromLeaving = false;
+            }
+        }
         #endregion
 
-        #region Public Methods
+#region Public Methods
         public void ShowScripts(IList<ScriptAbs> scripts)
         {
             TrayMenuContextScriptList(scripts);
@@ -138,8 +173,8 @@ namespace CommonScripts.View
         }
         public void ShowRunAtStartupDialog()
         {
-            DialogResult r = MetroSetMessageBox.Show(this, null, "Do you want to set the app to run at startup?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-            if (r == DialogResult.Yes)
+            MaterialDialog runAtStartupDialog = new MaterialDialog(this, null, "Do you want to set the app to run at startup?", "Yes", true, "No");
+            if (runAtStartupDialog.ShowDialog(this) == DialogResult.OK)
                 Presenter.SetAppRunAtStartup();
             else
                 Presenter.DoNotAskAgainRunAtStartup();
@@ -148,12 +183,12 @@ namespace CommonScripts.View
         {
             this.Invoke((MethodInvoker)delegate () { ChangeScriptStatus(script); });
         }
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
         private void ShowScriptForm(ScriptAbs script, Action<ScriptAbs> postAction)
         {
-            ScriptForm scriptForm = new ScriptForm(styleManager, script);
+            ScriptForm scriptForm = new ScriptForm(script);
             if (scriptForm.ShowDialogCenter(this) == DialogResult.OK)
             {
                 postAction(scriptForm.GetScript());
@@ -161,7 +196,7 @@ namespace CommonScripts.View
         }
         private void InitScriptListAdapter()
         {
-            _scriptListAdapter = new ScriptListAdapter(StyleManager, pnlScripts);
+            _scriptListAdapter = new ScriptListAdapter(pnlScripts);
             _scriptListAdapter.EditClicked += EditScript;
             _scriptListAdapter.RemoveClicked += RemoveScript;
             _scriptListAdapter.StatusClicked += ChangeScriptStatus;
@@ -186,26 +221,17 @@ namespace CommonScripts.View
             }
             return color;
         }
-        private void SetSettingsImage(bool hover = false)
-        {
-            if (hover)
-                pbxSettings.Image = Properties.Resources.settings_hover;
-            else
-                pbxSettings.Image = Properties.Resources.settings;
-        }
         private void ReloadStyles(bool isDarkMode)
         {
             if (_isDarkMode != isDarkMode)
             {
                 _isDarkMode = isDarkMode;
-                styleManager.Style = isDarkMode ? MetroSet_UI.Enums.Style.Dark : MetroSet_UI.Enums.Style.Light;
-                _scriptListAdapter.RefreshMetroStyles();
                 ReloadConsoleStyle();
             }
         }
         private void ReloadConsoleStyle()
         {
-            rtbConsole.ApplyTheme(_isDarkMode ? MetroSet_UI.Enums.Style.Dark : MetroSet_UI.Enums.Style.Light);
+            //rtbConsole.ApplyTheme(_isDarkMode ? MetroSet_UI.Enums.Style.Dark : MetroSet_UI.Enums.Style.Light);
             ReloadConsoleTextLines();
         }
         private void ReloadConsoleTextLines()
@@ -250,6 +276,12 @@ namespace CommonScripts.View
             bool currentTop = TopMost;
             TopMost = true;
             TopMost = currentTop;
+        }
+        private void MapSettingsFromControls()
+        {
+            _appSettings_SettingsTab.FileMinimumLoggingLevel = EnumUtils.Parse<LogEventLevel>(cbxFileMinLevel.SelectedValue);
+            _appSettings_SettingsTab.ConsoleMinimumLoggingLevel = EnumUtils.Parse<LogEventLevel>(cbxConsoleMinLevel.SelectedValue);
+            _appSettings_SettingsTab.IsDarkMode = swtIsDarkMode.Checked;
         }
         #endregion
     }

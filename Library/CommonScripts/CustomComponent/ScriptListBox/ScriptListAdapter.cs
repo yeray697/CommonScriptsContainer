@@ -1,9 +1,8 @@
 ﻿using CommonScripts.Model.Pojo.Base;
-using MetroSet_UI.Components;
-using MetroSet_UI.Controls;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace CommonScripts.CustomComponent.ScriptListBox
 {
@@ -17,14 +16,12 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         public event ScriptClickHandler EditClicked;
         public event ScriptClickHandler StatusClicked;
 
-        private readonly StyleManager _styleManager;
-        private readonly MetroSetPanel _pnlScripts;
+        private readonly Control _pnlScripts;
         private List<ScriptItem> _controlList;
 
-        public ScriptListAdapter(StyleManager styleManager, MetroSetPanel pnlScripts)
+        public ScriptListAdapter(Control pnlScripts)
         {
             _controlList = new List<ScriptItem>();
-            _styleManager = styleManager;
             _pnlScripts = pnlScripts;
         }
 
@@ -62,13 +59,6 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         {
             FindById(scriptId)?.PaintScriptStatus();
         }
-        public void RefreshMetroStyles()
-        {
-            foreach (var item in _controlList)
-            {
-                item.RefreshMetroStyles();
-            }
-        }
         #endregion
 
         #region Private methods
@@ -81,7 +71,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         }
         private ScriptItem GetScriptItemInstance(ScriptAbs script)
         {
-            ScriptItem item = new ScriptItem(script, _styleManager);
+            ScriptItem item = new ScriptItem(script);
             item.StatusClicked += Script_StatusClicked;
             item.EditClicked += Script_EditClicked;
             item.RemoveClicked += Script_RemoveClicked;

@@ -1,5 +1,4 @@
 ﻿using CommonScripts.View.Base;
-using MetroSet_UI.Components;
 using System;
 using System.Windows.Forms;
 
@@ -8,10 +7,9 @@ namespace CommonScripts.View
     public partial class SetInstallationPathForm : BaseInnerForm
     {
         public string InstallationPath { get; private set; }
-        public SetInstallationPathForm(StyleManager styleManager) : base()
+        public SetInstallationPathForm() : base()
         {
             InitializeComponent();
-            UpdateMetroStyles(styleManager);
         }
         private void Save(object sender, EventArgs e)
         {

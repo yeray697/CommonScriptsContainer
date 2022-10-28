@@ -1,11 +1,12 @@
-﻿using MetroSet_UI.Forms;
+﻿using MaterialSkin;
+using MaterialSkin.Controls;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
 
 namespace CommonScripts.View.Base
 {
-    public partial class BaseForm : MetroSetForm
+    public partial class BaseForm : MaterialForm
     {
         private const int WS_EX_COMPOSITED = 0x02000000;
         private const int WS_MINIMIZEBOX = 0x20000;
@@ -15,6 +16,7 @@ namespace CommonScripts.View.Base
         {
             InitializeComponent();
             (new Utils.DropShadow()).ApplyShadows(this);
+            MaterialSkinManager.Instance.AddFormToManage(this);
         }
         protected override void OnLoad(EventArgs e)
         {

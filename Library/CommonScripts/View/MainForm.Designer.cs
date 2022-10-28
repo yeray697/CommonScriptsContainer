@@ -30,151 +30,39 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.mtcMain = new MetroSet_UI.Controls.MetroSetTabControl();
-            this.mtpRun = new MetroSet_UI.Child.MetroSetSetTabPage();
-            this.pnlScripts = new MetroSet_UI.Controls.MetroSetPanel();
-            this.styleManager = new MetroSet_UI.Components.StyleManager();
-            this.lblRunAddScript = new MetroSet_UI.Controls.MetroSetLabel();
-            this.mtpConsole = new MetroSet_UI.Child.MetroSetSetTabPage();
             this.rtbConsole = new System.Windows.Forms.RichTextBox();
             this.appNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.pbxSettings = new System.Windows.Forms.PictureBox();
+            this.mtcMain = new MaterialSkin.Controls.MaterialTabControl();
+            this.mtpRun = new System.Windows.Forms.TabPage();
+            this.lblRunTitle = new MaterialSkin.Controls.MaterialLabel();
+            this.btnRunAddScript = new MaterialSkin.Controls.MaterialButton();
+            this.pnlScripts = new System.Windows.Forms.Panel();
+            this.mtpConsole = new System.Windows.Forms.TabPage();
+            this.mtpSettings = new System.Windows.Forms.TabPage();
+            this.lblConsoleMinLogLevel = new MaterialSkin.Controls.MaterialLabel();
+            this.lblFileMinLogLevel = new MaterialSkin.Controls.MaterialLabel();
+            this.swtIsDarkMode = new MaterialSkin.Controls.MaterialSwitch();
+            this.cbxConsoleMinLevel = new MaterialSkin.Controls.MaterialComboBox();
+            this.cbxFileMinLevel = new MaterialSkin.Controls.MaterialComboBox();
+            this.btnSave = new MaterialSkin.Controls.MaterialButton();
+            this.lblDarkMode = new MaterialSkin.Controls.MaterialLabel();
             this.mtcMain.SuspendLayout();
             this.mtpRun.SuspendLayout();
             this.mtpConsole.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxSettings)).BeginInit();
+            this.mtpSettings.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // metroSetControlBox1
-            // 
-            this.metroSetControlBox1.StyleManager = this.styleManager;
-            // 
-            // mtcMain
-            // 
-            this.mtcMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.mtcMain.AnimateEasingType = MetroSet_UI.Enums.EasingType.CubeOut;
-            this.mtcMain.AnimateTime = 200;
-            this.mtcMain.BackgroundColor = System.Drawing.Color.White;
-            this.mtcMain.Controls.Add(this.mtpRun);
-            this.mtcMain.Controls.Add(this.mtpConsole);
-            this.mtcMain.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.mtcMain.IsDerivedStyle = true;
-            this.mtcMain.ItemSize = new System.Drawing.Size(100, 38);
-            this.mtcMain.Location = new System.Drawing.Point(15, 93);
-            this.mtcMain.Name = "mtcMain";
-            this.mtcMain.SelectedIndex = 0;
-            this.mtcMain.SelectedTextColor = System.Drawing.Color.White;
-            this.mtcMain.Size = new System.Drawing.Size(644, 351);
-            this.mtcMain.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.mtcMain.Speed = 100;
-            this.mtcMain.Style = MetroSet_UI.Enums.Style.Light;
-            this.mtcMain.StyleManager = this.styleManager;
-            this.mtcMain.TabIndex = 0;
-            this.mtcMain.TabStyle = MetroSet_UI.Enums.TabStyle.Style2;
-            this.mtcMain.ThemeAuthor = "Narwin";
-            this.mtcMain.ThemeName = "MetroLite";
-            this.mtcMain.UnselectedTextColor = System.Drawing.Color.Gray;
-            this.mtcMain.UseAnimation = false;
-            // 
-            // mtpRun
-            // 
-            this.mtpRun.BaseColor = System.Drawing.Color.White;
-            this.mtpRun.Controls.Add(this.pnlScripts);
-            this.mtpRun.Controls.Add(this.lblRunAddScript);
-            this.mtpRun.Font = null;
-            this.mtpRun.ImageIndex = 0;
-            this.mtpRun.ImageKey = null;
-            this.mtpRun.IsDerivedStyle = true;
-            this.mtpRun.Location = new System.Drawing.Point(4, 42);
-            this.mtpRun.Name = "mtpRun";
-            this.mtpRun.Size = new System.Drawing.Size(636, 305);
-            this.mtpRun.Style = MetroSet_UI.Enums.Style.Light;
-            this.mtpRun.StyleManager = this.styleManager;
-            this.mtpRun.TabIndex = 0;
-            this.mtpRun.Text = "Run";
-            this.mtpRun.ThemeAuthor = "Narwin";
-            this.mtpRun.ThemeName = "MetroLite";
-            this.mtpRun.ToolTipText = null;
-            // 
-            // pnlScripts
-            // 
-            this.pnlScripts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlScripts.AutoScroll = true;
-            this.pnlScripts.BackgroundColor = System.Drawing.Color.White;
-            this.pnlScripts.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.pnlScripts.BorderThickness = 0;
-            this.pnlScripts.IsDerivedStyle = true;
-            this.pnlScripts.Location = new System.Drawing.Point(3, 3);
-            this.pnlScripts.Name = "pnlScripts";
-            this.pnlScripts.Padding = new System.Windows.Forms.Padding(500);
-            this.pnlScripts.Size = new System.Drawing.Size(630, 279);
-            this.pnlScripts.Style = MetroSet_UI.Enums.Style.Light;
-            this.pnlScripts.StyleManager = this.styleManager;
-            this.pnlScripts.TabIndex = 4;
-            this.pnlScripts.ThemeAuthor = "Narwin";
-            this.pnlScripts.ThemeName = "MetroLite";
-            // 
-            // styleManager
-            // 
-            this.styleManager.CustomTheme = "";
-            this.styleManager.MetroForm = this;
-            this.styleManager.Style = MetroSet_UI.Enums.Style.Light;
-            this.styleManager.ThemeAuthor = "Narwin";
-            this.styleManager.ThemeName = "MetroLite";
-            // 
-            // lblRunAddScript
-            // 
-            this.lblRunAddScript.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblRunAddScript.AutoSize = true;
-            this.lblRunAddScript.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblRunAddScript.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblRunAddScript.IsDerivedStyle = true;
-            this.lblRunAddScript.Location = new System.Drawing.Point(3, 288);
-            this.lblRunAddScript.Name = "lblRunAddScript";
-            this.lblRunAddScript.Size = new System.Drawing.Size(124, 17);
-            this.lblRunAddScript.Style = MetroSet_UI.Enums.Style.Light;
-            this.lblRunAddScript.StyleManager = this.styleManager;
-            this.lblRunAddScript.TabIndex = 3;
-            this.lblRunAddScript.Text = "Add a new script...";
-            this.lblRunAddScript.ThemeAuthor = "Narwin";
-            this.lblRunAddScript.ThemeName = "MetroLite";
-            this.lblRunAddScript.Click += new System.EventHandler(this.AddScript);
-            // 
-            // mtpConsole
-            // 
-            this.mtpConsole.BaseColor = System.Drawing.Color.White;
-            this.mtpConsole.Controls.Add(this.rtbConsole);
-            this.mtpConsole.Font = null;
-            this.mtpConsole.ImageIndex = 0;
-            this.mtpConsole.ImageKey = null;
-            this.mtpConsole.IsDerivedStyle = true;
-            this.mtpConsole.Location = new System.Drawing.Point(4, 42);
-            this.mtpConsole.Name = "mtpConsole";
-            this.mtpConsole.Size = new System.Drawing.Size(636, 305);
-            this.mtpConsole.Style = MetroSet_UI.Enums.Style.Light;
-            this.mtpConsole.StyleManager = this.styleManager;
-            this.mtpConsole.TabIndex = 0;
-            this.mtpConsole.Text = "Console";
-            this.mtpConsole.ThemeAuthor = "Narwin";
-            this.mtpConsole.ThemeName = "MetroLite";
-            this.mtpConsole.ToolTipText = null;
             // 
             // rtbConsole
             // 
-            this.rtbConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtbConsole.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.rtbConsole.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.rtbConsole.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.rtbConsole.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbConsole.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.rtbConsole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.rtbConsole.Location = new System.Drawing.Point(3, 3);
             this.rtbConsole.MaxLength = 32767;
             this.rtbConsole.Name = "rtbConsole";
             this.rtbConsole.ReadOnly = true;
-            this.rtbConsole.Size = new System.Drawing.Size(630, 279);
+            this.rtbConsole.Size = new System.Drawing.Size(648, 341);
             this.rtbConsole.TabIndex = 0;
             this.rtbConsole.Text = "";
             // 
@@ -184,56 +72,289 @@
             this.appNotifyIcon.Visible = true;
             this.appNotifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.AppTrayIcon_DoubleClick);
             // 
-            // pbxSettings
+            // mtcMain
             // 
-            this.pbxSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbxSettings.BackColor = System.Drawing.Color.Transparent;
-            this.pbxSettings.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbxSettings.Location = new System.Drawing.Point(554, 8);
-            this.pbxSettings.Name = "pbxSettings";
-            this.pbxSettings.Size = new System.Drawing.Size(18, 18);
-            this.pbxSettings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbxSettings.TabIndex = 2;
-            this.pbxSettings.TabStop = false;
-            this.pbxSettings.Click += new System.EventHandler(this.SettingsClicked);
-            this.pbxSettings.MouseEnter += new System.EventHandler(this.Settings_MouseEnter);
-            this.pbxSettings.MouseLeave += new System.EventHandler(this.Settings_MouseLeave);
+            this.mtcMain.Controls.Add(this.mtpRun);
+            this.mtcMain.Controls.Add(this.mtpConsole);
+            this.mtcMain.Controls.Add(this.mtpSettings);
+            this.mtcMain.Depth = 0;
+            this.mtcMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtcMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.mtcMain.Location = new System.Drawing.Point(0, 64);
+            this.mtcMain.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mtcMain.Multiline = true;
+            this.mtcMain.Name = "mtcMain";
+            this.mtcMain.SelectedIndex = 0;
+            this.mtcMain.Size = new System.Drawing.Size(662, 375);
+            this.mtcMain.TabIndex = 3;
+            this.mtcMain.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.TabSelectingEvent);
+            // 
+            // mtpRun
+            // 
+            this.mtpRun.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.mtpRun.Controls.Add(this.lblRunTitle);
+            this.mtpRun.Controls.Add(this.btnRunAddScript);
+            this.mtpRun.Controls.Add(this.pnlScripts);
+            this.mtpRun.Location = new System.Drawing.Point(4, 24);
+            this.mtpRun.Name = "mtpRun";
+            this.mtpRun.Padding = new System.Windows.Forms.Padding(3);
+            this.mtpRun.Size = new System.Drawing.Size(654, 347);
+            this.mtpRun.TabIndex = 0;
+            this.mtpRun.Text = "Run";
+            // 
+            // lblRunTitle
+            // 
+            this.lblRunTitle.AutoSize = true;
+            this.lblRunTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.lblRunTitle.Depth = 0;
+            this.lblRunTitle.Font = new System.Drawing.Font("Roboto", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.lblRunTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            this.lblRunTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblRunTitle.Location = new System.Drawing.Point(11, 7);
+            this.lblRunTitle.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblRunTitle.Name = "lblRunTitle";
+            this.lblRunTitle.Size = new System.Drawing.Size(122, 29);
+            this.lblRunTitle.TabIndex = 0;
+            this.lblRunTitle.Text = "Run Scripts";
+            // 
+            // btnRunAddScript
+            // 
+            this.btnRunAddScript.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRunAddScript.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnRunAddScript.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.btnRunAddScript.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Dense;
+            this.btnRunAddScript.Depth = 0;
+            this.btnRunAddScript.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnRunAddScript.HighEmphasis = true;
+            this.btnRunAddScript.Icon = null;
+            this.btnRunAddScript.Location = new System.Drawing.Point(550, 0);
+            this.btnRunAddScript.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnRunAddScript.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnRunAddScript.Name = "btnRunAddScript";
+            this.btnRunAddScript.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnRunAddScript.Size = new System.Drawing.Size(104, 36);
+            this.btnRunAddScript.TabIndex = 5;
+            this.btnRunAddScript.Text = "Add Script";
+            this.btnRunAddScript.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnRunAddScript.UseAccentColor = true;
+            this.btnRunAddScript.UseVisualStyleBackColor = false;
+            this.btnRunAddScript.Click += new System.EventHandler(this.AddScript);
+            // 
+            // pnlScripts
+            // 
+            this.pnlScripts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlScripts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.pnlScripts.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.pnlScripts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.pnlScripts.Location = new System.Drawing.Point(11, 54);
+            this.pnlScripts.Name = "pnlScripts";
+            this.pnlScripts.Size = new System.Drawing.Size(643, 293);
+            this.pnlScripts.TabIndex = 4;
+            // 
+            // mtpConsole
+            // 
+            this.mtpConsole.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.mtpConsole.Controls.Add(this.rtbConsole);
+            this.mtpConsole.Location = new System.Drawing.Point(4, 24);
+            this.mtpConsole.Name = "mtpConsole";
+            this.mtpConsole.Padding = new System.Windows.Forms.Padding(3);
+            this.mtpConsole.Size = new System.Drawing.Size(654, 347);
+            this.mtpConsole.TabIndex = 1;
+            this.mtpConsole.Text = "Console";
+            // 
+            // mtpSettings
+            // 
+            this.mtpSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.mtpSettings.Controls.Add(this.lblConsoleMinLogLevel);
+            this.mtpSettings.Controls.Add(this.lblFileMinLogLevel);
+            this.mtpSettings.Controls.Add(this.swtIsDarkMode);
+            this.mtpSettings.Controls.Add(this.cbxConsoleMinLevel);
+            this.mtpSettings.Controls.Add(this.cbxFileMinLevel);
+            this.mtpSettings.Controls.Add(this.btnSave);
+            this.mtpSettings.Controls.Add(this.lblDarkMode);
+            this.mtpSettings.Location = new System.Drawing.Point(4, 24);
+            this.mtpSettings.Name = "mtpSettings";
+            this.mtpSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.mtpSettings.Size = new System.Drawing.Size(654, 347);
+            this.mtpSettings.TabIndex = 2;
+            this.mtpSettings.Text = "Settings";
+            this.mtpSettings.Enter += new System.EventHandler(this.OpenSettingsTab);
+            this.mtpSettings.Leave += new System.EventHandler(this.LeaveSettingsTab);
+            // 
+            // lblConsoleMinLogLevel
+            // 
+            this.lblConsoleMinLogLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.lblConsoleMinLogLevel.Depth = 0;
+            this.lblConsoleMinLogLevel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblConsoleMinLogLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblConsoleMinLogLevel.Location = new System.Drawing.Point(219, 169);
+            this.lblConsoleMinLogLevel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblConsoleMinLogLevel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblConsoleMinLogLevel.Name = "lblConsoleMinLogLevel";
+            this.lblConsoleMinLogLevel.Size = new System.Drawing.Size(133, 49);
+            this.lblConsoleMinLogLevel.TabIndex = 18;
+            this.lblConsoleMinLogLevel.Text = "Console Minimum Logging Level";
+            // 
+            // lblFileMinLogLevel
+            // 
+            this.lblFileMinLogLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.lblFileMinLogLevel.Depth = 0;
+            this.lblFileMinLogLevel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblFileMinLogLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblFileMinLogLevel.Location = new System.Drawing.Point(219, 98);
+            this.lblFileMinLogLevel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblFileMinLogLevel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblFileMinLogLevel.Name = "lblFileMinLogLevel";
+            this.lblFileMinLogLevel.Size = new System.Drawing.Size(133, 49);
+            this.lblFileMinLogLevel.TabIndex = 17;
+            this.lblFileMinLogLevel.Text = "File Minimum Logging Level";
+            // 
+            // swtIsDarkMode
+            // 
+            this.swtIsDarkMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.swtIsDarkMode.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.swtIsDarkMode.Depth = 0;
+            this.swtIsDarkMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.swtIsDarkMode.Location = new System.Drawing.Point(369, 56);
+            this.swtIsDarkMode.Margin = new System.Windows.Forms.Padding(0);
+            this.swtIsDarkMode.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.swtIsDarkMode.MouseState = MaterialSkin.MouseState.HOVER;
+            this.swtIsDarkMode.Name = "swtIsDarkMode";
+            this.swtIsDarkMode.Ripple = true;
+            this.swtIsDarkMode.Size = new System.Drawing.Size(44, 27);
+            this.swtIsDarkMode.TabIndex = 16;
+            this.swtIsDarkMode.UseVisualStyleBackColor = false;
+            // 
+            // cbxConsoleMinLevel
+            // 
+            this.cbxConsoleMinLevel.AllowDrop = true;
+            this.cbxConsoleMinLevel.AutoResize = false;
+            this.cbxConsoleMinLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.cbxConsoleMinLevel.CausesValidation = false;
+            this.cbxConsoleMinLevel.Depth = 0;
+            this.cbxConsoleMinLevel.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cbxConsoleMinLevel.DropDownHeight = 174;
+            this.cbxConsoleMinLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxConsoleMinLevel.DropDownWidth = 121;
+            this.cbxConsoleMinLevel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.cbxConsoleMinLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cbxConsoleMinLevel.FormattingEnabled = true;
+            this.cbxConsoleMinLevel.IntegralHeight = false;
+            this.cbxConsoleMinLevel.ItemHeight = 43;
+            this.cbxConsoleMinLevel.Location = new System.Drawing.Point(369, 169);
+            this.cbxConsoleMinLevel.Margin = new System.Windows.Forms.Padding(2);
+            this.cbxConsoleMinLevel.MaxDropDownItems = 4;
+            this.cbxConsoleMinLevel.MouseState = MaterialSkin.MouseState.OUT;
+            this.cbxConsoleMinLevel.Name = "cbxConsoleMinLevel";
+            this.cbxConsoleMinLevel.Size = new System.Drawing.Size(109, 49);
+            this.cbxConsoleMinLevel.StartIndex = 0;
+            this.cbxConsoleMinLevel.TabIndex = 15;
+            // 
+            // cbxFileMinLevel
+            // 
+            this.cbxFileMinLevel.AllowDrop = true;
+            this.cbxFileMinLevel.AutoResize = false;
+            this.cbxFileMinLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.cbxFileMinLevel.CausesValidation = false;
+            this.cbxFileMinLevel.Depth = 0;
+            this.cbxFileMinLevel.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cbxFileMinLevel.DropDownHeight = 174;
+            this.cbxFileMinLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxFileMinLevel.DropDownWidth = 121;
+            this.cbxFileMinLevel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.cbxFileMinLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.cbxFileMinLevel.FormattingEnabled = true;
+            this.cbxFileMinLevel.IntegralHeight = false;
+            this.cbxFileMinLevel.ItemHeight = 43;
+            this.cbxFileMinLevel.Location = new System.Drawing.Point(369, 98);
+            this.cbxFileMinLevel.Margin = new System.Windows.Forms.Padding(2);
+            this.cbxFileMinLevel.MaxDropDownItems = 4;
+            this.cbxFileMinLevel.MouseState = MaterialSkin.MouseState.OUT;
+            this.cbxFileMinLevel.Name = "cbxFileMinLevel";
+            this.cbxFileMinLevel.Size = new System.Drawing.Size(109, 49);
+            this.cbxFileMinLevel.StartIndex = 0;
+            this.cbxFileMinLevel.TabIndex = 14;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.btnSave.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnSave.Depth = 0;
+            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnSave.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnSave.HighEmphasis = true;
+            this.btnSave.Icon = null;
+            this.btnSave.Location = new System.Drawing.Point(584, 304);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnSave.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnSave.Name = "btnSave";
+            this.btnSave.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnSave.Size = new System.Drawing.Size(64, 36);
+            this.btnSave.TabIndex = 12;
+            this.btnSave.Text = "Save";
+            this.btnSave.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnSave.UseAccentColor = false;
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.SaveSettingsButtonClicked);
+            // 
+            // lblDarkMode
+            // 
+            this.lblDarkMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.lblDarkMode.Depth = 0;
+            this.lblDarkMode.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lblDarkMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblDarkMode.Location = new System.Drawing.Point(219, 60);
+            this.lblDarkMode.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblDarkMode.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblDarkMode.Name = "lblDarkMode";
+            this.lblDarkMode.Size = new System.Drawing.Size(133, 28);
+            this.lblDarkMode.TabIndex = 11;
+            this.lblDarkMode.Text = "Is Dark Mode?";
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(674, 451);
-            this.Controls.Add(this.pbxSettings);
             this.Controls.Add(this.mtcMain);
+            this.DrawerShowIconsWhenHidden = true;
+            this.DrawerTabControl = this.mtcMain;
+            this.Location = new System.Drawing.Point(0, 0);
             this.Name = "MainForm";
-            this.Padding = new System.Windows.Forms.Padding(12, 90, 12, 12);
+            this.Padding = new System.Windows.Forms.Padding(0, 64, 12, 12);
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.StyleManager = this.styleManager;
             this.Text = "Common Scripts";
             this.Resize += new System.EventHandler(this.MainForm_Resize);
-            this.Controls.SetChildIndex(this.mtcMain, 0);
-            this.Controls.SetChildIndex(this.pbxSettings, 0);
-            this.Controls.SetChildIndex(this.metroSetControlBox1, 0);
             this.mtcMain.ResumeLayout(false);
             this.mtpRun.ResumeLayout(false);
             this.mtpRun.PerformLayout();
             this.mtpConsole.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbxSettings)).EndInit();
+            this.mtpSettings.ResumeLayout(false);
+            this.mtpSettings.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private MetroSet_UI.Controls.MetroSetTabControl mtcMain;
-        private MetroSet_UI.Child.MetroSetSetTabPage mtpRun;
-        private MetroSet_UI.Child.MetroSetSetTabPage mtpConsole;
-        private MetroSet_UI.Controls.MetroSetLabel lblRunAddScript;
-        private MetroSet_UI.Controls.MetroSetPanel pnlScripts;
-        private MetroSet_UI.Components.StyleManager styleManager;
         private System.Windows.Forms.NotifyIcon appNotifyIcon;
         private System.Windows.Forms.RichTextBox rtbConsole;
-        private System.Windows.Forms.PictureBox pbxSettings;
+        private MaterialSkin.Controls.MaterialTabControl mtcMain;
+        private System.Windows.Forms.TabPage mtpRun;
+        private System.Windows.Forms.TabPage mtpConsole;
+        private System.Windows.Forms.Panel pnlScripts;
+        private MaterialSkin.Controls.MaterialLabel lblRunTitle;
+        private MaterialSkin.Controls.MaterialButton btnRunAddScript;
+        private System.Windows.Forms.TabPage mtpSettings;
+        private MaterialSkin.Controls.MaterialLabel lblConsoleMinLogLevel;
+        private MaterialSkin.Controls.MaterialLabel lblFileMinLogLevel;
+        private MaterialSkin.Controls.MaterialSwitch swtIsDarkMode;
+        private MaterialSkin.Controls.MaterialComboBox cbxConsoleMinLevel;
+        private MaterialSkin.Controls.MaterialComboBox cbxFileMinLevel;
+        private MaterialSkin.Controls.MaterialButton btnSave;
+        private MaterialSkin.Controls.MaterialLabel lblDarkMode;
     }
 }
 

@@ -1,11 +1,9 @@
-﻿using CommonScripts.Extension;
-using CommonScripts.Model.Pojo;
+﻿using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
 using CommonScripts.Model.Service;
 using CommonScripts.Utils;
 using CommonScripts.View.Base;
-using MetroSet_UI.Components;
-using MetroSet_UI.Forms;
+using MaterialSkin.Controls;
 using Serilog;
 using System;
 using System.Windows.Forms;
@@ -19,13 +17,12 @@ namespace CommonScripts.View
 
         private const string FORM_TITLE_ADD = "Add Script";
         private const string FORM_TITLE_EDIT = "Update Script";
-        private const string KEY_PRESSED_UNDEFINED_TEXT = "Undefined";
+        private const string KEY_PRESSED_UNDEFINED_TEXT = "";
         private const string KEY_PRESSED_LISTENING_TEXT = "Listening...";
 
-        public ScriptForm(StyleManager styleManager, ScriptAbs script) : base()
+        public ScriptForm(ScriptAbs script) : base()
         {
             InitializeComponent();
-            UpdateMetroStyles(styleManager);
             string formTitle = FORM_TITLE_ADD;
             if (script != null)
             {
@@ -90,6 +87,8 @@ namespace CommonScripts.View
             Log.Debug("ScriptForm: SingleKeyUpClicked event received");
             tbxKeyPressed.Text = keyPressed.ToString();
             tbxKeyPressed.Tag = keyPressed;
+            if (tbxKeyPressed.ContainsFocus)
+                this.ActiveControl = null;
             StopListeningKeys();
         }
         private void ScriptTypeChanged(object sender, EventArgs e)
@@ -97,13 +96,14 @@ namespace CommonScripts.View
             StopListeningKeys();
             DisplaySpecificScriptFields();
         }
-        private void RemoveKeyMappingClicked(object sender, EventArgs e)
+        private void ListenForKeyControlLeaveFocus(object sender, EventArgs e)
         {
             StopListeningKeys();
-            tbxKeyPressed.Text = KEY_PRESSED_UNDEFINED_TEXT;
+            if (tbxKeyPressed.Text == KEY_PRESSED_LISTENING_TEXT)
+                tbxKeyPressed.Text = KEY_PRESSED_UNDEFINED_TEXT;
             tbxKeyPressed.Tag = null;
         }
-        private void EditKeyMappingClicked(object sender, EventArgs e)
+        private void ListenForKeyControlFocused(object sender, EventArgs e)
         {
             StartListeningKeys();
         }
@@ -186,12 +186,10 @@ namespace CommonScripts.View
         {
             if (hide)
             {
-                lblScriptSchedule.Hide();
                 tbxScriptScheduled.Hide();
             }
             else
             {
-                lblScriptSchedule.Show();
                 tbxScriptScheduled.Show();
             }
         }
@@ -199,15 +197,10 @@ namespace CommonScripts.View
         {
             if (hide)
             {
-                lblListenKey.Hide();
-                pbxEditKeyPressed.Hide();
-                pbxRemoveKeyPressed.Hide();
                 tbxKeyPressed.Hide();
-            } else
+            }
+            else
             {
-                lblListenKey.Show();
-                pbxEditKeyPressed.Show();
-                pbxRemoveKeyPressed.Show();
                 tbxKeyPressed.Show();
             }
         }
@@ -239,8 +232,12 @@ namespace CommonScripts.View
             if (scriptType == ScriptType.Scheduled && !IsMaskDatetimeValid(tbxScriptScheduled.Text))
             {
                 isValid = false;
-                MetroSetMessageBox.Show(this, "The Scheduled Time is not in valid format (00:00). Please change the value before saving it."
-                    , "Error validating the script fields", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                _ = new MaterialDialog(this,
+                                       "Error validating the script fields",
+                                       "The Scheduled Time is not in valid format (00:00). Please change the value before saving it.",
+                                       "Yes")
+                    .ShowDialog(this);
             }
 
             return isValid;
@@ -248,11 +245,6 @@ namespace CommonScripts.View
         #endregion
 
         #region Public Methods
-        public override void UpdateMetroStyles(StyleManager styleManager)
-        {
-            base.UpdateMetroStyles(styleManager);
-            tbxScriptScheduled.ApplyTheme(styleManager.Style);
-        }
         public ScriptAbs GetScript() => _script;
         #endregion
     }
