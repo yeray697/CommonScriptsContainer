@@ -8,8 +8,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
     {
         public delegate void ItemClickHandler(ScriptItem source);
 
-        public event ItemClickHandler RemoveClicked;
-        public event ItemClickHandler EditClicked;
+        public event ItemClickHandler MenuClicked;
         public event ItemClickHandler StatusClicked;
 
 
@@ -23,17 +22,20 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         }
 
         #region Events
-        private void EditButtonClicked(object sender, System.EventArgs e)
+        private void MenuButtonClicked(object sender, System.EventArgs e)
         {
-            EditClicked?.Invoke(this);
-        }
-        private void RemoveButtonClicked(object sender, System.EventArgs e)
-        {
-            RemoveClicked?.Invoke(this);
+            MenuClicked?.Invoke(this);
         }
         private void StatusButtonClicked(object sender, System.EventArgs e)
         {
             StatusClicked?.Invoke(this);
+        }
+        private void Control_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                MenuClicked?.Invoke(this);
+            }
         }
         #endregion
 

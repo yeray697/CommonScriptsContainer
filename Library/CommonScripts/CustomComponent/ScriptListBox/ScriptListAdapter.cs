@@ -12,8 +12,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
 
         public delegate void ScriptClickHandler(ScriptAbs source);
 
-        public event ScriptClickHandler RemoveClicked;
-        public event ScriptClickHandler EditClicked;
+        public event ScriptClickHandler ShowMenu;
         public event ScriptClickHandler StatusClicked;
 
         private readonly Control _pnlScripts;
@@ -73,8 +72,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         {
             ScriptItem item = new ScriptItem(script);
             item.StatusClicked += Script_StatusClicked;
-            item.EditClicked += Script_EditClicked;
-            item.RemoveClicked += Script_RemoveClicked;
+            item.MenuClicked += Script_MenuClicked;
 
             return item;
         }
@@ -124,13 +122,9 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         #endregion
 
         #region Events
-        private void Script_RemoveClicked(ScriptItem source)
+        private void Script_MenuClicked(ScriptItem source)
         {
-            RemoveClicked?.Invoke(source.Script);
-        }
-        private void Script_EditClicked(ScriptItem source)
-        {
-            EditClicked?.Invoke(source.Script);
+            ShowMenu?.Invoke(source.Script);
         }
         private void Script_StatusClicked(ScriptItem source)
         {

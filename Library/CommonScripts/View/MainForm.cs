@@ -163,9 +163,29 @@ namespace CommonScripts.View
                 _preventTabSettingsFromLeaving = false;
             }
         }
+        private void ShowContextMenuScript(ScriptAbs script)
+        {
+            cmsScriptList.Tag = script;
+            cmsScriptList.Show(Cursor.Position);
+        }
+        private void ContextMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var control = (sender as Control);
+            var script = control.Tag as ScriptAbs;
+            control.Tag = null;
+
+            if (e.ClickedItem.Text == "Edit")
+            {
+                EditScript(script);
+            }
+            else if (e.ClickedItem.Text == "Remove")
+            {
+                RemoveScript(script);
+            }
+        }
         #endregion
 
-#region Public Methods
+        #region Public Methods
         public void ShowScripts(IList<ScriptAbs> scripts)
         {
             TrayMenuContextScriptList(scripts);
@@ -197,8 +217,7 @@ namespace CommonScripts.View
         private void InitScriptListAdapter()
         {
             _scriptListAdapter = new ScriptListAdapter(pnlScripts);
-            _scriptListAdapter.EditClicked += EditScript;
-            _scriptListAdapter.RemoveClicked += RemoveScript;
+            _scriptListAdapter.ShowMenu += ShowContextMenuScript;
             _scriptListAdapter.StatusClicked += ChangeScriptStatus;
         }
         private Color GetConsoleTextColor(LogEventLevel logLevel)

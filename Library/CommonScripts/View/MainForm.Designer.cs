@@ -46,10 +46,14 @@
             this.cbxFileMinLevel = new MaterialSkin.Controls.MaterialComboBox();
             this.btnSave = new MaterialSkin.Controls.MaterialButton();
             this.lblDarkMode = new MaterialSkin.Controls.MaterialLabel();
+            this.cmsScriptList = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mtcMain.SuspendLayout();
             this.mtpRun.SuspendLayout();
             this.mtpConsole.SuspendLayout();
             this.mtpSettings.SuspendLayout();
+            this.cmsScriptList.SuspendLayout();
             this.SuspendLayout();
             // 
             // rtbConsole
@@ -315,6 +319,30 @@
             this.lblDarkMode.TabIndex = 11;
             this.lblDarkMode.Text = "Is Dark Mode?";
             // 
+            // cmsScriptList
+            // 
+            this.cmsScriptList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cmsScriptList.Depth = 0;
+            this.cmsScriptList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editToolStripMenuItem,
+            this.removeToolStripMenuItem});
+            this.cmsScriptList.MouseState = MaterialSkin.MouseState.HOVER;
+            this.cmsScriptList.Name = "cmsScriptList";
+            this.cmsScriptList.Size = new System.Drawing.Size(181, 70);
+            this.cmsScriptList.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuItemClicked);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -334,6 +362,7 @@
             this.mtpConsole.ResumeLayout(false);
             this.mtpSettings.ResumeLayout(false);
             this.mtpSettings.PerformLayout();
+            this.cmsScriptList.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -355,6 +384,9 @@
         private MaterialSkin.Controls.MaterialComboBox cbxFileMinLevel;
         private MaterialSkin.Controls.MaterialButton btnSave;
         private MaterialSkin.Controls.MaterialLabel lblDarkMode;
+        private MaterialSkin.Controls.MaterialContextMenuStrip cmsScriptList;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
     }
 }
 
