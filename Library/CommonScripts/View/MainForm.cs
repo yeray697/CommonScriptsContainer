@@ -8,6 +8,7 @@ using CommonScripts.Settings;
 using CommonScripts.Utils;
 using CommonScripts.View.Base;
 using CommonScripts.View.Interfaces;
+using MaterialSkin;
 using MaterialSkin.Controls;
 using Serilog.Events;
 using System;
@@ -245,6 +246,8 @@ namespace CommonScripts.View
             if (_isDarkMode != isDarkMode)
             {
                 _isDarkMode = isDarkMode;
+
+                MaterialSkinManager.Instance.Theme = isDarkMode ? MaterialSkinManager.Themes.DARK : MaterialSkinManager.Themes.LIGHT;
                 ReloadConsoleStyle();
             }
         }

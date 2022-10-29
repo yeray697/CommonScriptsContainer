@@ -4,8 +4,10 @@ using CommonScripts.Model.Repository.Interfaces;
 using CommonScripts.Model.Service;
 using CommonScripts.Model.Service.Interfaces;
 using CommonScripts.Presenter;
+using CommonScripts.Settings;
 using CommonScripts.Utils;
 using CommonScripts.View;
+using MaterialSkin;
 using Serilog;
 using System;
 using System.Threading;
@@ -75,6 +77,7 @@ namespace CommonScripts
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            ConfigureAppTheme();
             Form mainForm = Injection();
             if (startAppHidden)
             {
@@ -97,6 +100,10 @@ namespace CommonScripts
             mutex.Dispose();
             Application.ThreadExit -= ThreadOnExit;
             Application.Exit();
+        }
+        private static void ConfigureAppTheme()
+        {
+            MaterialSkinManager.Instance.Theme = AppSettingsManager.IsDarkMode() ? MaterialSkinManager.Themes.DARK : MaterialSkinManager.Themes.LIGHT;
         }
     }
 }

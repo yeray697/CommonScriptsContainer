@@ -1,5 +1,6 @@
 ﻿using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
+using MaterialSkin;
 using System.Windows.Forms;
 
 namespace CommonScripts.CustomComponent.ScriptListBox
@@ -18,6 +19,7 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         {
             Script = script;
             InitializeComponent();
+            this.BackColor = MaterialSkinManager.Instance.BackdropColor;
             PaintUI();
         }
 
