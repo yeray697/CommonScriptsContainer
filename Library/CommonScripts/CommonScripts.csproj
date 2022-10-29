@@ -40,8 +40,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="View\MainForm.cs" />
-    <Compile Update="View\MainForm.Designer.cs">
+    <Compile Update="View\MainForm\MainForm.cs" />
+    <Compile Update="View\MainForm\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Update="View\ScriptForm.cs" />
@@ -62,7 +62,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\MainForm.resx">
+    <EmbeddedResource Update="View\MainForm\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Update="View\ScriptForm.resx">

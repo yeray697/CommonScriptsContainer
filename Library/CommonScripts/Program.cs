@@ -6,7 +6,7 @@ using CommonScripts.Model.Service.Interfaces;
 using CommonScripts.Presenter;
 using CommonScripts.Settings;
 using CommonScripts.Utils;
-using CommonScripts.View;
+using CommonScripts.View.MainForm;
 using MaterialSkin;
 using Serilog;
 using System;

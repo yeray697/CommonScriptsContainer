@@ -1,6 +1,7 @@
 ﻿using CommonScripts.Extension;
 using CommonScripts.Model.Pojo;
 using CommonScripts.Utils;
+using MaterialSkin;
 using Serilog.Events;
 using System;
 using System.Configuration;
@@ -70,6 +71,8 @@ namespace CommonScripts.Settings
         public static void SetIsDarkMode(bool isDarkMode)
         {
             SetSettingValue(SETTING_DARK_MODE, isDarkMode.ToString());
+            if (_settings.IsDarkMode != isDarkMode)
+                MaterialSkinManager.Instance.Theme = isDarkMode ? MaterialSkinManager.Themes.DARK : MaterialSkinManager.Themes.LIGHT;
             _settings.IsDarkMode = isDarkMode;
         }
         public static void SetFileMinLogLevel(LogEventLevel minLogLevel)
