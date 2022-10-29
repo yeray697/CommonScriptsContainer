@@ -1,6 +1,8 @@
-﻿using CommonScripts.Model.Pojo;
+﻿using CommonScripts.Extension;
+using CommonScripts.Model.Pojo;
 using CommonScripts.Model.Pojo.Base;
 using MaterialSkin;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace CommonScripts.CustomComponent.ScriptListBox
@@ -20,6 +22,8 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             Script = script;
             InitializeComponent();
             this.BackColor = MaterialSkinManager.Instance.BackdropColor;
+            MaterialSkinManager.Instance.ThemeChanged += ThemeChanged;
+            UpdateMenuButtonColor();
             PaintUI();
         }
 
@@ -38,6 +42,10 @@ namespace CommonScripts.CustomComponent.ScriptListBox
             {
                 MenuClicked?.Invoke(this);
             }
+        }
+        private void ThemeChanged(object sender)
+        {
+            UpdateMenuButtonColor();
         }
         #endregion
 
@@ -74,6 +82,11 @@ namespace CommonScripts.CustomComponent.ScriptListBox
         private void PaintScriptType()
         {
             lblScriptType.Text = Script.ScriptType.ToString();
+        }
+        private void UpdateMenuButtonColor()
+        {
+            var color = MaterialSkinManager.Instance.Theme == MaterialSkinManager.Themes.DARK ? Color.White : Color.Black;
+            pbxMenu.Image = pbxMenu.Image.RecolorImage(color);
         }
         #endregion
 

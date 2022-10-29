@@ -4,12 +4,7 @@ using CommonScripts.Settings;
 using CommonScripts.Utils;
 using MaterialSkin;
 using Serilog.Events;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace CommonScripts.View.MainForm.Tabs.Console
@@ -19,7 +14,7 @@ namespace CommonScripts.View.MainForm.Tabs.Console
         public ConsoleTabControl()
         {
             InitializeComponent();
-            MaterialSkinManager.Instance.ThemeChanged += Instance_ThemeChanged;
+            MaterialSkinManager.Instance.ThemeChanged += ThemeChanged;
         }
 
         public void PrintLog(LogMessage log)
@@ -68,7 +63,7 @@ namespace CommonScripts.View.MainForm.Tabs.Console
             }
         }
 
-        private void Instance_ThemeChanged(object sender)
+        private void ThemeChanged(object sender)
         {
             //ToDo
             //rtbConsole.ApplyTheme(_isDarkMode ? MetroSet_UI.Enums.Style.Dark : MetroSet_UI.Enums.Style.Light);
