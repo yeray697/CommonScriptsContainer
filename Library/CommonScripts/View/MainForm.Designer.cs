@@ -46,6 +46,7 @@
             this.cbxFileMinLevel = new MaterialSkin.Controls.MaterialComboBox();
             this.btnSave = new MaterialSkin.Controls.MaterialButton();
             this.lblDarkMode = new MaterialSkin.Controls.MaterialLabel();
+            this.drawerImageList = new System.Windows.Forms.ImageList(this.components);
             this.cmsScriptList = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,7 +67,7 @@
             this.rtbConsole.MaxLength = 32767;
             this.rtbConsole.Name = "rtbConsole";
             this.rtbConsole.ReadOnly = true;
-            this.rtbConsole.Size = new System.Drawing.Size(648, 341);
+            this.rtbConsole.Size = new System.Drawing.Size(648, 334);
             this.rtbConsole.TabIndex = 0;
             this.rtbConsole.Text = "";
             // 
@@ -84,6 +85,7 @@
             this.mtcMain.Depth = 0;
             this.mtcMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mtcMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.mtcMain.ImageList = this.drawerImageList;
             this.mtcMain.Location = new System.Drawing.Point(0, 64);
             this.mtcMain.MouseState = MaterialSkin.MouseState.HOVER;
             this.mtcMain.Multiline = true;
@@ -99,10 +101,11 @@
             this.mtpRun.Controls.Add(this.lblRunTitle);
             this.mtpRun.Controls.Add(this.btnRunAddScript);
             this.mtpRun.Controls.Add(this.pnlScripts);
-            this.mtpRun.Location = new System.Drawing.Point(4, 24);
+            this.mtpRun.ImageKey = "script.png";
+            this.mtpRun.Location = new System.Drawing.Point(4, 31);
             this.mtpRun.Name = "mtpRun";
             this.mtpRun.Padding = new System.Windows.Forms.Padding(3);
-            this.mtpRun.Size = new System.Drawing.Size(654, 347);
+            this.mtpRun.Size = new System.Drawing.Size(654, 340);
             this.mtpRun.TabIndex = 0;
             this.mtpRun.Text = "Run";
             // 
@@ -114,7 +117,7 @@
             this.lblRunTitle.Font = new System.Drawing.Font("Roboto", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.lblRunTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
             this.lblRunTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblRunTitle.Location = new System.Drawing.Point(11, 7);
+            this.lblRunTitle.Location = new System.Drawing.Point(11, 12);
             this.lblRunTitle.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblRunTitle.Name = "lblRunTitle";
             this.lblRunTitle.Size = new System.Drawing.Size(122, 29);
@@ -124,19 +127,20 @@
             // btnRunAddScript
             // 
             this.btnRunAddScript.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRunAddScript.AutoSize = false;
             this.btnRunAddScript.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnRunAddScript.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.btnRunAddScript.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Dense;
             this.btnRunAddScript.Depth = 0;
             this.btnRunAddScript.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnRunAddScript.HighEmphasis = true;
-            this.btnRunAddScript.Icon = null;
-            this.btnRunAddScript.Location = new System.Drawing.Point(550, 0);
+            this.btnRunAddScript.Icon = global::CommonScripts.Properties.Resources.plus;
+            this.btnRunAddScript.Location = new System.Drawing.Point(525, 9);
             this.btnRunAddScript.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnRunAddScript.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnRunAddScript.Name = "btnRunAddScript";
             this.btnRunAddScript.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnRunAddScript.Size = new System.Drawing.Size(104, 36);
+            this.btnRunAddScript.Size = new System.Drawing.Size(122, 36);
             this.btnRunAddScript.TabIndex = 5;
             this.btnRunAddScript.Text = "Add Script";
             this.btnRunAddScript.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -149,22 +153,24 @@
             this.pnlScripts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlScripts.AutoScroll = true;
             this.pnlScripts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.pnlScripts.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.pnlScripts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.pnlScripts.Location = new System.Drawing.Point(11, 54);
             this.pnlScripts.Name = "pnlScripts";
-            this.pnlScripts.Size = new System.Drawing.Size(643, 293);
+            this.pnlScripts.Size = new System.Drawing.Size(636, 286);
             this.pnlScripts.TabIndex = 4;
             // 
             // mtpConsole
             // 
             this.mtpConsole.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.mtpConsole.Controls.Add(this.rtbConsole);
-            this.mtpConsole.Location = new System.Drawing.Point(4, 24);
+            this.mtpConsole.ImageKey = "log.png";
+            this.mtpConsole.Location = new System.Drawing.Point(4, 31);
             this.mtpConsole.Name = "mtpConsole";
             this.mtpConsole.Padding = new System.Windows.Forms.Padding(3);
-            this.mtpConsole.Size = new System.Drawing.Size(654, 347);
+            this.mtpConsole.Size = new System.Drawing.Size(654, 340);
             this.mtpConsole.TabIndex = 1;
             this.mtpConsole.Text = "Console";
             // 
@@ -178,10 +184,11 @@
             this.mtpSettings.Controls.Add(this.cbxFileMinLevel);
             this.mtpSettings.Controls.Add(this.btnSave);
             this.mtpSettings.Controls.Add(this.lblDarkMode);
-            this.mtpSettings.Location = new System.Drawing.Point(4, 24);
+            this.mtpSettings.ImageKey = "settings.png";
+            this.mtpSettings.Location = new System.Drawing.Point(4, 31);
             this.mtpSettings.Name = "mtpSettings";
             this.mtpSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.mtpSettings.Size = new System.Drawing.Size(654, 347);
+            this.mtpSettings.Size = new System.Drawing.Size(654, 340);
             this.mtpSettings.TabIndex = 2;
             this.mtpSettings.Text = "Settings";
             this.mtpSettings.Enter += new System.EventHandler(this.OpenSettingsTab);
@@ -292,7 +299,7 @@
             this.btnSave.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnSave.HighEmphasis = true;
             this.btnSave.Icon = null;
-            this.btnSave.Location = new System.Drawing.Point(584, 304);
+            this.btnSave.Location = new System.Drawing.Point(584, 297);
             this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSave.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSave.Name = "btnSave";
@@ -319,6 +326,15 @@
             this.lblDarkMode.TabIndex = 11;
             this.lblDarkMode.Text = "Is Dark Mode?";
             // 
+            // drawerImageList
+            // 
+            this.drawerImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.drawerImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("drawerImageList.ImageStream")));
+            this.drawerImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.drawerImageList.Images.SetKeyName(0, "script.png");
+            this.drawerImageList.Images.SetKeyName(1, "log.png");
+            this.drawerImageList.Images.SetKeyName(2, "settings.png");
+            // 
             // cmsScriptList
             // 
             this.cmsScriptList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -328,19 +344,19 @@
             this.removeToolStripMenuItem});
             this.cmsScriptList.MouseState = MaterialSkin.MouseState.HOVER;
             this.cmsScriptList.Name = "cmsScriptList";
-            this.cmsScriptList.Size = new System.Drawing.Size(181, 70);
+            this.cmsScriptList.Size = new System.Drawing.Size(118, 48);
             this.cmsScriptList.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuItemClicked);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.editToolStripMenuItem.Text = "Edit";
             // 
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.removeToolStripMenuItem.Text = "Remove";
             // 
             // MainForm
@@ -387,6 +403,7 @@
         private MaterialSkin.Controls.MaterialContextMenuStrip cmsScriptList;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.ImageList drawerImageList;
     }
 }
 
