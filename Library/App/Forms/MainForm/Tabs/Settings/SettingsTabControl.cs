@@ -10,10 +10,10 @@ namespace App.Forms.MainForm.Tabs.Settings
 {
     public partial class SettingsTabControl : UserControl
     {
-        private SettingsModel _newSettings;
+        private SettingsModel? _newSettings;
         public bool PreventTabSettingsFromLeaving { get; set; }
 
-        private SettingsModel _currentSettings;
+        private SettingsModel? _currentSettings;
 
         public SettingsTabControl()
         {
@@ -22,9 +22,8 @@ namespace App.Forms.MainForm.Tabs.Settings
         #region Public Methods
         public void LoadView()
         {
-            var settings = SettingsManager.Settings;
-            _currentSettings = (SettingsModel)settings.Clone();
-            _newSettings = (SettingsModel)settings.Clone();
+            _currentSettings = SettingsManager.CloneSettings;
+            _newSettings = SettingsManager.CloneSettings;
             swtIsDarkMode.Checked = _newSettings.App.DarkMode;
 
             cbxConsoleMinLevel.DataSource = Enum.GetValues(typeof(LogEventLevel));
@@ -37,7 +36,7 @@ namespace App.Forms.MainForm.Tabs.Settings
         {
             MapSettingsFromControls();
 
-            if (_newSettings.Equals(_currentSettings))
+            if (_newSettings != null &&_newSettings.Equals(_currentSettings))
             {
                 _newSettings = null;
                 return;
@@ -54,7 +53,7 @@ namespace App.Forms.MainForm.Tabs.Settings
         }
         #endregion
         #region Events
-        private void SaveSettingsButtonClicked(object sender, EventArgs e)
+        private async void SaveSettingsButtonClicked(object sender, EventArgs e)
         {
 
             Color primaryAcolor = ColorTranslator.FromHtml(tbxPrimaryColor.Text);
@@ -65,15 +64,18 @@ namespace App.Forms.MainForm.Tabs.Settings
             MaterialSkinManager.Instance.ColorScheme = new ColorScheme(primaryAcolor, darkPrimaryColor, lightPrimaryColor, accentColor, textShadeColor);
             MapSettingsFromControls();
 
+            //TODO
             //if (settings.FileMinimumLoggingLevel != AppSettingsManager.GetFileMinLogLevel())
             //    LogManager.ChangeMinLoggingLevel(settings.FileMinimumLoggingLevel);
-
-            SettingsManager.UpdateSettingsAsync(_newSettings);
+            if (_newSettings != null)
+                await SettingsManager.UpdateSettingsAsync(_newSettings);
         }
         #endregion
         #region Private Methods
         private void MapSettingsFromControls()
         {
+            if (_newSettings == null)
+                return;
             _newSettings.App.LoggingLevel = EnumUtils.Parse<LogLevel>(cbxFileMinLevel.SelectedValue);
             _newSettings.Core.LoggingLevel = EnumUtils.Parse<LogLevel>(cbxConsoleMinLevel.SelectedValue);
             _newSettings.App.DarkMode = swtIsDarkMode.Checked;

@@ -12,15 +12,19 @@ namespace Logging
         private const string LOG_FILE_NAME = @"CommonScripts.log";
         private const string QUARTZ_SERILOG = "Quartz";
         private const string MICROSOFT_SERILOG = "Microsoft";
-        private static LoggingLevelSwitch _levelSwitch;
-        private static LogSink _consoleLogSink;
+
+        private static LoggingLevelSwitch? _levelSwitch;
+        private static LogSink? _consoleLogSink;
+
         public static void InstanceLogger(Settings settings)
         {
             LogEventLevel minLoggingLevel = (LogEventLevel)settings.App.LoggingLevel;
             _consoleLogSink = new LogSink(minLoggingLevel);
             _levelSwitch = new LoggingLevelSwitch(minLoggingLevel);
+
             string baseDirectory = FileUtils.GetConfigDirectory();
             CreateLogDirectory(baseDirectory);
+
             var loggerConfiguration = new LoggerConfiguration()
                 .MinimumLevel.ControlledBy(_levelSwitch)
                 .MinimumLevel.Override(QUARTZ_SERILOG, LogEventLevel.Warning)
@@ -40,11 +44,15 @@ namespace Logging
         }
         public static void ChangeMinLoggingLevel(LogEventLevel newLogLevel)
         {
+            if (_levelSwitch == null)
+                throw new ArgumentNullException("Logger not instantiated. Call InstanceLogger() first", nameof(_levelSwitch));
             _levelSwitch.MinimumLevel = newLogLevel;
         }
-        public static LogSink GetConsoleSink()
+        public static void SetLogEmittedEventListener(LogSink.LogHandler action)
         {
-            return _consoleLogSink;
+            if (_consoleLogSink == null)
+                throw new ArgumentNullException("Logger not instantiated. Call InstanceLogger() first", nameof(_levelSwitch));
+            _consoleLogSink.LogEmitted += action;
         }
     }
 }

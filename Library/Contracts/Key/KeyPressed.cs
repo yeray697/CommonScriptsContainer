@@ -31,7 +31,7 @@
         public KeyPressed() : this(null)
         {
         }
-        public KeyPressed(KeyEventArgs keyEventArgs)
+        public KeyPressed(KeyEventArgs? keyEventArgs)
         {
             if (keyEventArgs != null)
             {
@@ -40,18 +40,6 @@
                 IsAltPressed = keyEventArgs.Alt;
                 Key = keyEventArgs.KeyCode;
             }
-        }
-        private bool IsOnlyShiftPressed(Keys key)
-        {
-            return key == Keys.LShiftKey || key == Keys.RShiftKey;
-        }
-        private bool IsOnlyControlPressed(Keys key)
-        {
-            return key == Keys.LControlKey || key == Keys.RControlKey;
-        }
-        private bool IsOnlyAltPressed(Keys key)
-        {
-            return key == Keys.LMenu || key == Keys.RMenu;
         }
         public override string ToString()
         {
@@ -71,15 +59,11 @@
 
             return aux;
         }
-        private string GetPlusSignIfRequired(string currentRepresentation)
-        {
-            return currentRepresentation == "" ? "" : PLUS_TO_STRING;
-        }
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as KeyPressed);
-        }
-        public bool Equals(KeyPressed other)
+        private static string GetPlusSignIfRequired(string currentRepresentation)
+            => currentRepresentation == "" ? "" : PLUS_TO_STRING;
+        public override bool Equals(object? obj)
+            => Equals(obj as KeyPressed);
+        public bool Equals(KeyPressed? other)
         {
             if (other == null)
                 return false;
@@ -88,9 +72,17 @@
                 && IsControlPressed == other.IsControlPressed
                 && IsAltPressed == other.IsAltPressed
                 && (
-                    Key == null && other.Key == null
+                    (Key == null && other.Key == null)
                     || Key == other.Key
                 );
         }
+        public override int GetHashCode()
+            => unchecked(Key.GetHashCode() ^ IsAltPressed.GetHashCode() ^ IsShiftPressed.GetHashCode() ^ IsControlPressed.GetHashCode());
+        private static bool IsOnlyShiftPressed(Keys key)
+            => key == Keys.LShiftKey || key == Keys.RShiftKey;
+        private static bool IsOnlyControlPressed(Keys key)
+            => key == Keys.LControlKey || key == Keys.RControlKey;
+        private static bool IsOnlyAltPressed(Keys key)
+            => key == Keys.LMenu || key == Keys.RMenu;
     }
 }

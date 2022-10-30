@@ -1,6 +1,5 @@
 ﻿using MaterialSkin;
 using MaterialSkin.Controls;
-using System.Reflection;
 
 namespace App.Forms.Base
 {
@@ -13,15 +12,8 @@ namespace App.Forms.Base
         public BaseForm()
         {
             InitializeComponent();
-            (new App.Utils.DropShadow()).ApplyShadows(this);
+            Utils.DropShadow.ApplyShadows(this);
             MaterialSkinManager.Instance.AddFormToManage(this);
-        }
-        protected override void OnLoad(EventArgs e)
-        {
-            //Override to leave default Form OnLoad method, as MetroSetForm implements an animation that cannot be disabled
-            var ptr = typeof(Form).GetMethod("OnLoad", BindingFlags.Instance | BindingFlags.NonPublic).MethodHandle.GetFunctionPointer();
-            var baseOnLoad = (Action<EventArgs>)Activator.CreateInstance(typeof(Action<EventArgs>), this, ptr);
-            baseOnLoad(e);
         }
         protected override CreateParams CreateParams
         {

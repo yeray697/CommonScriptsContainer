@@ -1,6 +1,4 @@
-﻿using Serilog.Events;
-
-namespace Logging.Model
+﻿namespace Logging.Model
 {
     public class LogMessage
     {
@@ -11,14 +9,14 @@ namespace Logging.Model
         public const string ERROR_STRING = "[ERROR]";
         public const string FATAL_STRING = "[FATAL]";
 
-        public LogEventLevel Lvl;
-        public string Text;
-        public string TimeStamp;
-        public Exception Exception;
+        public LogLevel Level { get; private set; }
+        public string Text { get; private set; }
+        public string TimeStamp { get; private set; }
+        public Exception? Exception { get; private set; }
 
-        public LogMessage(LogEventLevel lvl, string text, string timeStamp, Exception exception)
+        public LogMessage(LogLevel level, string text, string timeStamp, Exception? exception)
         {
-            Lvl = lvl;
+            Level = level;
             Text = text;
             TimeStamp = timeStamp;
             Exception = exception;
@@ -26,22 +24,22 @@ namespace Logging.Model
 
         public override string ToString()
         {
-            string text = TimeStamp + " " + LevelToSeverity() + " " + Text;
+            string text = TimeStamp + " " + LevelToSeverity(Level) + " " + Text;
 
-            if (Lvl == LogEventLevel.Error && Exception != null)
-                text += "\r\n" + Exception;
+            if (Level == LogLevel.Error && Exception != null)
+                text += Environment.NewLine + Exception;
 
             return text;
         }
-        private string LevelToSeverity()
+        private static string LevelToSeverity(LogLevel level)
         {
-            return Lvl switch
+            return level switch
             {
-                LogEventLevel.Debug => DEBUG_STRING,
-                LogEventLevel.Error => ERROR_STRING,
-                LogEventLevel.Fatal => FATAL_STRING,
-                LogEventLevel.Verbose => VERBOSE_STRING,
-                LogEventLevel.Warning => WARNING_STRING,
+                LogLevel.Debug => DEBUG_STRING,
+                LogLevel.Error => ERROR_STRING,
+                LogLevel.Fatal => FATAL_STRING,
+                LogLevel.Verbose => VERBOSE_STRING,
+                LogLevel.Warning => WARNING_STRING,
                 _ => INFO_STRING,
             };
         }

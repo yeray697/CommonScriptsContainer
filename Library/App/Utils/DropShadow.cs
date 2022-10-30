@@ -36,13 +36,13 @@ namespace App.Utils
 
         #region Overrides
 
-        public void ApplyShadows(Form form)
+        public static void ApplyShadows(Form form)
         {
             var v = 2;
 
-            DwmSetWindowAttribute(form.Handle, 2, ref v, 4);
+            _ = DwmSetWindowAttribute(form.Handle, 2, ref v, 4);
 
-            MARGINS margins = new MARGINS()
+            var margins = new MARGINS()
             {
                 bottomHeight = 1,
                 leftWidth = 0,
@@ -50,7 +50,7 @@ namespace App.Utils
                 topHeight = 0
             };
 
-            DwmExtendFrameIntoClientArea(form.Handle, ref margins);
+            _ = DwmExtendFrameIntoClientArea(form.Handle, ref margins);
         }
 
         #endregion

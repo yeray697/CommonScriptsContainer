@@ -6,10 +6,10 @@
 
         public static bool IsAbsolutePath(string path)
         {
-            return !String.IsNullOrWhiteSpace(path)
-                && path.IndexOfAny(System.IO.Path.GetInvalidPathChars().ToArray()) == -1
+            return !string.IsNullOrWhiteSpace(path)
+                && path.IndexOfAny(Path.GetInvalidPathChars().ToArray()) == -1
                 && Path.IsPathRooted(path)
-                && !Path.GetPathRoot(path).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
+                && !(Path.GetPathRoot(path) ?? string.Empty).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
         }
         public static string GetAbsolutePath(string path)
         {
@@ -26,10 +26,11 @@
         public static string GetConfigDirectory()
         {
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string path = Path.Combine(folder, COMMON_SCRIPTS_FOLDER_NAME);
 #if DEBUG
-            return Path.Combine(folder, COMMON_SCRIPTS_FOLDER_NAME, "Debug");
+            path = Path.Combine(path, "Debug");
 #endif
-            return Path.Combine(folder, COMMON_SCRIPTS_FOLDER_NAME);
+            return path;
         }
     }
 }

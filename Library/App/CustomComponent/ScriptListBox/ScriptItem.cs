@@ -10,8 +10,8 @@ namespace CommonScripts.CustomComponent.ScriptListBox
     {
         public delegate void ItemClickHandler(ScriptItem source);
 
-        public event ItemClickHandler MenuClicked;
-        public event ItemClickHandler StatusClicked;
+        public event ItemClickHandler? MenuClicked;
+        public event ItemClickHandler? StatusClicked;
 
 
         public ScriptAbs Script { get; private set; }

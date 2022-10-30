@@ -21,7 +21,7 @@ namespace Logging
             if (logEvent.Level >= _minLoggingLevel)
             {
                 var t = logEvent.Timestamp;
-                LogMessage msg = new(logEvent.Level,
+                LogMessage msg = new((LogLevel)logEvent.Level,
                                      logEvent.RenderMessage(),
                                      DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff") + " -" + t.Offset.ToString(@"hh\:mm"),
                                      logEvent.Exception);

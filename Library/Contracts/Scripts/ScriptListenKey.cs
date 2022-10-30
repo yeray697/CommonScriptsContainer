@@ -6,7 +6,7 @@ namespace Contracts.Scripts
     public class ScriptListenKey : ScriptAbs
     {
         public override ScriptType ScriptType => ScriptType.ListenKey;
-        public KeyPressed TriggerKey { get; set; }
+        public KeyPressed? TriggerKey { get; set; }
 
         public ScriptListenKey() : base()
         {

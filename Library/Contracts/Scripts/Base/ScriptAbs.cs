@@ -24,10 +24,10 @@
         }
         public abstract ScriptAbs Clone();
         object ICloneable.Clone() => Clone();
-        public static ScriptAbs GetInstance(ScriptAbs oldScript, ScriptType scriptType)
+        public static ScriptAbs? GetInstance(ScriptAbs? oldScript, ScriptType scriptType)
         {
             bool hasScriptTypeChanged = oldScript != null && HasScriptTypeChanged(oldScript.ScriptType, scriptType);
-            ScriptAbs newScript = null;
+            ScriptAbs? newScript = null;
             if (oldScript == null || hasScriptTypeChanged)
             {
                 newScript = scriptType switch
@@ -37,9 +37,9 @@
                     ScriptType.ListenKey => new ScriptListenKey(),
                     _ => throw new Exception(),
                 };
-                if (hasScriptTypeChanged)
+                if (hasScriptTypeChanged && oldScript != null)
                 {
-                    newScript.Id = oldScript.Id;
+                    newScript!.Id = oldScript.Id;
                 }
             }
 

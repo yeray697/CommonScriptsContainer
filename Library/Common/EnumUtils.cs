@@ -11,20 +11,16 @@
             if (!typeof(T).IsEnum)
                 throw new ArgumentException("T must be an enumerated type");
 
-            T enumType;
-
-            return Enum.TryParse(value?.ToString(), out enumType) ? enumType : defaultValue;
+            return Enum.TryParse(value?.ToString(), out T enumType) ? enumType : defaultValue;
         }
         public static string GetEnumValueAsString<T>(T enumerationValue)
             where T : struct
         {
             Type tType = typeof(T);
             if (!tType.IsEnum)
-            {
                 throw new ArgumentException("T must be an enumerated type");
-            }
 
-            return Enum.GetName(tType, enumerationValue);
+            return Enum.GetName(tType, enumerationValue) ?? throw new ArgumentOutOfRangeException(nameof(enumerationValue));
         }
     }
 }

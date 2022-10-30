@@ -8,29 +8,29 @@ namespace JobManager.Job
 {
     public class RunScriptJob : IJob
     {
-        private ScriptAbs _script;
+        private ScriptAbs? _script;
 
         public async Task Execute(IJobExecutionContext context)
         {
             GetScript(context);
-            RunScript();
+            await RunScript();
         }
         private void GetScript(IJobExecutionContext context)
         {
             var dataMap = context.MergedJobDataMap;
             _script = (ScriptAbs)dataMap["script"];
         }
-        private void RunScript()
+        private Task RunScript()
         {
-            string realPath = FileUtils.GetAbsolutePath(_script.ScriptPath);
+            string realPath = FileUtils.GetAbsolutePath(_script!.ScriptPath);
 
             try
             {
                 if (File.Exists(realPath))
                 {
                     Log.Information("Executing {@ScriptName}", _script.ScriptName);
-                    //string psScript = "Set-Location \"" + SettingsManager.Settings.Core.InstallationPath + "\"\r\n";
-                    string psScript = File.ReadAllText(realPath);
+                    string psScript = $"Set-Location \"{realPath}\"{Environment.NewLine}";
+                    psScript += File.ReadAllText(realPath);
                     var powerShell = PowerShell.Create().AddScript(psScript);
                     powerShell.Invoke();
                 }
@@ -44,6 +44,8 @@ namespace JobManager.Job
             {
                 Log.Error(e, "An error has occurred while executing the script {@ScriptName} ({@ScriptPath})", _script.ScriptName, realPath);
             }
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -7,11 +7,11 @@ namespace App.Service
     public class ListenKeysService
     {
         public delegate void KeyUpHandler(KeyPressed keyPressed);
-        public event KeyUpHandler SingleKeyUpClicked;
-        public event KeyUpHandler KeyUpClicked;
+        public event KeyUpHandler? SingleKeyUpClicked;
+        public event KeyUpHandler? KeyUpClicked;
 
-        private static ListenKeysService _instance;
-        private IKeyboardMouseEvents _globalHook;
+        private static ListenKeysService? _instance;
+        private IKeyboardMouseEvents? _globalHook;
         private bool _running;
         private bool _singleKeyListen;
 
@@ -21,8 +21,7 @@ namespace App.Service
         }
         public static ListenKeysService GetInstance()
         {
-            if (_instance == null)
-                _instance = new ListenKeysService();
+            _instance ??= new ListenKeysService();
 
             return _instance;
         }
@@ -57,11 +56,11 @@ namespace App.Service
                 _globalHook.KeyUp += GlobalHookKeyUp;
             }
         }
-        private void GlobalHookKeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
+        private void GlobalHookKeyUp(object? sender, System.Windows.Forms.KeyEventArgs e)
         {
             int key = (int)e.KeyData;
             Contracts.Key.Keys keys = (Contracts.Key.Keys)key;
-            KeyPressed keyPressed = new KeyPressed(new Contracts.Key.KeyEventArgs(keys));
+            var keyPressed = new KeyPressed(new Contracts.Key.KeyEventArgs(keys));
             Log.Debug("Key Up: {@KeyPressed}", keyPressed.ToString());
 
             if (_singleKeyListen)

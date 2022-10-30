@@ -4,8 +4,6 @@ using App.Utils;
 using Contracts.Scripts.Base;
 using Data;
 using JobManager.Service;
-using Logging;
-using Logging.Model;
 using MaterialSkin.Controls;
 
 namespace App.Forms.MainForm
@@ -105,13 +103,10 @@ namespace App.Forms.MainForm
         {
             if (string.IsNullOrWhiteSpace(SettingsManager.Settings.Core.InstallationPath))
             {
-                SetInstallationPathForm installationPathForm = new SetInstallationPathForm();
+                var installationPathForm = new SetInstallationPathForm();
                 if (installationPathForm.ShowDialogCenter(this) == DialogResult.OK)
                 {
-                    var settings = SettingsManager.CloneSettings;
-                    settings.Core.InstallationPath = installationPathForm.InstallationPath;
-
-                    await SettingsManager.UpdateSettingsAsync(settings);
+                    await SettingsManager.UpdateSettingsAsync((settings) => settings.Core.InstallationPath = installationPathForm.InstallationPath!);
                 }
             }
         }
@@ -119,14 +114,12 @@ namespace App.Forms.MainForm
         {
             if (SettingsManager.Settings.Core.DoNotAskAgainRunStartup || _windowsRegistryService.IsAppSetToRunAtStartup())
                 return;
-            MaterialDialog runAtStartupDialog = new MaterialDialog(this, null, "Do you want to set the app to run at startup?", "Yes", true, "No");
+            var runAtStartupDialog = new MaterialDialog(this, null, "Do you want to set the app to run at startup?", "Yes", true, "No");
             if (runAtStartupDialog.ShowDialog(this) == DialogResult.OK)
                 _windowsRegistryService.SetAppToRunAtStartup();
             else
             {
-                var settings = SettingsManager.CloneSettings;
-                settings.Core.DoNotAskAgainRunStartup = true;
-                await SettingsManager.UpdateSettingsAsync(settings);
+                await SettingsManager.UpdateSettingsAsync((settings) => settings.Core.DoNotAskAgainRunStartup = true);
             }
         }
         #endregion

@@ -1,33 +1,32 @@
 ﻿using App.Extension;
 using App.Utils;
+using Data;
 using Logging;
 using Logging.Model;
 using MaterialSkin;
-using Serilog.Events;
 
 namespace App.Forms.MainForm.Tabs.Console
 {
     public partial class ConsoleTabControl : UserControl
     {
-        private bool _darkMode;
         public ConsoleTabControl()
         {
             InitializeComponent();
             MaterialSkinManager.Instance.ThemeChanged += ThemeChanged;
-            LogManager.GetConsoleSink().LogEmitted += LogEmitted;
+            LogManager.SetLogEmittedEventListener(LogEmitted);
         }
         private void LogEmitted(LogMessage log)
         {
-            Color color = GetConsoleTextColor(log.Lvl);
+            Color color = GetConsoleTextColor(log.Level);
             rtbConsole.AppendTextThreadSafe(log.ToString(), color, true);
         }
-        private Color GetConsoleTextColor(LogEventLevel logLevel)
+        private static Color GetConsoleTextColor(LogLevel logLevel)
         {
             var color = logLevel switch
             {
-                LogEventLevel.Error or LogEventLevel.Fatal => ColorConstants.CONSOLE_ERROR_COLOR,
-                LogEventLevel.Warning => ColorConstants.CONSOLE_WARNING_COLOR,
-                _ => _darkMode ? ColorConstants.CONSOLE_DEFAULT_DARK_COLOR : ColorConstants.CONSOLE_DEFAULT_LIGHT_COLOR,
+                LogLevel.Error or LogLevel.Fatal => ColorConstants.CONSOLE_ERROR_COLOR,
+                LogLevel.Warning => ColorConstants.CONSOLE_WARNING_COLOR,
+                _ => SettingsManager.Settings.App.DarkMode ? ColorConstants.CONSOLE_DEFAULT_DARK_COLOR : ColorConstants.CONSOLE_DEFAULT_LIGHT_COLOR,
             };
             return color;
         }

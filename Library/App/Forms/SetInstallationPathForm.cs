@@ -4,7 +4,7 @@ namespace App.Forms
 {
     public partial class SetInstallationPathForm : BaseInnerForm
     {
-        public string InstallationPath { get; private set; }
+        public string? InstallationPath { get; private set; }
         public SetInstallationPathForm() : base()
         {
             InitializeComponent();

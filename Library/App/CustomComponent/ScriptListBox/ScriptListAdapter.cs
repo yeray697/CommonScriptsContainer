@@ -9,8 +9,8 @@ namespace App.CustomComponent.ScriptListBox
 
         public delegate void ScriptClickHandler(ScriptAbs source);
 
-        public event ScriptClickHandler ShowMenu;
-        public event ScriptClickHandler StatusClicked;
+        public event ScriptClickHandler? ShowMenu;
+        public event ScriptClickHandler? StatusClicked;
 
         private readonly Control _pnlScripts;
         private List<ScriptItem> _controlList;
@@ -61,13 +61,15 @@ namespace App.CustomComponent.ScriptListBox
         private void CreateUIElements(IList<ScriptAbs> list)
         {
             _controlList = new List<ScriptItem>();
-            if ((list?.Count ?? 0) > 0)
+            if (list != null && list.Count > 0)
+            {
                 foreach (var item in list)
                     _controlList.Add(GetScriptItemInstance(item));
+            }
         }
         private ScriptItem GetScriptItemInstance(ScriptAbs script)
         {
-            ScriptItem item = new ScriptItem(script);
+            var item = new ScriptItem(script);
             item.StatusClicked += Script_StatusClicked;
             item.MenuClicked += Script_MenuClicked;
 
@@ -108,7 +110,7 @@ namespace App.CustomComponent.ScriptListBox
                 }
             }
         }
-        private ScriptItem FindById(string id)
+        private ScriptItem? FindById(string id)
         {
             return !IsEmptyList() ? _controlList.Find(s => s.Script.Id == id) : null;
         }

@@ -17,56 +17,41 @@ namespace Data.Service
         }
 
         public async Task<List<ScriptAbs>> ReadScriptsAsync()
-        {
-            List<ScriptAbs> scripts;
-            string filePath = GetScriptsPath();
-
-            if (!_fileRepository.FileExists(filePath))
-            {
-                scripts = new List<ScriptAbs>();
-                CreateDirectoryIfNotExists(filePath);
-                await _fileRepository.UpdateFileAsync(scripts, filePath);
-            }
-            else
-                scripts = await _fileRepository.GetFileAsync<List<ScriptAbs>>(filePath);
-
-            return scripts;
-        }
-
+            => await ReadFileAsync< List<ScriptAbs>>(GetConfigPath());
+        
         public async Task<Settings> ReadSettingsAsync()
+            => await ReadFileAsync<Settings>(GetConfigPath());
+
+        public async Task UpdateScriptsAsync(List<ScriptAbs> scripts)
+            => await _fileRepository.UpdateFileAsync(scripts, GetScriptsPath());
+
+        public async Task UpdateSettingsAsync(Settings settings)
+            => await _fileRepository.UpdateFileAsync(settings, GetConfigPath());
+
+        private async Task<T> ReadFileAsync<T>(string filePath)
+            where T : new()
         {
-            Settings settings;
-            string filePath = GetConfigPath();
-            
+            T fileContent;
+
             if (!_fileRepository.FileExists(filePath))
             {
-                settings = new Settings();
+                fileContent = new();
                 CreateDirectoryIfNotExists(filePath);
-                await _fileRepository.UpdateFileAsync(settings, filePath);
+                await _fileRepository.UpdateFileAsync(fileContent, filePath);
             }
             else
-                settings = await _fileRepository.GetFileAsync<Settings>(filePath);
+                fileContent = await _fileRepository.GetFileAsync<T>(filePath);
 
-            return settings;
+            return fileContent;
         }
 
-        private void CreateDirectoryIfNotExists(string filePath)
+        private static void CreateDirectoryIfNotExists(string filePath)
         {
             string? directoryPath = Path.GetDirectoryName(filePath);
             if (directoryPath == null)
                 throw new ArgumentNullException(directoryPath);
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
-        }
-
-        public async Task UpdateScriptsAsync(List<ScriptAbs> scripts)
-        {
-            await _fileRepository.UpdateFileAsync(scripts, GetScriptsPath());
-        }
-
-        public async Task UpdateSettingsAsync(Settings settings)
-        {
-            await _fileRepository.UpdateFileAsync(settings, GetConfigPath());
         }
 
         private static string GetFilePath(string configFilename)

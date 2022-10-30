@@ -11,7 +11,7 @@ namespace App.Forms
 {
     public partial class ScriptForm : BaseInnerForm
     {
-        private ScriptAbs _script;
+        private ScriptAbs? _script;
         private bool _listeningKeys = false;
 
         private const string FORM_TITLE_ADD = "Add Script";
@@ -19,7 +19,7 @@ namespace App.Forms
         private const string KEY_PRESSED_UNDEFINED_TEXT = "";
         private const string KEY_PRESSED_LISTENING_TEXT = "Listening...";
 
-        public ScriptForm(ScriptAbs script) : base()
+        public ScriptForm(ScriptAbs? script) : base()
         {
             InitializeComponent();
             string formTitle = FORM_TITLE_ADD;
@@ -52,6 +52,8 @@ namespace App.Forms
                 ScriptType scriptType = EnumUtils.Parse<ScriptType>(cbxScriptType.SelectedValue);
                 ScriptStatus scriptStatus = _script?.ScriptStatus ?? ScriptStatus.Stopped;
                 _script = ScriptAbs.GetInstance(_script, scriptType);
+                if (_script == null)
+                    throw new NullReferenceException();
                 _script.ScriptName = tbxScriptName.Text;
                 _script.ScriptPath = tbxScriptPath.Text;
                 _script.ScriptStatus = scriptStatus;
@@ -62,7 +64,7 @@ namespace App.Forms
                         break;
                     case ScriptType.Scheduled:
                         DateTime dt = DateTime.Parse(tbxScriptScheduled.Text);
-                        TimeSpan st = new TimeSpan(dt.Hour, dt.Minute, dt.Second);
+                        var st = new TimeSpan(dt.Hour, dt.Minute, dt.Second);
                         ((ScriptScheduled)_script).ScheduledHour = st;
                         break;
                     case ScriptType.ListenKey:
@@ -121,7 +123,7 @@ namespace App.Forms
             }
             else if (_script != null && _script is ScriptListenKey scriptListenKey)
             {
-                KeyPressed triggerKey = scriptListenKey.TriggerKey;
+                KeyPressed? triggerKey = scriptListenKey.TriggerKey;
                 if (triggerKey != null)
                 {
                     tbxKeyPressed.Text = triggerKey.ToString();
@@ -218,12 +220,12 @@ namespace App.Forms
         {
             _listeningKeys = false;
         }
-        private bool IsMaskDatetimeValid(string maskedText)
+        private static bool IsMaskDatetimeValid(string maskedText)
         {
             string value = maskedText.Replace(":", "").Trim();
 
             return (value != String.Empty && value.Length == 4
-                && int.TryParse(value.Substring(0, 2), out int hour) && int.TryParse(value.Substring(2, 2), out int minute)
+                && int.TryParse(value.AsSpan(0, 2), out int hour) && int.TryParse(value.AsSpan(2, 2), out int minute)
                 && hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59);
         }
         private bool ValidateBeforeSaving()
@@ -246,7 +248,7 @@ namespace App.Forms
         #endregion
 
         #region Public Methods
-        public ScriptAbs GetScript() => _script;
+        public ScriptAbs? GetScript() => _script;
         #endregion
     }
 }

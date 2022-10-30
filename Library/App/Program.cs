@@ -16,7 +16,7 @@ namespace App
 {
     internal static class Program
     {
-        static Mutex mutex = null;
+        static Mutex? mutex = null;
         static readonly string applicationMutex = @"Global\fcb9566c-9987-4095-805d-691fb98559e0";
 
         /// <summary>
@@ -62,7 +62,10 @@ namespace App
         {
             using ServiceProvider serviceProvider = ServiceCollection!.BuildServiceProvider();
             Data.Service.ISettingsService settingsService = serviceProvider.GetRequiredService<Data.Service.ISettingsService>();
-            SettingsManager.InitInstanceAsync(settingsService).RunSync();
+            //TODO maybe this can be done right with async?
+            Task
+                .Run(async () => await SettingsManager.InitInstanceAsync(settingsService))
+                .Wait();
             LogManager.InstanceLogger(SettingsManager.Settings);
             ConfigureAppTheme(SettingsManager.Settings);
 
@@ -86,7 +89,7 @@ namespace App
         }
         private static void ThreadOnExit(object? s, EventArgs e)
         {
-            mutex.Dispose();
+            mutex?.Dispose();
             Application.ThreadExit -= ThreadOnExit;
             Application.Exit();
         }

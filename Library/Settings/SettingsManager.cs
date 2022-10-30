@@ -25,11 +25,9 @@ namespace Data
 
         public static List<ScriptAbs> Scripts
             => GetInstance().GetScripts();
-        //public static List<ScriptAbs> CloneScripts
-        //    => (List<ScriptAbs>)GetInstance().GetScripts().Clone();
 
-        private static SettingsManager GetInstance()
-            => _instance ?? throw new ArgumentNullException("Instance is not initiated. Call InitInstance() method first");
+        public static ScriptAbs? FindScriptById(string scriptId)
+            => GetInstance().GetScripts().FirstOrDefault(s => s.Id == scriptId)?.Clone();
 
         public static async Task InitInstanceAsync(ISettingsService settingsService)
         {
@@ -39,10 +37,45 @@ namespace Data
 
         public static async Task UpdateSettingsAsync(Settings newSettings)
             => await GetInstance().UpdateSettingsFileAsync(newSettings);
-        
+
+        public static async Task UpdateSettingsAsync(Action<Settings> action)
+        {
+            Settings settings = CloneSettings;
+            action(settings);
+            await UpdateSettingsAsync(settings);
+        }
 
         public static async Task UpdateScriptsAsync(List<ScriptAbs> newScripts)
             => await GetInstance().UpdateScriptsFileAsync(newScripts);
+
+        public static async Task AddScriptAsync(ScriptAbs newScript)
+            => await UpdateScriptsAsync(scripts => scripts.Add(newScript));
+
+        public static async Task EditScriptAsync(ScriptAbs scriptToEdit)
+        {
+            int index = Scripts.FindIndex(s => s.Id == scriptToEdit.Id);
+            if (index == -1) 
+                return;
+            await UpdateScriptsAsync(scripts => scripts[index] = scriptToEdit);
+        }
+
+        public static async Task RemoveScriptAsync(string scriptId)
+        {
+            var scriptToDelete = Scripts.FirstOrDefault(s => s.Id == scriptId);
+            if (scriptToDelete == null)
+                return;
+            await UpdateScriptsAsync(scripts => scripts.Remove(scriptToDelete));
+        }
+
+        public static async Task UpdateScriptsAsync(Action<List<ScriptAbs>> action)
+        {
+            List<ScriptAbs> scripts = GetInstance().GetScripts();
+            action(scripts);
+            await UpdateScriptsAsync(scripts);
+        }
+
+        private static SettingsManager GetInstance()
+            => _instance ?? throw new ArgumentNullException("Instance is not initiated. Call InitInstance() method first");
 
         private async Task InitConfigFilesAsync()
         {

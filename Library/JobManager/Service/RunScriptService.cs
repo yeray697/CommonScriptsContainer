@@ -10,39 +10,51 @@ namespace JobManager.Service
 {
     public class RunScriptService : IRunScriptService
     {
+
         private readonly ISchedulerFactory _schedulerFactory;
-        private IJobListener _jobListenerOneOff;
-        public IScheduler Scheduler { get; set; }
+        private readonly JobListener _jobListenerOneOff;
+        private IScheduler? _scheduler;
+
+        public event IRunScriptService.ScriptExecutedHandler? OneOffScriptExecuted;
 
         public RunScriptService()
         {
             _schedulerFactory = new StdSchedulerFactory();
+            _jobListenerOneOff = new JobListener();
+            _jobListenerOneOff.JobWasExecutedListener += OneOffJobWasExecuted;
         }
-
-        public async Task Run()
+        public async Task RunServiceAsync()
         {
-            if (!Scheduler?.IsStarted ?? true)
+            if (!_scheduler?.IsStarted ?? true)
             {
                 Log.Information("Running RunScriptService...");
-                if (Scheduler == null)
+                if (_scheduler == null)
                 {
-                    Scheduler = await _schedulerFactory.GetScheduler();
-                    AddJobListener(_jobListenerOneOff, ScriptType.OneOff.ToString());
+                    _scheduler = await _schedulerFactory.GetScheduler();
+                    _scheduler.ListenerManager.AddJobListener(_jobListenerOneOff, GroupMatcher<JobKey>.GroupEquals(ScriptType.OneOff.ToString()));
                 }
-                await Scheduler.Start();
+                await _scheduler.Start();
             }
         }
-        public async Task RunScript(ScriptAbs script)
+        public async Task StopServiceAsync()
         {
-            await Run();
+            if (_scheduler != null)
+            {
+                await _scheduler.Shutdown();
+                Log.Information("Stopping RunScriptService...");
+            }
+        }
+        public async Task RunScriptAsync(ScriptAbs script)
+        {
+            await RunServiceAsync();
             if (script.ScriptType is ScriptType.Scheduled)
                 Log.Information("Schedule Job for script {@ScriptName} ({@ScriptType}) at {@ScheduledHour}", script.ScriptName, script.ScriptType, ((ScriptScheduled)script).ScheduledHour.ToString());
             else
                 Log.Information("Schedule Job for script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
             JobKey jobKey = GetJobKeyForScript(script);
-            if (await Scheduler.CheckExists(jobKey))
+            if (await _scheduler!.CheckExists(jobKey))
             {
-                await Scheduler.ResumeJob(jobKey);
+                await _scheduler.ResumeJob(jobKey);
             }
             else
             {
@@ -50,39 +62,26 @@ namespace JobManager.Service
                 var trigger = CreateTrigger(script);
                 job.JobDataMap.Put("script", script);
 
-                await Scheduler.ScheduleJob(job, trigger);
+                await _scheduler.ScheduleJob(job, trigger);
             }
         }
-        public async Task StopScript(ScriptAbs script)
+        public async Task StopScriptAsync(ScriptAbs script)
         {
-            if (Scheduler != null)
+            if (_scheduler != null)
             {
                 Log.Information("Stopping Job for script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
                 if (script is ScriptScheduled)
-                    await Scheduler.UnscheduleJob(GetTriggerKeyForScript(script));
+                    await _scheduler.UnscheduleJob(GetTriggerKeyForScript(script));
                 else
-                    await Scheduler.PauseJob(GetJobKeyForScript(script));
+                    await _scheduler.PauseJob(GetJobKeyForScript(script));
             }
         }
-        public async Task Stop()
+        private void OneOffJobWasExecuted(IJobExecutionContext context, JobExecutionException? jobException)
         {
-            if (Scheduler != null)
-            {
-                await Scheduler.Shutdown();
-                Log.Information("Stopping RunScriptService...");
-            }
+            string scriptId = context.JobDetail.Key.Name;
+            OneOffScriptExecuted?.Invoke(scriptId);
         }
-        public void SetOneOffJobListener(IJobListener jobListenerOneOff)
-        {
-            _jobListenerOneOff = jobListenerOneOff;
-            AddJobListener(_jobListenerOneOff, ScriptType.OneOff.ToString());
-        }
-        private void AddJobListener(IJobListener jobListener, string jobGroup)
-        {
-            if (Scheduler != null)
-                Scheduler.ListenerManager.AddJobListener(jobListener, GroupMatcher<JobKey>.GroupEquals(jobGroup));
-        }
-        private IJobDetail CreateJob(ScriptAbs script)
+        private static IJobDetail CreateJob(ScriptAbs script)
         {
             return JobBuilder
                 .Create<RunScriptJob>()
@@ -90,7 +89,7 @@ namespace JobManager.Service
                 .WithDescription(script.ToString())
                 .Build();
         }
-        private ITrigger CreateTrigger(ScriptAbs script)
+        private static ITrigger CreateTrigger(ScriptAbs script)
         {
             TriggerBuilder triggerBuilder = TriggerBuilder
                 .Create()
@@ -119,11 +118,11 @@ namespace JobManager.Service
 
             return startAt;
         }
-        private JobKey GetJobKeyForScript(ScriptAbs script)
+        private static JobKey GetJobKeyForScript(ScriptAbs script)
         {
             return new JobKey(script.Id, script.ScriptType.ToString());
         }
-        private TriggerKey GetTriggerKeyForScript(ScriptAbs script)
+        private static TriggerKey GetTriggerKeyForScript(ScriptAbs script)
         {
             return new TriggerKey($"{script.Id}.trigger", script.ScriptType.ToString());
         }
