@@ -1,5 +1,6 @@
 ﻿using Data.Converter;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Data.Repository
 {
@@ -10,7 +11,7 @@ namespace Data.Repository
         {
             _options = new JsonSerializerOptions
             {
-                Converters = { new ScriptJsonConverter() },
+                Converters = { new ScriptJsonConverter(), new JsonStringEnumConverter() },
                 WriteIndented = true
             };
         }

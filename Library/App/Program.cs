@@ -1,4 +1,3 @@
-using App.Extension;
 using App.Forms.MainForm;
 using App.Service;
 using App.Service.Interfaces;

@@ -17,7 +17,7 @@ namespace Data.Service
         }
 
         public async Task<List<ScriptAbs>> ReadScriptsAsync()
-            => await ReadFileAsync< List<ScriptAbs>>(GetConfigPath());
+            => await ReadFileAsync< List<ScriptAbs>>(GetScriptsPath());
         
         public async Task<Settings> ReadSettingsAsync()
             => await ReadFileAsync<Settings>(GetConfigPath());
