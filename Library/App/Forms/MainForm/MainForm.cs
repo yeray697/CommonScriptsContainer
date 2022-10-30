@@ -1,0 +1,134 @@
+﻿using App.Forms.Base;
+using App.Service.Interfaces;
+using App.Utils;
+using Contracts.Scripts.Base;
+using Data;
+using JobManager.Service;
+using Logging;
+using Logging.Model;
+using MaterialSkin.Controls;
+
+namespace App.Forms.MainForm
+{
+    public partial class MainForm : BaseForm
+    {
+        private readonly TrayContextMenu _trayContextMenu;
+        private readonly IWindowsRegistryService _windowsRegistryService;
+
+        public MainForm(IRunScriptService runScriptService, IWindowsRegistryService windowsRegistryService)
+        {
+            InitializeComponent();
+            _windowsRegistryService = windowsRegistryService;
+
+            _trayContextMenu = new TrayContextMenu();
+            ConfigureTrayContextMenu();
+            runTabControl.SetRunScriptService(runScriptService);
+        }
+
+        #region Events
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+#if DEBUG
+            return;
+#endif
+            if (m.Msg == NativeMethods.WM_SHOWME)
+            {
+                ShowForm();
+            }
+        }
+
+        protected async override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            await OpenInstallFormIfNeededAsync();
+            await ShowRunAtStartupDialogIfNeededAsync();
+        }
+        private void SettingsTab_Open(object sender, EventArgs e)
+        {
+            settingsTabControl.LoadView();
+        }
+        private void SettingsTab_Leave(object sender, EventArgs e)
+        {
+            settingsTabControl.ShowUnsavedChangesDialogIfNeeded();
+        }
+        private void Tab_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (settingsTabControl.PreventTabSettingsFromLeaving)
+            {
+                e.Cancel = true;
+                settingsTabControl.PreventTabSettingsFromLeaving = false;
+            }
+        }
+        private void AppTrayIcon_DoubleClick(object sender, MouseEventArgs e) => ShowForm();
+        private void ContextMenu_Open_Click()
+            => ShowForm();
+        private void ContextMenu_Close_Click()
+            => Application.Exit();
+        private void ContextMenu_StatusClick(ScriptAbs script)
+            => ChangeScriptStatus(script);
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+                this.ShowInTaskbar = false;
+            }
+        }
+        #endregion
+
+        #region Private Methods
+        private void ShowForm()
+        {
+            Show();
+            this.WindowState = FormWindowState.Normal;
+
+            this.ShowInTaskbar = true;
+            //Bring app to the foreground
+            bool currentTop = TopMost;
+            TopMost = true;
+            TopMost = currentTop;
+        }
+        private void ConfigureTrayContextMenu()
+        {
+            _trayContextMenu.CloseClicked += ContextMenu_Close_Click;
+            _trayContextMenu.OpenClicked += ContextMenu_Open_Click;
+            _trayContextMenu.ScriptStatusClicked += ContextMenu_StatusClick;
+            this.appNotifyIcon.ContextMenuStrip = _trayContextMenu;
+        }
+        private void ChangeScriptStatus(ScriptAbs script)
+        {
+            runTabControl.RefreshScriptStatus(script.Id);
+            _trayContextMenu.RefreshScriptStatus(script);
+        }
+        private async Task OpenInstallFormIfNeededAsync()
+        {
+            if (string.IsNullOrWhiteSpace(SettingsManager.Settings.Core.InstallationPath))
+            {
+                SetInstallationPathForm installationPathForm = new SetInstallationPathForm();
+                if (installationPathForm.ShowDialogCenter(this) == DialogResult.OK)
+                {
+                    var settings = SettingsManager.CloneSettings;
+                    settings.Core.InstallationPath = installationPathForm.InstallationPath;
+
+                    await SettingsManager.UpdateSettingsAsync(settings);
+                }
+            }
+        }
+        private async Task ShowRunAtStartupDialogIfNeededAsync()
+        {
+            if (SettingsManager.Settings.Core.DoNotAskAgainRunStartup || _windowsRegistryService.IsAppSetToRunAtStartup())
+                return;
+            MaterialDialog runAtStartupDialog = new MaterialDialog(this, null, "Do you want to set the app to run at startup?", "Yes", true, "No");
+            if (runAtStartupDialog.ShowDialog(this) == DialogResult.OK)
+                _windowsRegistryService.SetAppToRunAtStartup();
+            else
+            {
+                var settings = SettingsManager.CloneSettings;
+                settings.Core.DoNotAskAgainRunStartup = true;
+                await SettingsManager.UpdateSettingsAsync(settings);
+            }
+        }
+        #endregion
+    }
+}
