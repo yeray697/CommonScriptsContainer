@@ -1,8 +1,8 @@
+using App.Extension;
 using App.Forms.MainForm;
 using App.Service;
 using App.Service.Interfaces;
 using App.Utils;
-using Contracts.Config;
 using Data;
 using Data.Extensions;
 using JobManager.Service;
@@ -61,12 +61,10 @@ namespace App
         {
             using ServiceProvider serviceProvider = ServiceCollection!.BuildServiceProvider();
             Data.Service.ISettingsService settingsService = serviceProvider.GetRequiredService<Data.Service.ISettingsService>();
-            //TODO maybe this can be done right with async?
-            Task
-                .Run(async () => await SettingsManager.InitInstanceAsync(settingsService))
+            Task.Run(async () => await SettingsManager.InitInstanceAsync(settingsService))
                 .Wait();
             LogManager.InstanceLogger(SettingsManager.Settings);
-            ConfigureAppTheme(SettingsManager.Settings);
+            MaterialSkinManager.Instance.ChangeTheme(SettingsManager.Settings.App.DarkMode, true);
 
             var mainForm = serviceProvider.GetService<MainForm>()!;
             Log.Information("Starting application...");
@@ -91,21 +89,6 @@ namespace App
             mutex?.Dispose();
             Application.ThreadExit -= ThreadOnExit;
             Application.Exit();
-        }
-        private static void ConfigureAppTheme(Settings settings)
-        {
-            Color primaryAcolor = Color.FromArgb(0, 107, 95);
-            Color darkPrimaryColor = primaryAcolor;
-            Color lightPrimaryColor = Color.FromArgb(124, 150, 144);
-            Color accentColor = Color.FromArgb(203, 230, 255);
-
-            //Color primaryAcolor = Color.FromArgb(0, 126,112);
-            //Color darkPrimaryColor = primaryAcolor;
-            //Color lightPrimaryColor = Color.FromArgb(124, 150, 144);
-            //Color accentColor = Color.FromArgb(119, 148, 173);
-            TextShade textShadeColor = TextShade.WHITE;
-            MaterialSkinManager.Instance.ColorScheme = new ColorScheme(primaryAcolor, darkPrimaryColor, lightPrimaryColor, accentColor, textShadeColor);
-            MaterialSkinManager.Instance.Theme = settings.App.DarkMode ? MaterialSkinManager.Themes.DARK : MaterialSkinManager.Themes.LIGHT;
         }
         private static IServiceCollection? ServiceCollection { get; set; }
         private static void ConfigureServices()

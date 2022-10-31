@@ -37,9 +37,11 @@ namespace App.Forms.MainForm.Tabs.Run
             _runScriptService.OneOffScriptExecuted += OneOffJobWasExecuted;
         }
         #region Events
-        private void OnLoad(object sender, EventArgs e)
+        private async void OnLoad(object sender, EventArgs e)
         {
+            if (this.DesignMode) return;
             _scriptListAdapter.CreateWithList(SettingsManager.Scripts);
+            await CheckIfScriptsNeedToRunOnLoad();
         }
         private void OneOffJobWasExecuted(string scriptId)
         {
@@ -78,9 +80,9 @@ namespace App.Forms.MainForm.Tabs.Run
         private void ListenKeysService_KeyUpClicked(KeyPressed keyPressed)
         {
             Log.Debug("MainPresenter: KeyUpClicked event received");
-            foreach (ScriptListenKey item in GetScriptListenKeyScripts())
+            foreach (ScriptListenKey item in GetRunningScriptsByType<ScriptListenKey>())
             {
-                if (item.ScriptStatus == ScriptStatus.Running && (item.TriggerKey?.Equals(keyPressed) ?? false))
+                if (item.TriggerKey?.Equals(keyPressed) ?? false)
                 {
                     Log.Debug("KeyUp matches with a running ScriptListenKey script ({@ScriptName})", item.ScriptName);
                     _runScriptService!.RunScriptAsync(item);
@@ -89,19 +91,22 @@ namespace App.Forms.MainForm.Tabs.Run
             }
         }
         #endregion
-        private static bool IsListenKeyServiceNecessary(string executingScriptId)
-        {
-            return GetScriptListenKeyScripts()?.Any(s => s.ScriptStatus == ScriptStatus.Running && s.Id != executingScriptId) ?? false;
-        }
-        private static IEnumerable<ScriptListenKey> GetScriptListenKeyScripts()
-        {
-            return SettingsManager.Scripts.OfType<ScriptListenKey>();
-        }
+
         #region Private Methods
-        public void ChangeScriptStatusThreadSafe(ScriptAbs script)
+        private async Task CheckIfScriptsNeedToRunOnLoad()
         {
-            this.Invoke((MethodInvoker) async delegate () { await ChangeScriptStatusAsync(script); });
+            foreach (var script in GetRunningScriptsByType<ScriptScheduled>())
+                await _runScriptService!.RunScriptAsync(script);
+
+            if (IsListenKeyServiceNecessary())
+                _listenKeysService.Run();
         }
+        private static bool IsListenKeyServiceNecessary(string? executingScriptId = null)
+            => GetRunningScriptsByType<ScriptListenKey>()?.Any(s => s.Id != executingScriptId) ?? false;
+        private static IEnumerable<T> GetRunningScriptsByType<T>() 
+            where T : ScriptAbs => SettingsManager.Scripts.OfType<T>().Where(s => s.ScriptStatus == ScriptStatus.Running);
+        private void ChangeScriptStatusThreadSafe(ScriptAbs script)
+            => this.Invoke((MethodInvoker) async delegate () { await ChangeScriptStatusAsync(script); });
         private async Task ShowEditScriptFormAsync(ScriptAbs script)
         {
             await ShowScriptForm(script, async (ScriptAbs? editedScript) => {

@@ -63,12 +63,12 @@
             this.btnRunAddScript.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnRunAddScript.HighEmphasis = true;
             this.btnRunAddScript.Icon = global::App.Properties.Resources.plus;
-            this.btnRunAddScript.Location = new System.Drawing.Point(532, 0);
+            this.btnRunAddScript.Location = new System.Drawing.Point(526, 0);
             this.btnRunAddScript.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnRunAddScript.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnRunAddScript.Name = "btnRunAddScript";
             this.btnRunAddScript.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnRunAddScript.Size = new System.Drawing.Size(122, 36);
+            this.btnRunAddScript.Size = new System.Drawing.Size(128, 36);
             this.btnRunAddScript.TabIndex = 8;
             this.btnRunAddScript.Text = "Add Script";
             this.btnRunAddScript.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;

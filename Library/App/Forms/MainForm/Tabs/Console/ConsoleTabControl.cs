@@ -1,6 +1,5 @@
 ﻿using App.Extension;
 using App.Utils;
-using Data;
 using Logging;
 using Logging.Model;
 using MaterialSkin;
@@ -24,37 +23,32 @@ namespace App.Forms.MainForm.Tabs.Console
         {
             var color = logLevel switch
             {
-                LogLevel.Error or LogLevel.Fatal => ColorConstants.CONSOLE_ERROR_COLOR,
-                LogLevel.Warning => ColorConstants.CONSOLE_WARNING_COLOR,
-                _ => SettingsManager.Settings.App.DarkMode ? ColorConstants.CONSOLE_DEFAULT_DARK_COLOR : ColorConstants.CONSOLE_DEFAULT_LIGHT_COLOR,
+                LogLevel.Error or LogLevel.Fatal => ColorUtils.GetConsoleErrorForeColor(),
+                LogLevel.Warning => ColorUtils.GetConsoleWarningForeColor(),
+                _ => ColorUtils.GetConsoleDefaultForeColor(),
             };
             return color;
         }
         private void ReloadConsoleTextLines()
         {
             int lineCount = 0;
-            Color color = Color.White;
-            bool changeLine = true;
+            Color color;
             foreach (string line in rtbConsole.Lines)
             {
                 if (line.Contains(LogMessage.ERROR_STRING) || line.Contains(LogMessage.FATAL_STRING))
-                    color = ColorConstants.CONSOLE_ERROR_COLOR;
+                    color = GetConsoleTextColor(LogLevel.Error);
                 else if (line.Contains(LogMessage.WARNING_STRING))
-                    color = ColorConstants.CONSOLE_WARNING_COLOR;
+                    color = GetConsoleTextColor(LogLevel.Warning);
                 else
-                    changeLine = false;
+                    color = GetConsoleTextColor(LogLevel.Debug);
 
-                if (changeLine)
-                    rtbConsole.ColorLineThreadSafe(lineCount, line.Length, color);
+                rtbConsole.ColorLineThreadSafe(lineCount, line.Length, color);
                 lineCount++;
-                changeLine = true;
             }
         }
 
         private void ThemeChanged(object sender)
         {
-            //ToDo
-            //rtbConsole.ApplyTheme(_isDarkMode ? MetroSet_UI.Enums.Style.Dark : MetroSet_UI.Enums.Style.Light);
             ReloadConsoleTextLines();
         }
     }

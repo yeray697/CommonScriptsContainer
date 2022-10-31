@@ -23,7 +23,6 @@ namespace JobManager.Job
         private Task RunScript()
         {
             string realPath = FileUtils.GetAbsolutePath(_script!.ScriptPath);
-
             try
             {
                 if (File.Exists(realPath))
@@ -31,8 +30,11 @@ namespace JobManager.Job
                     Log.Information("Executing {@ScriptName}", _script.ScriptName);
                     string psScript = $"Set-Location \"{realPath}\"{Environment.NewLine}";
                     psScript += File.ReadAllText(realPath);
-                    var powerShell = PowerShell.Create().AddScript(psScript);
-                    powerShell.Invoke();
+                    Log.Verbose("Script content: {ScriptContent}", psScript);
+                    using var powerShell = PowerShell.Create();
+                    powerShell
+                        .AddScript(psScript)
+                        .Invoke();
                 }
                 else
                 {

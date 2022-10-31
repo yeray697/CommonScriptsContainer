@@ -18,9 +18,10 @@ namespace Logging
 
         public static void InstanceLogger(Settings settings)
         {
-            LogEventLevel minLoggingLevel = (LogEventLevel)settings.App.LoggingLevel;
-            _consoleLogSink = new LogSink(minLoggingLevel);
-            _levelSwitch = new LoggingLevelSwitch(minLoggingLevel);
+            LogEventLevel fileMinLoggingLevel = ParseLogLevel(settings.Core.LoggingLevel);
+            LogEventLevel consoleMinLoggingLevel = ParseLogLevel(settings.App.LoggingLevel);
+            _consoleLogSink = new LogSink(consoleMinLoggingLevel);
+            _levelSwitch = new LoggingLevelSwitch(fileMinLoggingLevel);
 
             string baseDirectory = FileUtils.GetConfigDirectory();
             CreateLogDirectory(baseDirectory);
@@ -37,16 +38,17 @@ namespace Logging
 
             Log.Logger = loggerConfiguration.CreateLogger();
         }
-        private static void CreateLogDirectory(string baseDirectory)
-        {
-            if (!Directory.Exists(Path.Combine(baseDirectory, LOG_FOLDER)))
-                Directory.CreateDirectory(Path.Combine(baseDirectory, LOG_FOLDER));
-        }
-        public static void ChangeMinLoggingLevel(LogEventLevel newLogLevel)
+        public static void ChangeFileMinLoggingLevel(LogLevel newLogLevel)
         {
             if (_levelSwitch == null)
                 throw new ArgumentNullException("Logger not instantiated. Call InstanceLogger() first", nameof(_levelSwitch));
-            _levelSwitch.MinimumLevel = newLogLevel;
+            _levelSwitch.MinimumLevel = ParseLogLevel(newLogLevel);
+        }
+        public static void ChangeConsoleMinLoggingLevel(LogLevel newLogLevel)
+        {
+            if (_consoleLogSink == null)
+                throw new ArgumentNullException("Logger not instantiated. Call InstanceLogger() first", nameof(_levelSwitch));
+            _consoleLogSink.ChangeLoggingLevel(ParseLogLevel(newLogLevel));
         }
         public static void SetLogEmittedEventListener(LogSink.LogHandler action)
         {
@@ -54,5 +56,12 @@ namespace Logging
                 throw new ArgumentNullException("Logger not instantiated. Call InstanceLogger() first", nameof(_levelSwitch));
             _consoleLogSink.LogEmitted += action;
         }
+        private static void CreateLogDirectory(string baseDirectory)
+        {
+            if (!Directory.Exists(Path.Combine(baseDirectory, LOG_FOLDER)))
+                Directory.CreateDirectory(Path.Combine(baseDirectory, LOG_FOLDER));
+        }
+        private static LogEventLevel ParseLogLevel(LogLevel logLevel)
+            => (LogEventLevel)logLevel;
     }
 }

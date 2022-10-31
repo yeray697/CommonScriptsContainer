@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace App.Extension
+﻿namespace App.Extension
 {
     public static class RichTextBoxExtensions
     {
@@ -16,15 +14,10 @@ namespace App.Extension
         }
         public static void AppendTextThreadSafe(this RichTextBox box, string text, Color color, bool addNewLine = false)
         {
-            var worker = new BackgroundWorker();
-            worker.RunWorkerCompleted += (obj, e) =>
+            box.Invoke((MethodInvoker)delegate ()
             {
-                box.Invoke((MethodInvoker)delegate ()
-                {
-                    box.AppendText(text, color, addNewLine);
-                });
-            };
-            worker.RunWorkerAsync();
+                box.AppendText(text, color, addNewLine);
+            });
         }
         public static void ColorLine(this RichTextBox box, int lineNumber, int lineLength, Color color)
         {
@@ -33,15 +26,10 @@ namespace App.Extension
         }
         public static void ColorLineThreadSafe(this RichTextBox box, int lineNumber, int lineLength, Color color)
         {
-            var worker = new BackgroundWorker();
-            worker.RunWorkerCompleted += (obj, e) =>
+            box.Invoke((MethodInvoker)delegate ()
             {
-                box.Invoke((MethodInvoker)delegate ()
-                {
-                    box.ColorLine(lineNumber, lineLength, color);
-                });
-            };
-            worker.RunWorkerAsync();
+                box.ColorLine(lineNumber, lineLength, color);
+            });
         }
     }
 }

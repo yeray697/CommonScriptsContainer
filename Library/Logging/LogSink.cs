@@ -9,7 +9,7 @@ namespace Logging
         public delegate void LogHandler(LogMessage log);
         public event LogHandler? LogEmitted;
 
-        private readonly LogEventLevel _minLoggingLevel;
+        private LogEventLevel _minLoggingLevel;
 
         public LogSink(LogEventLevel minLoggingLevel)
         {
@@ -28,6 +28,11 @@ namespace Logging
 
                 LogEmitted?.Invoke(msg);
             }
+        }
+
+        public void ChangeLoggingLevel(LogEventLevel newLogLevel)
+        {
+            _minLoggingLevel = newLogLevel;
         }
     }
 }

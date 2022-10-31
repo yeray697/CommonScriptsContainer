@@ -104,7 +104,6 @@ namespace App.CustomComponent.ScriptListBox
         }
         private void SortControls()
         {
-            //TODO This may change based on the type of the script and the status
             if (!IsEmptyList())
             {
                 int lastYLocation = 0;
