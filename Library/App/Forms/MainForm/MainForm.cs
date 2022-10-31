@@ -29,9 +29,6 @@ namespace App.Forms.MainForm
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
-#if DEBUG
-            return;
-#endif
             if (m.Msg == NativeMethods.WM_SHOWME)
             {
                 ShowForm();

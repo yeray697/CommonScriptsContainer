@@ -16,7 +16,11 @@ namespace App
     internal static class Program
     {
         static Mutex? mutex = null;
+#if DEBUG
+        static readonly string applicationMutex = @"Global\fcb9566c-9987-4095-805d-691fb98559e0-Debug";
+#else
         static readonly string applicationMutex = @"Global\fcb9566c-9987-4095-805d-691fb98559e0";
+#endif
 
         /// <summary>
         ///  The main entry point for the application.
@@ -27,9 +31,6 @@ namespace App
             Application.ThreadExit += ThreadOnExit;
             mutex = new Mutex(true, applicationMutex);
             bool singleInstance = mutex.WaitOne(0, false);
-#if DEBUG
-            InitForm(args);
-#else
             if (!singleInstance)
             {
                 BringInstanceToForeground();
@@ -37,7 +38,6 @@ namespace App
             } 
             else
                InitForm(args);
-#endif
         }
         private static void ParseArgs(string[] args, out bool startAppHidden)
         {

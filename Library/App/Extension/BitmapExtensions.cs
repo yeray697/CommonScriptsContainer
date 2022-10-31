@@ -12,12 +12,12 @@ namespace App.Extension
                     new float[] {   0,   0,   0,   0,  0}, // Blue scale factor
                     new float[] {   0,   0,   0,   1,  0}, // alpha scale factor
                     new float[] {   color.R,   color.G,   color.B,   0,  1}};// offset
-            ColorMatrix colorMatrixColor = new ColorMatrix(matrixColor);
-            ImageAttributes colorImageAttributes = new ImageAttributes();
+            var colorMatrixColor = new ColorMatrix(matrixColor);
+            var colorImageAttributes = new ImageAttributes();
             colorImageAttributes.SetColorMatrix(colorMatrixColor, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-            Rectangle destRect = new Rectangle(0, 0, source.Width, source.Height);
-            Bitmap bcolor = new Bitmap(destRect.Width, destRect.Height);
+            var destRect = new Rectangle(0, 0, source.Width, source.Height);
+            var bcolor = new Bitmap(destRect.Width, destRect.Height);
             using (Graphics gColor = Graphics.FromImage(bcolor))
             {
                 gColor.DrawImage(source,
