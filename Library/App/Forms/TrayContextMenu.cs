@@ -49,13 +49,13 @@ namespace App.Forms
                 AddScriptToContextMenu(script);
             }
         }
-        public void RefreshScriptStatus(ScriptAbs script)
-        {
-            var contextMenu = GetContextMenuByScriptId(script.Id);
-            if (contextMenu == null)
-                return;
-            EnableDropDownItemsPerStatus(contextMenu.DropDownItems, script.ScriptStatus);
-        }
+        //public void RefreshScriptStatus(ScriptAbs script)
+        //{
+        //    var contextMenu = GetContextMenuByScriptId(script.Id);
+        //    if (contextMenu == null)
+        //        return;
+        //    EnableDropDownItemsPerStatus(contextMenu.DropDownItems, script.ScriptStatus);
+        //}
         public void AddScript(ScriptAbs script)
         {
             AddScriptToContextMenu(script);

@@ -21,9 +21,11 @@ namespace App.Forms.MainForm
             _trayContextMenu = new TrayContextMenu();
             ConfigureTrayContextMenu();
             runTabControl.SetRunScriptService(runScriptService);
+            runTabControl.ScriptEdited += RunTabControl_ScriptEdited;
+            runTabControl.ScriptAdded += RunTabControl_ScriptAdded;
+            runTabControl.ScriptRemoved += RunTabControl_ScriptRemoved;
         }
 
-        #region Events
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
@@ -36,6 +38,19 @@ namespace App.Forms.MainForm
             }
         }
 
+        #region Events
+        private void RunTabControl_ScriptEdited(ScriptAbs script)
+        {
+            _trayContextMenu.EditScript(script);
+        }
+        private void RunTabControl_ScriptRemoved(ScriptAbs script)
+        {
+            _trayContextMenu.RemoveScript(script.Id);
+        }
+        private void RunTabControl_ScriptAdded(ScriptAbs script)
+        {
+            _trayContextMenu.AddScript(script);
+        }
         protected async override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -92,12 +107,12 @@ namespace App.Forms.MainForm
             _trayContextMenu.CloseClicked += ContextMenu_Close_Click;
             _trayContextMenu.OpenClicked += ContextMenu_Open_Click;
             _trayContextMenu.ScriptStatusClicked += ContextMenu_StatusClick;
+            _trayContextMenu.LoadScriptList(SettingsManager.Scripts);
             this.appNotifyIcon.ContextMenuStrip = _trayContextMenu;
         }
         private void ChangeScriptStatus(ScriptAbs script)
         {
-            runTabControl.RefreshScriptStatus(script.Id);
-            _trayContextMenu.RefreshScriptStatus(script);
+            runTabControl.RefreshScriptStatusAsync(script.Id);
         }
         private async Task OpenInstallFormIfNeededAsync()
         {

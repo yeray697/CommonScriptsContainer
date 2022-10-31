@@ -12,6 +12,11 @@ namespace App.Forms.MainForm.Tabs.Run
 {
     public partial class RunTabControl : UserControl
     {
+        public delegate void ScriptChangedHandler(ScriptAbs source);
+        public event ScriptChangedHandler? ScriptEdited;
+        public event ScriptChangedHandler? ScriptAdded;
+        public event ScriptChangedHandler? ScriptRemoved;
+
         private readonly ScriptListAdapter _scriptListAdapter;
         private readonly ListenKeysService _listenKeysService;
         private IRunScriptService? _runScriptService;
@@ -84,9 +89,9 @@ namespace App.Forms.MainForm.Tabs.Run
             }
         }
         #endregion
-        private static bool IsListenKeyServiceNecessary()
+        private static bool IsListenKeyServiceNecessary(string executingScriptId)
         {
-            return GetScriptListenKeyScripts()?.Any(s => s.ScriptStatus == ScriptStatus.Running) ?? false;
+            return GetScriptListenKeyScripts()?.Any(s => s.ScriptStatus == ScriptStatus.Running && s.Id != executingScriptId) ?? false;
         }
         private static IEnumerable<ScriptListenKey> GetScriptListenKeyScripts()
         {
@@ -114,6 +119,7 @@ namespace App.Forms.MainForm.Tabs.Run
                         await ChangeScriptStatusAsync(editedScript);
                 }
                 _scriptListAdapter.EditItem(script, editedScript);
+                ScriptEdited?.Invoke(editedScript);
             });
         }
         private async Task ShowAddScriptForm()
@@ -125,6 +131,7 @@ namespace App.Forms.MainForm.Tabs.Run
                 addedScript.Id = Guid.NewGuid().ToString();
                 await SettingsManager.AddScriptAsync(addedScript);
                 _scriptListAdapter.AddItem(addedScript);
+                ScriptAdded?.Invoke(addedScript);
             });
         }
         private async Task ShowRemoveScriptDialogAsync(ScriptAbs script)
@@ -135,6 +142,7 @@ namespace App.Forms.MainForm.Tabs.Run
                 Log.Debug("Removing ScriptId {@ScriptId}", script.Id);
                 await SettingsManager.RemoveScriptAsync(script.Id);
                 _scriptListAdapter.RemoveItem(script.Id);
+                ScriptRemoved?.Invoke(script);
             }
         }
         private Task ShowScriptForm(ScriptAbs? script, Func<ScriptAbs?, Task> postAction)
@@ -146,8 +154,10 @@ namespace App.Forms.MainForm.Tabs.Run
             }
             return Task.CompletedTask;
         }
-        private async Task ChangeScriptStatusAsync(ScriptAbs script)
+        private async Task ChangeScriptStatusAsync(ScriptAbs? script)
         {
+            if (script == null)
+                return;
             ScriptStatus oldStatus = script.ScriptStatus;
             script.ScriptStatus = GetNewScriptStatus(oldStatus);
 
@@ -161,15 +171,16 @@ namespace App.Forms.MainForm.Tabs.Run
             }
             else
             {
-                if (script is ScriptListenKey && !IsListenKeyServiceNecessary())
+                if (script is ScriptListenKey && !IsListenKeyServiceNecessary(script.Id))
                     _listenKeysService.Stop();
-                else
+                else 
                     await _runScriptService!.StopScriptAsync(script);
             }
 
             await SettingsManager.EditScriptAsync(script);
 
-            _scriptListAdapter.RefreshScriptStatus(script.Id);
+            _scriptListAdapter.RefreshScriptStatus(script.Id, script.ScriptStatus);
+            ScriptEdited?.Invoke(script);
         }
         private static ScriptStatus GetNewScriptStatus(ScriptStatus oldStatus)
         {
@@ -191,8 +202,11 @@ namespace App.Forms.MainForm.Tabs.Run
         #endregion
 
         #region Public methods
-        public void RefreshScriptStatus(string scriptId)
-            => _scriptListAdapter.RefreshScriptStatus(scriptId);
+        public async void RefreshScriptStatusAsync(string scriptId)
+        {
+            var script = SettingsManager.FindScriptById(scriptId);
+            await ChangeScriptStatusAsync(script);
+        }
         #endregion
 
     }

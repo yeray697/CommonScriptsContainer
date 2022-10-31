@@ -1,4 +1,5 @@
 ﻿using CommonScripts.CustomComponent.ScriptListBox;
+using Contracts.Scripts;
 using Contracts.Scripts.Base;
 
 namespace App.CustomComponent.ScriptListBox
@@ -51,9 +52,13 @@ namespace App.CustomComponent.ScriptListBox
                 SortControls();
             }
         }
-        public void RefreshScriptStatus(string scriptId)
+        public void RefreshScriptStatus(string scriptId, ScriptStatus newStatus)
         {
-            FindById(scriptId)?.PaintScriptStatus();
+            var script = FindById(scriptId);
+            if (script == null)
+                return;
+            script.Script.ScriptStatus = newStatus;
+            script?.PaintScriptStatus();
         }
         #endregion
 
