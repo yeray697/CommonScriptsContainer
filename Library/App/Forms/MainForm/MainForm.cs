@@ -51,7 +51,6 @@ namespace App.Forms.MainForm
         protected async override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            await OpenInstallFormIfNeededAsync();
             await ShowRunAtStartupDialogIfNeededAsync();
         }
         private void SettingsTab_Open(object sender, EventArgs e)
@@ -110,17 +109,6 @@ namespace App.Forms.MainForm
         private void ChangeScriptStatus(ScriptAbs script)
         {
             runTabControl.RefreshScriptStatusAsync(script.Id);
-        }
-        private async Task OpenInstallFormIfNeededAsync()
-        {
-            if (string.IsNullOrWhiteSpace(SettingsManager.Settings.Core.InstallationPath))
-            {
-                var installationPathForm = new SetInstallationPathForm();
-                if (installationPathForm.ShowDialogCenter(this) == DialogResult.OK)
-                {
-                    await SettingsManager.UpdateSettingsAsync((settings) => settings.Core.InstallationPath = installationPathForm.InstallationPath!);
-                }
-            }
         }
         private async Task ShowRunAtStartupDialogIfNeededAsync()
         {

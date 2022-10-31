@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.btnSave = new MaterialSkin.Controls.MaterialButton();
-            this.btnCancel = new MaterialSkin.Controls.MaterialButton();
             this.btnInstallationPath = new MaterialSkin.Controls.MaterialButton();
             this.tbxInstallationPath = new MaterialSkin.Controls.MaterialTextBox2();
             this.fbdInstallationPath = new System.Windows.Forms.FolderBrowserDialog();
@@ -58,30 +57,6 @@
             this.btnSave.UseAccentColor = false;
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.Save);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.btnCancel.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnCancel.Depth = 0;
-            this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.btnCancel.HighEmphasis = true;
-            this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(336, 148);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnCancel.Size = new System.Drawing.Size(77, 36);
-            this.btnCancel.TabIndex = 6;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnCancel.UseAccentColor = false;
-            this.btnCancel.UseVisualStyleBackColor = false;
-            this.btnCancel.Click += new System.EventHandler(this.Cancel);
             // 
             // btnInstallationPath
             // 
@@ -116,6 +91,7 @@
             this.tbxInstallationPath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.tbxInstallationPath.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
             this.tbxInstallationPath.Depth = 0;
+            this.tbxInstallationPath.ErrorMessage = "Directory does not exist";
             this.tbxInstallationPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tbxInstallationPath.HideSelection = true;
             this.tbxInstallationPath.Hint = "Path";
@@ -133,12 +109,14 @@
             this.tbxInstallationPath.SelectionLength = 0;
             this.tbxInstallationPath.SelectionStart = 0;
             this.tbxInstallationPath.ShortcutsEnabled = true;
-            this.tbxInstallationPath.Size = new System.Drawing.Size(394, 48);
+            this.tbxInstallationPath.ShowAssistiveText = true;
+            this.tbxInstallationPath.Size = new System.Drawing.Size(394, 64);
             this.tbxInstallationPath.TabIndex = 5;
             this.tbxInstallationPath.TabStop = false;
             this.tbxInstallationPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.tbxInstallationPath.TrailingIcon = null;
             this.tbxInstallationPath.UseSystemPasswordChar = false;
+            this.tbxInstallationPath.TextChanged += new System.EventHandler(this.InstallationPath_TextChanged);
             // 
             // SetInstallationPathForm
             // 
@@ -147,7 +125,6 @@
             this.ClientSize = new System.Drawing.Size(501, 194);
             this.Controls.Add(this.tbxInstallationPath);
             this.Controls.Add(this.btnInstallationPath);
-            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Location = new System.Drawing.Point(0, 0);
             this.MaximumSize = new System.Drawing.Size(700, 194);
@@ -163,7 +140,6 @@
         #endregion
 
         private MaterialSkin.Controls.MaterialButton btnSave;
-        private MaterialSkin.Controls.MaterialButton btnCancel;
         private MaterialSkin.Controls.MaterialButton btnInstallationPath;
         private MaterialSkin.Controls.MaterialTextBox2 tbxInstallationPath;
         private System.Windows.Forms.FolderBrowserDialog fbdInstallationPath;

@@ -11,13 +11,14 @@ namespace App.Forms
         }
         private void Save(object sender, EventArgs e)
         {
+            if (!Directory.Exists(tbxInstallationPath.Text))
+            {
+                tbxInstallationPath.SetErrorState(true);
+                return;
+            }
+
             InstallationPath = tbxInstallationPath.Text;
             DialogResult = DialogResult.OK;
-            Close();
-        }
-        private void Cancel(object sender, EventArgs e)
-        {
-            InstallationPath = null;
             Close();
         }
         private void ShowPathSelector(object sender, EventArgs e)
@@ -25,5 +26,8 @@ namespace App.Forms
             if (fbdInstallationPath.ShowDialog() == DialogResult.OK)
                 tbxInstallationPath.Text = fbdInstallationPath.SelectedPath;
         }
+
+        private void InstallationPath_TextChanged(object sender, EventArgs e)
+            => tbxInstallationPath.SetErrorState(false);
     }
 }

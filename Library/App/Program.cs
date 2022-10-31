@@ -1,4 +1,5 @@
 using App.Extension;
+using App.Forms;
 using App.Forms.MainForm;
 using App.Service;
 using App.Service.Interfaces;
@@ -10,11 +11,15 @@ using Logging;
 using MaterialSkin;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using System.Windows.Forms.Design;
 
 namespace App
 {
     internal static class Program
     {
+        private static IServiceCollection? ServiceCollection { get; set; }
+        private static ServiceProvider? ServiceProvider { get; set; }
+        private static bool IsInstallationFormOpen = false;
         static Mutex? mutex = null;
 #if DEBUG
         static readonly string applicationMutex = @"Global\fcb9566c-9987-4095-805d-691fb98559e0-Debug";
@@ -55,18 +60,23 @@ namespace App
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ConfigureServices();
+            InitServices();
             RunForm(startAppHidden);
         }
-        private static void RunForm(bool startAppHidden)
+        private static void InitServices()
         {
-            using ServiceProvider serviceProvider = ServiceCollection!.BuildServiceProvider();
-            Data.Service.ISettingsService settingsService = serviceProvider.GetRequiredService<Data.Service.ISettingsService>();
+            ServiceProvider = ServiceCollection!.BuildServiceProvider();
+            Data.Service.ISettingsService settingsService = ServiceProvider.GetRequiredService<Data.Service.ISettingsService>();
             Task.Run(async () => await SettingsManager.InitInstanceAsync(settingsService))
                 .Wait();
             LogManager.InstanceLogger(SettingsManager.Settings);
             MaterialSkinManager.Instance.ChangeTheme(SettingsManager.Settings.App.DarkMode, true);
-
-            var mainForm = serviceProvider.GetService<MainForm>()!;
+        }
+        private static void RunForm(bool startAppHidden)
+        {
+            if (!OpenInstallFormIfNeeded())
+                return;
+            var mainForm = ServiceProvider!.GetService<MainForm>()!;
             Log.Information("Starting application...");
             if (startAppHidden)
             {
@@ -86,11 +96,10 @@ namespace App
         }
         private static void ThreadOnExit(object? s, EventArgs e)
         {
-            mutex?.Dispose();
-            Application.ThreadExit -= ThreadOnExit;
-            Application.Exit();
+            if (IsInstallationFormOpen)
+                return;
+            DisposeObjects();
         }
-        private static IServiceCollection? ServiceCollection { get; set; }
         private static void ConfigureServices()
         {
             ServiceCollection = new ServiceCollection();
@@ -99,6 +108,39 @@ namespace App
                 .AddScoped<IRunScriptService, RunScriptService>()
                 .AddScoped<IWindowsRegistryService, WindowsRegistryService>()
                 .AddSingleton<MainForm>();
+        }
+        private static bool OpenInstallFormIfNeeded()
+        {
+            bool result = true;
+            if (string.IsNullOrWhiteSpace(SettingsManager.Settings.Core.InstallationPath))
+            {
+                var installationPathForm = new SetInstallationPathForm
+                {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+                IsInstallationFormOpen = true;
+                Application.Run(installationPathForm);
+                if (installationPathForm.DialogResult == DialogResult.OK)
+                {
+                    Task.Run(async () => await SettingsManager.UpdateSettingsAsync((settings) => settings.Core.InstallationPath = installationPathForm.InstallationPath!))
+                        .Wait();
+                    Application.Exit();
+                }
+                else
+                {
+                    DisposeObjects();
+                    result = false;
+                }
+                IsInstallationFormOpen = false;
+            }
+            return result;
+        }
+        private static void DisposeObjects()
+        {
+            mutex?.Dispose();
+            ServiceProvider?.Dispose();
+            Application.ThreadExit -= ThreadOnExit;
+            Application.Exit();
         }
     }
 }
