@@ -1,0 +1,103 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\ShutdownPC\ShutdownPC.ps1" />
+    <None Remove="Scripts\ToggleAudioDevice\AudioDeviceCmdlets.dll" />
+    <None Remove="Scripts\ToggleAudioDevice\Toggle-AudioDevice.ps1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Scripts\ShutdownPC\ShutdownPC.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Include="Scripts\ToggleAudioDevice\AudioDeviceCmdlets.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Include="Scripts\ToggleAudioDevice\Toggle-AudioDevice.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialSkin.2" Version="2.3.1" />
+    <PackageReference Include="MouseKeyHook" Version="5.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\JobManager\JobManager.csproj" />
+    <ProjectReference Include="..\Logging\Logging.csproj" />
+    <ProjectReference Include="..\Settings\Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Forms\Base\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\Base\BaseInnerForm.cs" />
+    <Compile Update="CustomComponent\ScriptListBox\ScriptItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="CustomComponent\ScriptListBox\ScriptItem.Designer.cs">
+      <DependentUpon>ScriptItem.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\MainForm\MainForm.cs" />
+    <Compile Update="Forms\MainForm\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\MainForm\Tabs\Console\ConsoleTabControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Forms\MainForm\Tabs\Run\RunTabControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Forms\MainForm\Tabs\Settings\SettingsTabControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Forms\ScriptForm.cs" />
+    <Compile Update="Forms\ScriptForm.Designer.cs">
+      <DependentUpon>ScriptForm.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\SetInstallationPathForm.cs" />
+    <Compile Update="Forms\TrayContextMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="CustomComponent\ScriptListBox\ScriptItem.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ScriptItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\MainForm\MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\ScriptForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ScriptForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
