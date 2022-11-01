@@ -37,9 +37,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Contracts\Contracts.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
     <ProjectReference Include="..\JobManager\JobManager.csproj" />
     <ProjectReference Include="..\Logging\Logging.csproj" />
-    <ProjectReference Include="..\Settings\Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
