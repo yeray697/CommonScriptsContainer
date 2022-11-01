@@ -47,13 +47,13 @@ namespace Logging
         public static void ChangeConsoleMinLoggingLevel(LogLevel newLogLevel)
         {
             if (_consoleLogSink == null)
-                throw new ArgumentNullException("Logger not instantiated. Call InstanceLogger() first", nameof(_levelSwitch));
+                throw new ArgumentNullException("Logger not instantiated. Call InstanceLogger() first", nameof(_consoleLogSink));
             _consoleLogSink.ChangeLoggingLevel(ParseLogLevel(newLogLevel));
         }
         public static void SetLogEmittedEventListener(LogSink.LogHandler action)
         {
             if (_consoleLogSink == null)
-                throw new ArgumentNullException("Logger not instantiated. Call InstanceLogger() first", nameof(_levelSwitch));
+                return;
             _consoleLogSink.LogEmitted += action;
         }
         private static void CreateLogDirectory(string baseDirectory)
