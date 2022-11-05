@@ -1,5 +1,4 @@
-﻿using Common;
-using Contracts.Config;
+﻿using Contracts.Config;
 using Data.Repository.Interfaces;
 using Data.Service.Interfaces;
 
@@ -8,7 +7,6 @@ namespace Data.Service
     public class SettingsService : ISettingsService
     {
         private readonly ISettingsRepository _fileRepository;
-        private const string SettingsFileName = "settings.json";
         
         public SettingsService(ISettingsRepository fileRepository)
         {
@@ -16,41 +14,9 @@ namespace Data.Service
         }
         
         public async Task<Settings> ReadSettingsAsync()
-            => await ReadFileAsync<Settings>(GetConfigPath());
+            => await _fileRepository.ReadSettingsAsync();
 
         public async Task UpdateSettingsAsync(Settings settings)
-            => await _fileRepository.UpdateFileAsync(settings, GetConfigPath());
-
-        private async Task<T> ReadFileAsync<T>(string filePath)
-            where T : new()
-        {
-            T fileContent;
-
-            if (!_fileRepository.FileExists(filePath))
-            {
-                fileContent = new();
-                CreateDirectoryIfNotExists(filePath);
-                await _fileRepository.UpdateFileAsync(fileContent, filePath);
-            }
-            else
-                fileContent = await _fileRepository.GetFileAsync<T>(filePath);
-
-            return fileContent;
-        }
-
-        private static void CreateDirectoryIfNotExists(string filePath)
-        {
-            string? directoryPath = Path.GetDirectoryName(filePath);
-            if (directoryPath == null)
-                throw new ArgumentNullException(directoryPath);
-            if (!Directory.Exists(directoryPath))
-                Directory.CreateDirectory(directoryPath);
-        }
-
-        private static string GetFilePath(string configFilename)
-            => Path.Combine(FileUtils.GetConfigDirectory(), configFilename);
-
-        private static string GetConfigPath()
-            => GetFilePath(SettingsFileName);
+            => await _fileRepository.UpdateSettingsAsync(settings);
     }
 }

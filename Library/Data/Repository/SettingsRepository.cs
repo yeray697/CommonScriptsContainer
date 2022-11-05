@@ -1,4 +1,6 @@
-﻿using Data.Repository.Interfaces;
+﻿using Common;
+using Contracts.Config;
+using Data.Repository.Interfaces;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -6,7 +8,9 @@ namespace Data.Repository
 {
     public class SettingsRepository : ISettingsRepository
     {
+        private const string SettingsFileName = "settings.json";
         private readonly JsonSerializerOptions _options;
+
         public SettingsRepository()
         {
             _options = new JsonSerializerOptions
@@ -15,13 +19,37 @@ namespace Data.Repository
                 WriteIndented = true
             };
         }
-        public bool FileExists(string path)
-            => File.Exists(path);
 
-        public async Task<T> GetFileAsync<T>(string path)
-            => JsonSerializer.Deserialize<T>(await File.ReadAllTextAsync(path), _options)!;
+        public async Task<Settings> ReadSettingsAsync()
+        {
+            Settings fileContent;
+            string settingsPath = GetSettingsPath();
 
-        public async Task UpdateFileAsync(object file, string path)
-            => await File.WriteAllTextAsync(path, JsonSerializer.Serialize(file, _options));
+            if (!File.Exists(settingsPath))
+            {
+                fileContent = new();
+                CreateDirectoryIfNotExists(settingsPath);
+                await UpdateSettingsAsync(fileContent);
+            }
+            else
+                fileContent = JsonSerializer.Deserialize<Settings>(await File.ReadAllTextAsync(settingsPath), _options)!;
+
+            return fileContent;
+        }
+
+        public async Task UpdateSettingsAsync(object file)
+            => await File.WriteAllTextAsync(GetSettingsPath(), JsonSerializer.Serialize(file, _options));
+
+        private static string GetSettingsPath()
+            => Path.Combine(FileUtils.GetConfigDirectory(), SettingsFileName);
+
+        private static void CreateDirectoryIfNotExists(string filePath)
+        {
+            string? directoryPath = Path.GetDirectoryName(filePath);
+            if (directoryPath == null)
+                throw new ArgumentNullException(directoryPath);
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
+        }
     }
 }

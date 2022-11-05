@@ -54,7 +54,7 @@ namespace Data
             {
                 if (db != null)
                     return;
-                db = new LiteDatabase(Path.Combine(FileUtils.GetConfigDirectory(), DB_NAME));
+                db = new LiteDatabase(GetDatabasePath());
             }
         }
 
@@ -72,6 +72,16 @@ namespace Data
         {
             db?.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        private static string GetDatabasePath()
+        {
+#if DEBUG
+            string path = FileUtils.GetConfigDirectory();
+#else
+            string path = SettingsManager.Settings.Core.InstallationPath;
+#endif
+            return Path.Combine(path, DB_NAME);
         }
     }
 }
