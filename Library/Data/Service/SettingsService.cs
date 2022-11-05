@@ -1,29 +1,22 @@
 ﻿using Common;
 using Contracts.Config;
-using Contracts.Scripts.Base;
-using Data.Repository;
+using Data.Repository.Interfaces;
+using Data.Service.Interfaces;
 
 namespace Data.Service
 {
     public class SettingsService : ISettingsService
     {
-        private readonly IFileRepository _fileRepository;
+        private readonly ISettingsRepository _fileRepository;
         private const string SettingsFileName = "settings.json";
-        private const string ScriptsFileName = "scripts.json";
         
-        public SettingsService(IFileRepository fileRepository)
+        public SettingsService(ISettingsRepository fileRepository)
         {
             _fileRepository = fileRepository;
         }
-
-        public async Task<List<ScriptAbs>> ReadScriptsAsync()
-            => await ReadFileAsync< List<ScriptAbs>>(GetScriptsPath());
         
         public async Task<Settings> ReadSettingsAsync()
             => await ReadFileAsync<Settings>(GetConfigPath());
-
-        public async Task UpdateScriptsAsync(List<ScriptAbs> scripts)
-            => await _fileRepository.UpdateFileAsync(scripts, GetScriptsPath());
 
         public async Task UpdateSettingsAsync(Settings settings)
             => await _fileRepository.UpdateFileAsync(settings, GetConfigPath());
@@ -59,8 +52,5 @@ namespace Data.Service
 
         private static string GetConfigPath()
             => GetFilePath(SettingsFileName);
-
-        private static string GetScriptsPath()
-            => GetFilePath(ScriptsFileName);
     }
 }

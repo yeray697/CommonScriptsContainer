@@ -1,5 +1,7 @@
 ﻿using Data.Repository;
+using Data.Repository.Interfaces;
 using Data.Service;
+using Data.Service.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Data.Extensions
@@ -10,7 +12,9 @@ namespace Data.Extensions
         {
             return serviceCollection
                 .AddScoped<ISettingsService, SettingsService>()
-                .AddScoped<IFileRepository, FileRepository>();
+                .AddScoped<IScriptsService, ScriptsService>()
+                .AddScoped<ISettingsRepository, SettingsRepository>()
+                .AddScoped<IScriptsRepository, ScriptsRepository>();
         }
     }
 }

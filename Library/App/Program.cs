@@ -6,6 +6,7 @@ using App.Service.Interfaces;
 using App.Utils;
 using Data;
 using Data.Extensions;
+using Data.Service.Interfaces;
 using JobManager.Service;
 using Logging;
 using MaterialSkin;
@@ -66,7 +67,7 @@ namespace App
         private static void InitServices()
         {
             ServiceProvider = ServiceCollection!.BuildServiceProvider();
-            Data.Service.ISettingsService settingsService = ServiceProvider.GetRequiredService<Data.Service.ISettingsService>();
+            ISettingsService settingsService = ServiceProvider.GetRequiredService<ISettingsService>();
             Task.Run(async () => await SettingsManager.InitInstanceAsync(settingsService))
                 .Wait();
             LogManager.InstanceLogger(SettingsManager.Settings);

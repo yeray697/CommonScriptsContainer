@@ -1,17 +1,17 @@
-﻿using Data.Converter;
+﻿using Data.Repository.Interfaces;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Data.Repository
 {
-    public class FileRepository : IFileRepository
+    public class SettingsRepository : ISettingsRepository
     {
-        private JsonSerializerOptions _options;
-        public FileRepository()
+        private readonly JsonSerializerOptions _options;
+        public SettingsRepository()
         {
             _options = new JsonSerializerOptions
             {
-                Converters = { new ScriptJsonConverter(), new JsonStringEnumConverter() },
+                Converters = { new JsonStringEnumConverter() },
                 WriteIndented = true
             };
         }
