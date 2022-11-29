@@ -9,12 +9,16 @@ namespace App.Forms.Base
         private const int WS_MINIMIZEBOX = 0x20000;
         private const int CS_DBLCLKS = 0x8;
 
-        public BaseForm()
+        protected BaseForm()
         {
-            InitializeComponent();
-            Utils.DropShadow.ApplyShadows(this);
             MaterialSkinManager.Instance.AddFormToManage(this);
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            Utils.DropShadow.ApplyShadows(this);
+        }
+
         protected override CreateParams CreateParams
         {
             get

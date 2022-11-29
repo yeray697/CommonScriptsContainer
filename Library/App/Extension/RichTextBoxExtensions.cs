@@ -14,10 +14,20 @@
         }
         public static void AppendTextThreadSafe(this RichTextBox box, string text, Color color, bool addNewLine = false)
         {
-            box.Invoke((MethodInvoker)delegate ()
+            if (box.IsHandleCreated)
             {
-                box.AppendText(text, color, addNewLine);
-            });
+                if (box.InvokeRequired)
+                {
+                    box.Invoke((MethodInvoker)delegate ()
+                    {
+                        box.AppendText(text, color, addNewLine);
+                    });
+                }
+                else
+                {
+                    box.AppendText(text, color, addNewLine);
+                }
+            }
         }
         public static void ColorLine(this RichTextBox box, int lineNumber, int lineLength, Color color)
         {
