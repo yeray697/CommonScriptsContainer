@@ -16,7 +16,7 @@ namespace App.Forms.Base
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Utils.DropShadow.ApplyShadows(this);
+            ApplyFormStyle();
         }
 
         protected override CreateParams CreateParams
@@ -31,6 +31,26 @@ namespace App.Forms.Base
                 cp.ClassStyle |= CS_DBLCLKS;
                 return cp;
             }
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            if (this.WindowState == FormWindowState.Maximized)
+                Invalidate();
+        }
+
+        protected override void OnResizeEnd(EventArgs e)
+        {
+            base.OnResizeEnd(e);
+            if (this.WindowState == FormWindowState.Normal)
+                ApplyFormStyle();
+
+        }
+
+        protected void ApplyFormStyle()
+        {
+            Utils.DropShadow.ApplyShadows(this);
         }
 
         public DialogResult ShowDialogCenter(IWin32Window form)

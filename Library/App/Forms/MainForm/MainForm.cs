@@ -100,6 +100,7 @@ namespace App.Forms.MainForm
             bool currentTop = TopMost;
             TopMost = true;
             TopMost = currentTop;
+            ApplyFormStyle();
         }
         private void ConfigureTrayContextMenu(List<ScriptAbs> scripts)
         {
