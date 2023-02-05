@@ -13,6 +13,7 @@ namespace App.Forms.MainForm
     {
         private readonly TrayContextMenu _trayContextMenu;
         private readonly IWindowsRegistryService _windowsRegistryService;
+        public bool RunOnStartup { get; set; }
 
         public MainForm(IRunScriptService runScriptService, IWindowsRegistryService windowsRegistryService, IScriptsService scriptsService)
         {
@@ -55,6 +56,10 @@ namespace App.Forms.MainForm
         {
             base.OnLoad(e);
             await ShowRunAtStartupDialogIfNeededAsync();
+            if (RunOnStartup)
+            {
+                runTabControl.RunScriptsOnStartupAsync();
+            }
         }
         private void SettingsTab_Open(object sender, EventArgs e)
         {

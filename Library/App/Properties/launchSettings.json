@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "App": {
+      "commandName": "Project"
+    },
+    "AppStartup": {
+      "commandName": "Project",
+      "commandLineArgs": "-startup"
+    },
+    "AppHide": {
+      "commandName": "Project",
+      "commandLineArgs": "-hide"
+    },
+    "AppHideAndStartup": {
+      "commandName": "Project",
+      "commandLineArgs": "-hide -startup"
+    }
+  }
+}

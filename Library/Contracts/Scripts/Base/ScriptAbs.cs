@@ -35,6 +35,7 @@
                     ScriptType.OneOff => new ScriptOneOff(),
                     ScriptType.Scheduled => new ScriptScheduled(),
                     ScriptType.ListenKey => new ScriptListenKey(),
+                    ScriptType.OnStartup => new ScriptOnStartup(),
                     _ => throw new Exception(),
                 };
                 if (hasScriptTypeChanged && oldScript != null)

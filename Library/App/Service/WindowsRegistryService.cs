@@ -11,6 +11,7 @@ namespace App.Service
         private const string WINDOWS_REGISTRY_STARTUP_KEY = "CommonScripts";
         private const string APP_EXE_NAME = "CommonScripts.Exe";
         public const string APP_HIDE_ARG = "-hide";
+        public const string APP_ON_STARTUP_ARG = "-startup";
 
         public bool IsAppSetToRunAtStartup()
         {
@@ -22,13 +23,12 @@ namespace App.Service
         public bool SetAppToRunAtStartup()
         {
             string exePath = Path.Combine(SettingsManager.Settings.Core.InstallationPath, APP_EXE_NAME);
-            string args = APP_HIDE_ARG;
             bool result = true;
             try
             {
                 Registry.SetValue(WINDOWS_REGISTRY_STARTUP_PATH,
                  WINDOWS_REGISTRY_STARTUP_KEY,
-                 exePath + " " + args);
+                 $"{exePath} {APP_HIDE_ARG} {APP_ON_STARTUP_ARG}");
             }
             catch (Exception e)
             {
