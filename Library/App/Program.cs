@@ -49,7 +49,7 @@ namespace App
         {
             startAppHidden = false;
             onStartup = false;
-            if (args != null && args.Length == 1)
+            if (args != null)
             {
                 foreach (var arg in args)
                 {
