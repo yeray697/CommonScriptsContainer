@@ -53,6 +53,14 @@ namespace App.Forms.MainForm.Tabs.Run
             var script = _scripts.FirstOrDefault(s => s.Id == scriptId)?.Clone();
             await ChangeScriptStatusAsync(script);
         }
+        public async void RunScriptsOnStartupAsync()
+        {
+            var scripts = GetRunningScriptsByType<ScriptOnStartup>();
+            foreach (var script in scripts)
+            {
+                await _runScriptService!.RunScriptAsync(script);
+            }
+        }
         #endregion
         #region Events
         private async void OnLoad(object sender, EventArgs e)

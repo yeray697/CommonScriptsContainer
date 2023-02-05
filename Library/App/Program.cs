@@ -45,24 +45,31 @@ namespace App
             else
                InitForm(args);
         }
-        private static void ParseArgs(string[] args, out bool startAppHidden)
+        private static void ParseArgs(string[] args, out bool startAppHidden, out bool onStartup)
         {
             startAppHidden = false;
-            if (args != null && args.Length == 1)
+            onStartup = false;
+            if (args != null)
             {
-                if (args[0] == WindowsRegistryService.APP_HIDE_ARG)
-                    startAppHidden = true;
+                foreach (var arg in args)
+                {
+                    if (arg == WindowsRegistryService.APP_HIDE_ARG)
+                        startAppHidden = true;
+                    else if (arg == WindowsRegistryService.APP_ON_STARTUP_ARG)
+                        onStartup = true;
+
+                }
             }
         }
         private static void InitForm(string[] args)
         {
-            ParseArgs(args, out bool startAppHidden);
+            ParseArgs(args, out bool startAppHidden, out bool onStartup);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ConfigureServices();
             InitServices();
-            RunForm(startAppHidden);
+            RunForm(startAppHidden, onStartup);
         }
         private static void InitServices()
         {
@@ -73,7 +80,7 @@ namespace App
             LogManager.InstanceLogger(SettingsManager.Settings);
             MaterialSkinManager.Instance.ChangeTheme(SettingsManager.Settings.App.DarkMode, true);
         }
-        private static void RunForm(bool startAppHidden)
+        private static void RunForm(bool startAppHidden, bool onStartup)
         {
             if (!OpenInstallFormIfNeeded())
                 return;
@@ -85,6 +92,7 @@ namespace App
                 mainForm.Hide();
                 mainForm.ShowInTaskbar = false;
             }
+            mainForm.RunOnStartup = onStartup;
             Application.Run(mainForm);
         }
         private static void BringInstanceToForeground()
