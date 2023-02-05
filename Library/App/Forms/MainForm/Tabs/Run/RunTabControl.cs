@@ -3,7 +3,7 @@ using App.Service;
 using Contracts.Key;
 using Contracts.Scripts;
 using Contracts.Scripts.Base;
-using Data;
+using Data.Service.Interfaces;
 using JobManager.Service;
 using MaterialSkin.Controls;
 using Serilog;
@@ -20,9 +20,13 @@ namespace App.Forms.MainForm.Tabs.Run
         private readonly ScriptListAdapter _scriptListAdapter;
         private readonly ListenKeysService _listenKeysService;
         private IRunScriptService? _runScriptService;
+        private IScriptsService? _scriptsService;
+        private List<ScriptAbs> _scripts;
         public RunTabControl()
         {
             InitializeComponent();
+
+            _scripts = new();
 
             _scriptListAdapter = new ScriptListAdapter(pnlScripts);
             _scriptListAdapter.ShowMenu += ShowContextMenuScript;
@@ -31,21 +35,43 @@ namespace App.Forms.MainForm.Tabs.Run
             _listenKeysService = ListenKeysService.GetInstance();
             _listenKeysService.KeyUpClicked += ListenKeysService_KeyUpClicked;
         }
+
+        #region Public methods
         public void SetRunScriptService(IRunScriptService runScriptService)
         {
             _runScriptService = runScriptService;
             _runScriptService.OneOffScriptExecuted += OneOffJobWasExecuted;
         }
+        public List<ScriptAbs> SetScriptsService(IScriptsService scriptsService)
+        {
+            _scriptsService = scriptsService;
+            _scripts = _scriptsService.GetScripts();
+            return _scripts;
+        }
+        public async void RefreshScriptStatusAsync(string scriptId)
+        {
+            var script = _scripts.FirstOrDefault(s => s.Id == scriptId)?.Clone();
+            await ChangeScriptStatusAsync(script);
+        }
+        public async void RunScriptsOnStartupAsync()
+        {
+            var scripts = GetRunningScriptsByType<ScriptOnStartup>();
+            foreach (var script in scripts)
+            {
+                await _runScriptService!.RunScriptAsync(script);
+            }
+        }
+        #endregion
         #region Events
         private async void OnLoad(object sender, EventArgs e)
         {
             if (this.DesignMode) return;
-            _scriptListAdapter.CreateWithList(SettingsManager.Scripts);
-            await CheckIfScriptsNeedToRunOnLoad();
+            _scriptListAdapter.CreateWithList(_scripts);
+            await CheckIfScriptsNeedToRunOnLoadAsync();
         }
         private void OneOffJobWasExecuted(string scriptId)
         {
-            var script = SettingsManager.FindScriptById(scriptId);
+            var script = _scripts.FirstOrDefault(s => s.Id == scriptId)?.Clone();
             if (script != null)
                 ChangeScriptStatusThreadSafe(script);
         }
@@ -74,7 +100,7 @@ namespace App.Forms.MainForm.Tabs.Run
             }
             else if (e.ClickedItem.Text == "Remove")
             {
-                await ShowRemoveScriptDialogAsync(script);
+                ShowRemoveScriptDialog(script);
             }
         }
         private void ListenKeysService_KeyUpClicked(KeyPressed keyPressed)
@@ -93,7 +119,7 @@ namespace App.Forms.MainForm.Tabs.Run
         #endregion
 
         #region Private Methods
-        private async Task CheckIfScriptsNeedToRunOnLoad()
+        private async Task CheckIfScriptsNeedToRunOnLoadAsync()
         {
             foreach (var script in GetRunningScriptsByType<ScriptScheduled>())
                 await _runScriptService!.RunScriptAsync(script);
@@ -101,10 +127,10 @@ namespace App.Forms.MainForm.Tabs.Run
             if (IsListenKeyServiceNecessary())
                 _listenKeysService.Run();
         }
-        private static bool IsListenKeyServiceNecessary(string? executingScriptId = null)
+        private bool IsListenKeyServiceNecessary(string? executingScriptId = null)
             => GetRunningScriptsByType<ScriptListenKey>()?.Any(s => s.Id != executingScriptId) ?? false;
-        private static IEnumerable<T> GetRunningScriptsByType<T>() 
-            where T : ScriptAbs => SettingsManager.Scripts.OfType<T>().Where(s => s.ScriptStatus == ScriptStatus.Running);
+        private IEnumerable<T> GetRunningScriptsByType<T>() 
+            where T : ScriptAbs => _scripts.OfType<T>().Where(s => s.ScriptStatus == ScriptStatus.Running);
         private void ChangeScriptStatusThreadSafe(ScriptAbs script)
             => this.Invoke((MethodInvoker) async delegate () { await ChangeScriptStatusAsync(script); });
         private async Task ShowEditScriptFormAsync(ScriptAbs script)
@@ -114,7 +140,7 @@ namespace App.Forms.MainForm.Tabs.Run
                     return;
                 Log.Debug("Editing Script {@ScriptName} ({@ScriptType})", editedScript.ScriptName, editedScript.ScriptType);
                 bool rescheduleJob = ScriptAbs.HasScriptTypeChanged(script.ScriptType, editedScript.ScriptType) || ScriptAbs.HasScheduledTimeChanged(script, editedScript);
-                await SettingsManager.EditScriptAsync(editedScript);
+                UpdateScript(editedScript);
                 if (editedScript.ScriptStatus == ScriptStatus.Running && rescheduleJob)
                 {
                     await _runScriptService!.StopScriptAsync(editedScript);
@@ -129,23 +155,24 @@ namespace App.Forms.MainForm.Tabs.Run
         }
         private async Task ShowAddScriptForm()
         {
-            await ShowScriptForm(null, async (ScriptAbs? addedScript) => {
+            await ShowScriptForm(null, (ScriptAbs? addedScript) => {
                 if (addedScript == null)
-                    return;
+                    return Task.CompletedTask;
                 Log.Debug("Adding Script {@ScriptName} ({@ScriptType})", addedScript.ScriptName, addedScript.ScriptType);
                 addedScript.Id = Guid.NewGuid().ToString();
-                await SettingsManager.AddScriptAsync(addedScript);
+                AddScript(addedScript);
                 _scriptListAdapter.AddItem(addedScript);
                 ScriptAdded?.Invoke(addedScript);
+                return Task.CompletedTask;
             });
         }
-        private async Task ShowRemoveScriptDialogAsync(ScriptAbs script)
+        private void ShowRemoveScriptDialog(ScriptAbs script)
         {
             var dialog = new MaterialDialog(this.ParentForm, "Remove", "Do you want to remove the script?", "Yes", true, "No");
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
                 Log.Debug("Removing ScriptId {@ScriptId}", script.Id);
-                await SettingsManager.RemoveScriptAsync(script.Id);
+                DeleteScript(script.Id);
                 _scriptListAdapter.RemoveItem(script.Id);
                 ScriptRemoved?.Invoke(script);
             }
@@ -182,7 +209,7 @@ namespace App.Forms.MainForm.Tabs.Run
                     await _runScriptService!.StopScriptAsync(script);
             }
 
-            await SettingsManager.EditScriptAsync(script);
+            UpdateScript(script);
 
             _scriptListAdapter.RefreshScriptStatus(script.Id, script.ScriptStatus);
             ScriptEdited?.Invoke(script);
@@ -204,13 +231,26 @@ namespace App.Forms.MainForm.Tabs.Run
             }
             return newStatus;
         }
-        #endregion
-
-        #region Public methods
-        public async void RefreshScriptStatusAsync(string scriptId)
+        private void AddScript(ScriptAbs addedScript)
         {
-            var script = SettingsManager.FindScriptById(scriptId);
-            await ChangeScriptStatusAsync(script);
+            _scriptsService!.AddScript(addedScript);
+            _scripts.Add(addedScript);
+        }
+        private void UpdateScript(ScriptAbs editedScript)
+        {
+            _scriptsService!.UpdateScript(editedScript);
+            int index = _scripts.FindIndex(s => s.Id == editedScript.Id);
+            if (index == -1)
+                return;
+            _scripts[index] = editedScript;
+        }
+        private void DeleteScript(string scriptId)
+        {
+            _scriptsService!.DeleteScript(scriptId);
+            var scriptToDelete = _scripts.FirstOrDefault(s => s.Id == scriptId);
+            if (scriptToDelete == null)
+                return;
+            _scripts.Remove(scriptToDelete);
         }
         #endregion
 

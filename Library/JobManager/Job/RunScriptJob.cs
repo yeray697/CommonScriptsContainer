@@ -28,13 +28,19 @@ namespace JobManager.Job
                 if (File.Exists(realPath))
                 {
                     Log.Information("Executing {@ScriptName}", _script.ScriptName);
-                    string psScript = $"Set-Location \"{realPath}\"{Environment.NewLine}";
+                    string psScript = $"Set-Location \"{Path.GetDirectoryName(realPath)}\"{Environment.NewLine}";
                     psScript += File.ReadAllText(realPath);
                     Log.Verbose("Script content: {ScriptContent}", psScript);
                     using var powerShell = PowerShell.Create();
-                    powerShell
+                    string output = "";
+                    var scriptOutput = powerShell
                         .AddScript(psScript)
                         .Invoke();
+                    foreach (var line in scriptOutput)
+                        output += line + Environment.NewLine;
+                    if (string.IsNullOrWhiteSpace(output))
+                        output = "(no output)";
+                    Log.Debug("Script output: {Output}", output.TrimEnd());
                 }
                 else
                 {

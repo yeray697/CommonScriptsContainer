@@ -3,6 +3,7 @@ using App.Service.Interfaces;
 using App.Utils;
 using Contracts.Scripts.Base;
 using Data;
+using Data.Service.Interfaces;
 using JobManager.Service;
 using MaterialSkin.Controls;
 
@@ -12,18 +13,21 @@ namespace App.Forms.MainForm
     {
         private readonly TrayContextMenu _trayContextMenu;
         private readonly IWindowsRegistryService _windowsRegistryService;
+        public bool RunOnStartup { get; set; }
 
-        public MainForm(IRunScriptService runScriptService, IWindowsRegistryService windowsRegistryService)
+        public MainForm(IRunScriptService runScriptService, IWindowsRegistryService windowsRegistryService, IScriptsService scriptsService)
         {
             InitializeComponent();
             _windowsRegistryService = windowsRegistryService;
 
-            _trayContextMenu = new TrayContextMenu();
-            ConfigureTrayContextMenu();
+            var scripts = runTabControl.SetScriptsService(scriptsService);
             runTabControl.SetRunScriptService(runScriptService);
             runTabControl.ScriptEdited += RunTabControl_ScriptEdited;
             runTabControl.ScriptAdded += RunTabControl_ScriptAdded;
             runTabControl.ScriptRemoved += RunTabControl_ScriptRemoved;
+
+            _trayContextMenu = new TrayContextMenu();
+            ConfigureTrayContextMenu(scripts);
         }
 
         protected override void WndProc(ref Message m)
@@ -52,6 +56,10 @@ namespace App.Forms.MainForm
         {
             base.OnLoad(e);
             await ShowRunAtStartupDialogIfNeededAsync();
+            if (RunOnStartup)
+            {
+                runTabControl.RunScriptsOnStartupAsync();
+            }
         }
         private void SettingsTab_Open(object sender, EventArgs e)
         {
@@ -97,13 +105,14 @@ namespace App.Forms.MainForm
             bool currentTop = TopMost;
             TopMost = true;
             TopMost = currentTop;
+            ApplyFormStyle();
         }
-        private void ConfigureTrayContextMenu()
+        private void ConfigureTrayContextMenu(List<ScriptAbs> scripts)
         {
             _trayContextMenu.CloseClicked += ContextMenu_Close_Click;
             _trayContextMenu.OpenClicked += ContextMenu_Open_Click;
             _trayContextMenu.ScriptStatusClicked += ContextMenu_StatusClick;
-            _trayContextMenu.LoadScriptList(SettingsManager.Scripts);
+            _trayContextMenu.LoadScriptList(scripts);
             this.appNotifyIcon.ContextMenuStrip = _trayContextMenu;
         }
         private void ChangeScriptStatus(ScriptAbs script)

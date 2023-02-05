@@ -9,12 +9,16 @@ namespace App.Forms.Base
         private const int WS_MINIMIZEBOX = 0x20000;
         private const int CS_DBLCLKS = 0x8;
 
-        public BaseForm()
+        protected BaseForm()
         {
-            InitializeComponent();
-            Utils.DropShadow.ApplyShadows(this);
             MaterialSkinManager.Instance.AddFormToManage(this);
         }
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            ApplyFormStyle();
+        }
+
         protected override CreateParams CreateParams
         {
             get
@@ -27,6 +31,26 @@ namespace App.Forms.Base
                 cp.ClassStyle |= CS_DBLCLKS;
                 return cp;
             }
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            if (this.WindowState == FormWindowState.Maximized)
+                Invalidate();
+        }
+
+        protected override void OnResizeEnd(EventArgs e)
+        {
+            base.OnResizeEnd(e);
+            if (this.WindowState == FormWindowState.Normal)
+                ApplyFormStyle();
+
+        }
+
+        protected void ApplyFormStyle()
+        {
+            Utils.DropShadow.ApplyShadows(this);
         }
 
         public DialogResult ShowDialogCenter(IWin32Window form)
