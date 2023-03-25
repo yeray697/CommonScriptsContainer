@@ -4,11 +4,22 @@ namespace App.Utils
 {
     internal class NativeMethods
     {
-        public const int HWND_BROADCAST = 0xffff;
         public static readonly int WM_SHOWME = RegisterWindowMessage("WM_SHOWME");
+        
+        private const int HWND_BROADCAST = 0xffff;
+
+        public static void BringInstanceToForeground()
+        {
+            _ = SendMessage(
+                (IntPtr)HWND_BROADCAST,
+                WM_SHOWME,
+                IntPtr.Zero,
+                IntPtr.Zero);
+        }
+
         [DllImport("user32")]
-        public static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
+        private static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
         [DllImport("user32")]
-        public static extern int RegisterWindowMessage(string message);
+        private static extern int RegisterWindowMessage(string message);
     }
 }

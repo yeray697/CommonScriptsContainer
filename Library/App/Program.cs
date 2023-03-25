@@ -7,10 +7,14 @@ using App.Utils;
 using Data;
 using Data.Extensions;
 using Data.Service.Interfaces;
-using JobManager.Service;
+using Grpc;
+using JobManager.Extensions;
 using Logging;
 using MaterialSkin;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using System.Windows.Forms.Design;
 
@@ -39,11 +43,18 @@ namespace App
             bool singleInstance = mutex.WaitOne(0, false);
             if (!singleInstance)
             {
-                BringInstanceToForeground();
+                NativeMethods.BringInstanceToForeground();
                 Application.ExitThread();
-            } 
+            }
             else
-               InitForm(args);
+            {
+
+                WebHost.CreateDefaultBuilder(args)
+                     .UseStartup<Startup>()
+                    .Build()
+                    .RunAsync();
+                InitForm(args);
+            }
         }
         private static void ParseArgs(string[] args, out bool startAppHidden, out bool onStartup)
         {
@@ -95,14 +106,6 @@ namespace App
             mainForm.RunOnStartup = onStartup;
             Application.Run(mainForm);
         }
-        private static void BringInstanceToForeground()
-        {
-            _ = NativeMethods.SendMessage(
-                (IntPtr)NativeMethods.HWND_BROADCAST,
-                NativeMethods.WM_SHOWME,
-                IntPtr.Zero,
-                IntPtr.Zero);
-        }
         private static void ThreadOnExit(object? s, EventArgs e)
         {
             if (IsInstallationFormOpen)
@@ -114,7 +117,7 @@ namespace App
             ServiceCollection = new ServiceCollection();
             ServiceCollection
                 .AddSettingServices()
-                .AddScoped<IRunScriptService, RunScriptService>()
+                .AddJobManagerServices()
                 .AddScoped<IWindowsRegistryService, WindowsRegistryService>()
                 .AddSingleton<MainForm>();
         }
