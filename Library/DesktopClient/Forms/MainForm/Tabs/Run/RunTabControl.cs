@@ -40,7 +40,8 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
         public void SetRunScriptService(IRunScriptService runScriptService)
         {
             _runScriptService = runScriptService;
-            _runScriptService.OneOffScriptExecuted += OneOffJobWasExecuted;
+            _runScriptService.OneOffScriptExecuted += (scriptId) => ModifyScriptStatusByIdThreadSafe(scriptId, ScriptStatus.Stopped);
+            _runScriptService.ScriptStarted += (scriptId) => ModifyScriptStatusByIdThreadSafe(scriptId, ScriptStatus.Running);
         }
         public List<ScriptAbs> SetScriptsService(IScriptsService scriptsService)
         {
@@ -55,7 +56,7 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
         }
         public async void RunScriptsOnStartupAsync()
         {
-            var scripts = GetRunningScriptsByType<ScriptOnStartup>();
+            var scripts = GetRunningScriptsByType<ScriptOnStartup>().ToList();
             foreach (var script in scripts)
             {
                 await _runScriptService!.RunScriptAsync(script);
@@ -69,11 +70,19 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
             _scriptListAdapter.CreateWithList(_scripts);
             await CheckIfScriptsNeedToRunOnLoadAsync();
         }
-        private void OneOffJobWasExecuted(string scriptId)
+        private void ModifyScriptStatusByIdThreadSafe(string scriptId, ScriptStatus newScriptStatus)
         {
             var script = _scripts.FirstOrDefault(s => s.Id == scriptId)?.Clone();
             if (script != null)
-                ChangeScriptStatusThreadSafe(script);
+            {
+                script.ScriptStatus = newScriptStatus;
+                UpdateScript(script);
+
+                this.Invoke((MethodInvoker)delegate () { 
+                    _scriptListAdapter.RefreshScriptStatus(script.Id, script.ScriptStatus);
+                    ScriptEdited?.Invoke(script);
+                });
+            }
         }
         private void ShowContextMenuScript(ScriptAbs script)
         {
@@ -106,7 +115,8 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
         private void ListenKeysService_KeyUpClicked(KeyPressed keyPressed)
         {
             Log.Debug("MainPresenter: KeyUpClicked event received");
-            foreach (ScriptListenKey item in GetRunningScriptsByType<ScriptListenKey>())
+            var scripts = GetRunningScriptsByType<ScriptListenKey>().ToList();
+            foreach (ScriptListenKey item in scripts)
             {
                 if (item.TriggerKey?.Equals(keyPressed) ?? false)
                 {
@@ -121,7 +131,8 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
         #region Private Methods
         private async Task CheckIfScriptsNeedToRunOnLoadAsync()
         {
-            foreach (var script in GetRunningScriptsByType<ScriptScheduled>())
+            var scripts = GetRunningScriptsByType<ScriptScheduled>().ToList();
+            foreach (var script in scripts)
                 await _runScriptService!.RunScriptAsync(script);
 
             if (IsListenKeyServiceNecessary())
@@ -131,8 +142,6 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
             => GetRunningScriptsByType<ScriptListenKey>()?.Any(s => s.Id != executingScriptId) ?? false;
         private IEnumerable<T> GetRunningScriptsByType<T>() 
             where T : ScriptAbs => _scripts.OfType<T>().Where(s => s.ScriptStatus == ScriptStatus.Running);
-        private void ChangeScriptStatusThreadSafe(ScriptAbs script)
-            => this.Invoke((MethodInvoker) async delegate () { await ChangeScriptStatusAsync(script); });
         private async Task ShowEditScriptFormAsync(ScriptAbs script)
         {
             await ShowScriptForm(script, async (ScriptAbs? editedScript) => {
@@ -190,11 +199,10 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
         {
             if (script == null)
                 return;
-            ScriptStatus oldStatus = script.ScriptStatus;
-            script.ScriptStatus = GetNewScriptStatus(oldStatus);
+            ScriptStatus newStatus = GetNewScriptStatus(script.ScriptStatus);
 
-            Log.Debug("Change {@ScriptName} ({@ScriptType}) Script Status from {@OldStatus} to {@NewStatus}", script.ScriptName, script.ScriptType, oldStatus, script.ScriptStatus);
-            if (script.ScriptStatus == ScriptStatus.Running)
+            Log.Debug("Change {@ScriptName} ({@ScriptType}) Script Status from {@OldStatus} to {@NewStatus}", script.ScriptName, script.ScriptType, script.ScriptStatus, newStatus);
+            if (script.ScriptStatus == ScriptStatus.Stopped)
             {
                 if (script is ScriptListenKey)
                     _listenKeysService.Run();
@@ -208,11 +216,12 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
                 else 
                     await _runScriptService!.StopScriptAsync(script);
             }
-
-            UpdateScript(script);
-
-            _scriptListAdapter.RefreshScriptStatus(script.Id, script.ScriptStatus);
-            ScriptEdited?.Invoke(script);
+            //OneOffs are updated by IRunScriptService events
+            //The other scripts need to be updated here
+            if (script is not ScriptOneOff) 
+            {
+                ModifyScriptStatusByIdThreadSafe(script.Id, newStatus);
+            }
         }
         private static ScriptStatus GetNewScriptStatus(ScriptStatus oldStatus)
         {
