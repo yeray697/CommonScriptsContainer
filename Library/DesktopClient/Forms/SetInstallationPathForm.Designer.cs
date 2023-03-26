@@ -56,7 +56,7 @@
             this.btnSave.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btnSave.UseAccentColor = false;
             this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.Save);
+            this.btnSave.Click += new System.EventHandler(this.SaveAsync);
             // 
             // btnInstallationPath
             // 

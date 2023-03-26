@@ -1,15 +1,16 @@
-﻿using DesktopClient.Forms.Base;
+﻿using Data;
+using DesktopClient.Forms.Base;
 
 namespace DesktopClient.Forms
 {
     public partial class SetInstallationPathForm : BaseInnerForm
     {
-        public string? InstallationPath { get; private set; }
+        private string? InstallationPath { get; set; }
         public SetInstallationPathForm() : base()
         {
             InitializeComponent();
         }
-        private void Save(object sender, EventArgs e)
+        private async void SaveAsync(object sender, EventArgs e)
         {
             if (!Directory.Exists(tbxInstallationPath.Text))
             {
@@ -18,6 +19,7 @@ namespace DesktopClient.Forms
             }
 
             InstallationPath = tbxInstallationPath.Text;
+            await SettingsManager.UpdateSettingsAsync((settings) => settings.Core.InstallationPath = InstallationPath);
             DialogResult = DialogResult.OK;
             Close();
         }

@@ -1,16 +1,9 @@
+using Data;
+using DesktopClient.Extension;
 using DesktopClient.Forms;
 using DesktopClient.Forms.MainForm;
-using DesktopClient.Service.Interfaces;
+using DesktopClient.Models;
 using DesktopClient.Utils;
-using Data;
-using Data.Extensions;
-using Data.Service.Interfaces;
-using DesktopClient.Extension;
-using DesktopClient.Service;
-using Grpc;
-using JobManager.Extensions;
-using Logging;
-using MaterialSkin;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -50,76 +43,33 @@ namespace App
             {
 
                 WebHost.CreateDefaultBuilder(args)
-                     .UseStartup<Startup>()
+                    .UseStartup<GrpcStartup>()
                     .Build()
                     .RunAsync();
                 InitForm(args);
             }
         }
-        private static void ParseArgs(string[] args, out bool startAppHidden, out bool onStartup)
-        {
-            startAppHidden = false;
-            onStartup = false;
-            if (args != null)
-            {
-                foreach (var arg in args)
-                {
-                    if (arg == WindowsRegistryService.APP_HIDE_ARG)
-                        startAppHidden = true;
-                    else if (arg == WindowsRegistryService.APP_ON_STARTUP_ARG)
-                        onStartup = true;
-
-                }
-            }
-        }
         private static void InitForm(string[] args)
         {
-            ParseArgs(args, out bool startAppHidden, out bool onStartup);
+            ClientArguments clientArguments = new(args);
+
+            ServiceCollection = new ServiceCollection()
+                .AddClientDependencies();
+            ServiceProvider = ServiceCollection.InitClientServices();
+            RunForm(clientArguments);
+        }
+        private static void RunForm(ClientArguments clientArguments)
+        {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            ConfigureServices();
-            InitServices();
-            RunForm(startAppHidden, onStartup);
-        }
-        private static void InitServices()
-        {
-            ServiceProvider = ServiceCollection!.BuildServiceProvider();
-            ISettingsService settingsService = ServiceProvider.GetRequiredService<ISettingsService>();
-            Task.Run(async () => await SettingsManager.InitInstanceAsync(settingsService))
-                .Wait();
-            LogManager.InstanceLogger(SettingsManager.Settings);
-            MaterialSkinManager.Instance.ChangeTheme(SettingsManager.Settings.App.DarkMode, true);
-        }
-        private static void RunForm(bool startAppHidden, bool onStartup)
-        {
+
             if (!OpenInstallFormIfNeeded())
                 return;
             var mainForm = ServiceProvider!.GetService<MainForm>()!;
             Log.Information("Starting application...");
-            if (startAppHidden)
-            {
-                mainForm.WindowState = FormWindowState.Minimized;
-                mainForm.Hide();
-                mainForm.ShowInTaskbar = false;
-            }
-            mainForm.RunOnStartup = onStartup;
+            mainForm.Setup(clientArguments);
             Application.Run(mainForm);
-        }
-        private static void ThreadOnExit(object? s, EventArgs e)
-        {
-            if (IsInstallationFormOpen)
-                return;
-            DisposeObjects();
-        }
-        private static void ConfigureServices()
-        {
-            ServiceCollection = new ServiceCollection();
-            ServiceCollection
-                .AddSettingServices()
-                .AddJobManagerServices()
-                .AddScoped<IWindowsRegistryService, WindowsRegistryService>()
-                .AddSingleton<MainForm>();
         }
         private static bool OpenInstallFormIfNeeded()
         {
@@ -134,8 +84,6 @@ namespace App
                 Application.Run(installationPathForm);
                 if (installationPathForm.DialogResult == DialogResult.OK)
                 {
-                    Task.Run(async () => await SettingsManager.UpdateSettingsAsync((settings) => settings.Core.InstallationPath = installationPathForm.InstallationPath!))
-                        .Wait();
                     Application.Exit();
                 }
                 else
@@ -146,6 +94,12 @@ namespace App
                 IsInstallationFormOpen = false;
             }
             return result;
+        }
+        private static void ThreadOnExit(object? s, EventArgs e)
+        {
+            if (IsInstallationFormOpen)
+                return;
+            DisposeObjects();
         }
         private static void DisposeObjects()
         {

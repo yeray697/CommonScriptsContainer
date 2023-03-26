@@ -1,9 +1,10 @@
-﻿using DesktopClient.Forms.Base;
-using DesktopClient.Service.Interfaces;
-using DesktopClient.Utils;
-using Contracts.Scripts.Base;
+﻿using Contracts.Scripts.Base;
 using Data;
 using Data.Service.Interfaces;
+using DesktopClient.Forms.Base;
+using DesktopClient.Models;
+using DesktopClient.Service.Interfaces;
+using DesktopClient.Utils;
 using JobManager.Service;
 using MaterialSkin.Controls;
 
@@ -13,7 +14,7 @@ namespace DesktopClient.Forms.MainForm
     {
         private readonly TrayContextMenu _trayContextMenu;
         private readonly IWindowsRegistryService _windowsRegistryService;
-        public bool RunOnStartup { get; set; }
+        private bool RunOnStartup { get; set; }
 
         public MainForm(IRunScriptService runScriptService, IWindowsRegistryService windowsRegistryService, IScriptsService scriptsService)
         {
@@ -29,6 +30,18 @@ namespace DesktopClient.Forms.MainForm
             _trayContextMenu = new TrayContextMenu();
             ConfigureTrayContextMenu(scripts);
         }
+        #region Public methods
+        public void Setup(ClientArguments clientArguments)
+        {
+            if (clientArguments.StartAppHidden.Value)
+            {
+                WindowState = FormWindowState.Minimized;
+                Hide();
+                ShowInTaskbar = false;
+            }
+            RunOnStartup = clientArguments.OnStartup.Value;
+        }
+        #endregion
 
         protected override void WndProc(ref Message m)
         {

@@ -1,14 +1,15 @@
+using DesktopClient.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Grpc;
+namespace App;
 
-public class Startup
+public class GrpcStartup
 {
-    public Startup(IConfiguration configuration)
+    public GrpcStartup(IConfiguration configuration)
     {
         Configuration = configuration;
     }
