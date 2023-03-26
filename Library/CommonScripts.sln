@@ -9,11 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{D33A4F11-F62F-4869-AB32-243A4EDE40AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{FB63ED0D-8EDC-4785-A6CC-1FACAFACA097}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{FB63ED0D-8EDC-4785-A6CC-1FACAFACA097}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobManager", "JobManager\JobManager.csproj", "{483AC362-0F5F-4730-8BAD-2992AE3B9F45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobManager", "JobManager\JobManager.csproj", "{483AC362-0F5F-4730-8BAD-2992AE3B9F45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "Logging\Logging.csproj", "{B8F66CEE-24F3-4446-BE2B-55B44B383D32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "Logging\Logging.csproj", "{B8F66CEE-24F3-4446-BE2B-55B44B383D32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopClient", "DesktopClient\DesktopClient.csproj", "{69FF369D-1A9A-4B47-995B-634A2B558BB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{B8F66CEE-24F3-4446-BE2B-55B44B383D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8F66CEE-24F3-4446-BE2B-55B44B383D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8F66CEE-24F3-4446-BE2B-55B44B383D32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69FF369D-1A9A-4B47-995B-634A2B558BB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69FF369D-1A9A-4B47-995B-634A2B558BB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69FF369D-1A9A-4B47-995B-634A2B558BB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69FF369D-1A9A-4B47-995B-634A2B558BB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
