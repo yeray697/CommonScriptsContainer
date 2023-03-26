@@ -4,7 +4,9 @@ using DesktopClient.Forms;
 using DesktopClient.Forms.MainForm;
 using DesktopClient.Models;
 using DesktopClient.Utils;
+using JobManager.Service;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,6 +19,7 @@ namespace App
     {
         private static IServiceCollection? ServiceCollection { get; set; }
         private static ServiceProvider? ServiceProvider { get; set; }
+        private static IRunScriptService? RunScriptService { get; set; }
         private static bool IsInstallationFormOpen = false;
         static Mutex? mutex = null;
 #if DEBUG
@@ -41,22 +44,38 @@ namespace App
             }
             else
             {
+                RunScriptService = new RunScriptService();
+                ClientArguments clientArguments = new(args);
+
+                ServiceCollection = new ServiceCollection()
+                    .AddClientDependencies(RunScriptService);
+                ServiceProvider = ServiceCollection.InitClientServices();
 
                 WebHost.CreateDefaultBuilder(args)
-                    .UseStartup<GrpcStartup>()
+                    .ConfigureServices(services =>
+                    {
+                        services
+                            .AddSingleton(RunScriptService)
+                            .AddGrpc();
+                    })
+                    .Configure(app =>
+                    {
+                        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
+                        {
+                            app.UseDeveloperExceptionPage();
+                        }
+                        app.UseRouting();
+                        app.UseEndpoints(endpoints =>
+                        {
+                            endpoints.MapGrpcService<RunScriptGrpcService>();
+                            endpoints.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+                        });
+                    })
                     .Build()
                     .RunAsync();
-                InitForm(args);
-            }
-        }
-        private static void InitForm(string[] args)
-        {
-            ClientArguments clientArguments = new(args);
 
-            ServiceCollection = new ServiceCollection()
-                .AddClientDependencies();
-            ServiceProvider = ServiceCollection.InitClientServices();
-            RunForm(clientArguments);
+                RunForm(clientArguments);
+            }
         }
         private static void RunForm(ClientArguments clientArguments)
         {

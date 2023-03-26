@@ -4,7 +4,7 @@ using Data.Service.Interfaces;
 using DesktopClient.Forms.MainForm;
 using DesktopClient.Service;
 using DesktopClient.Service.Interfaces;
-using JobManager.Extensions;
+using JobManager.Service;
 using Logging;
 using MaterialSkin;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,11 +13,11 @@ namespace DesktopClient.Extension
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddClientDependencies(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddClientDependencies(this IServiceCollection serviceCollection, IRunScriptService runScriptService)
         {
             return serviceCollection
                 .AddSettingServices()
-                .AddJobManagerServices()
+                .AddSingleton(runScriptService)
                 .AddScoped<IWindowsRegistryService, WindowsRegistryService>()
                 .AddSingleton<MainForm>();
         }
