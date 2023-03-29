@@ -17,11 +17,24 @@ namespace DesktopClient.Extension
         {
             return serviceCollection
                 .AddSettingServices()
-                .AddSingleton(runScriptService)
+                .AddSingleton<IScriptManagerService>((IServiceProvider sp) =>
+                {
+                    IScriptsService scriptService = sp.GetRequiredService<IScriptsService>();
+                    return new ScriptManagerService("DesktopClient", runScriptService, scriptService);
+                })
                 .AddScoped<IWindowsRegistryService, WindowsRegistryService>()
                 .AddSingleton<MainForm>();
         }
+        public static IServiceCollection AddGrpcServerDependencies(this IServiceCollection serviceCollection, IRunScriptService runScriptService)
+        {
+            serviceCollection.AddGrpc();
 
+            return serviceCollection.AddSingleton<IScriptManagerService>((IServiceProvider sp) =>
+            {
+                IScriptsService scriptService = sp.GetRequiredService<IScriptsService>();
+                return new ScriptManagerService("GrpcServer", runScriptService, scriptService);
+            });
+        }
         public static ServiceProvider InitClientServices(this IServiceCollection serviceCollection)
         {
             ServiceProvider serviceProvider = serviceCollection!.BuildServiceProvider();
@@ -34,5 +47,6 @@ namespace DesktopClient.Extension
             
             return serviceProvider;
         }
+
     }
 }

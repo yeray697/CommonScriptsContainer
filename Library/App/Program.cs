@@ -3,6 +3,7 @@ using DesktopClient.Extension;
 using DesktopClient.Forms;
 using DesktopClient.Forms.MainForm;
 using DesktopClient.Models;
+using DesktopClient.Service;
 using DesktopClient.Utils;
 using JobManager.Service;
 using Microsoft.AspNetCore;
@@ -19,7 +20,6 @@ namespace App
     {
         private static IServiceCollection? ServiceCollection { get; set; }
         private static ServiceProvider? ServiceProvider { get; set; }
-        private static IRunScriptService? RunScriptService { get; set; }
         private static bool IsInstallationFormOpen = false;
         static Mutex? mutex = null;
 #if DEBUG
@@ -44,19 +44,17 @@ namespace App
             }
             else
             {
-                RunScriptService = new RunScriptService();
+                IRunScriptService runScriptService = new RunScriptService();
                 ClientArguments clientArguments = new(args);
 
                 ServiceCollection = new ServiceCollection()
-                    .AddClientDependencies(RunScriptService);
+                    .AddClientDependencies(runScriptService);
                 ServiceProvider = ServiceCollection.InitClientServices();
 
                 WebHost.CreateDefaultBuilder(args)
                     .ConfigureServices(services =>
                     {
-                        services
-                            .AddSingleton(RunScriptService)
-                            .AddGrpc();
+                        services.AddGrpcServerDependencies(runScriptService);
                     })
                     .Configure(app =>
                     {

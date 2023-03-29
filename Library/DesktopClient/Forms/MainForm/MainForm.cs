@@ -5,7 +5,6 @@ using DesktopClient.Forms.Base;
 using DesktopClient.Models;
 using DesktopClient.Service.Interfaces;
 using DesktopClient.Utils;
-using JobManager.Service;
 using MaterialSkin.Controls;
 
 namespace DesktopClient.Forms.MainForm
@@ -16,13 +15,12 @@ namespace DesktopClient.Forms.MainForm
         private readonly IWindowsRegistryService _windowsRegistryService;
         private bool RunOnStartup { get; set; }
 
-        public MainForm(IRunScriptService runScriptService, IWindowsRegistryService windowsRegistryService, IScriptsService scriptsService)
+        public MainForm(IScriptManagerService scriptManagerService, IWindowsRegistryService windowsRegistryService)
         {
             InitializeComponent();
             _windowsRegistryService = windowsRegistryService;
 
-            var scripts = runTabControl.SetScriptsService(scriptsService);
-            runTabControl.SetRunScriptService(runScriptService);
+            var scripts = runTabControl.InitTabController(scriptManagerService, RunOnStartup);
             runTabControl.ScriptEdited += RunTabControl_ScriptEdited;
             runTabControl.ScriptAdded += RunTabControl_ScriptAdded;
             runTabControl.ScriptRemoved += RunTabControl_ScriptRemoved;
@@ -69,10 +67,6 @@ namespace DesktopClient.Forms.MainForm
         {
             base.OnLoad(e);
             await ShowRunAtStartupDialogIfNeededAsync();
-            if (RunOnStartup)
-            {
-                runTabControl.RunScriptsOnStartupAsync();
-            }
         }
         private void SettingsTab_Open(object sender, EventArgs e)
         {
@@ -95,8 +89,10 @@ namespace DesktopClient.Forms.MainForm
             => ShowForm();
         private void ContextMenu_Close_Click()
             => Application.Exit();
-        private void ContextMenu_StatusClick(ScriptAbs script)
-            => ChangeScriptStatus(script);
+        private async void ContextMenu_StatusClick(ScriptAbs script)
+        {
+            await runTabControl.SwapScriptStatusAsync(script);
+        }
         private void MainForm_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -127,10 +123,6 @@ namespace DesktopClient.Forms.MainForm
             _trayContextMenu.ScriptStatusClicked += ContextMenu_StatusClick;
             _trayContextMenu.LoadScriptList(scripts);
             this.appNotifyIcon.ContextMenuStrip = _trayContextMenu;
-        }
-        private void ChangeScriptStatus(ScriptAbs script)
-        {
-            runTabControl.RefreshScriptStatusAsync(script.Id);
         }
         private async Task ShowRunAtStartupDialogIfNeededAsync()
         {

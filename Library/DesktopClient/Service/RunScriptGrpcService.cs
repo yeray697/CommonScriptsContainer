@@ -1,23 +1,25 @@
+using DesktopClient.Mapper;
+using DesktopClient.Service.Interfaces;
 using Grpc.Core;
-using JobManager.Mapper;
+using JobManager;
 using Serilog;
 
-namespace JobManager.Service
+namespace DesktopClient.Service
 {
-    public class RunScriptGrpcService : JobManager.ScriptService.ScriptServiceBase
+    public class RunScriptGrpcService : ScriptService.ScriptServiceBase
     {
-        private readonly IRunScriptService _runScriptService;
+        private readonly IScriptManagerService _scriptManagerService;
 
-        public RunScriptGrpcService(IRunScriptService runScriptService)
+        public RunScriptGrpcService(IScriptManagerService scriptManagerService)
         {
-            _runScriptService = runScriptService;
+            _scriptManagerService = scriptManagerService;
         }
 
         public override async Task<ScriptResponse> RunScript(ScriptRequest request, ServerCallContext context)
         {
             Log.Information("Running script from GRPC");
             var script = ScriptMapper.MapGrpcRequestToScript(request);
-            await _runScriptService.RunScriptAsync(script);
+            await _scriptManagerService.RunScriptAsync(script);
             return new ScriptResponse
             {
                 IsSuccessful = true,
@@ -29,7 +31,7 @@ namespace JobManager.Service
         {
             Log.Information("Stopping script from GRPC");
             var script = ScriptMapper.MapGrpcRequestToScript(request);
-            await _runScriptService.StopScriptAsync(script);
+            await _scriptManagerService.StopScriptAsync(script);
             return new ScriptResponse
             {
                 IsSuccessful = true,
