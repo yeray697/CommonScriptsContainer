@@ -112,6 +112,8 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
             => await ShowAddScriptForm();
         private async void ContextMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            if (e.ClickedItem == null)
+                return;
             var control = (sender as Control)!;
             var script = (control.Tag as ScriptAbs)!;
             control.Tag = null;

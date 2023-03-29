@@ -1,6 +1,5 @@
 ﻿using Contracts.Scripts.Base;
 using Data;
-using Data.Service.Interfaces;
 using DesktopClient.Forms.Base;
 using DesktopClient.Models;
 using DesktopClient.Service.Interfaces;

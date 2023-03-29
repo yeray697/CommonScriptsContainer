@@ -1,7 +1,6 @@
 ﻿using Contracts.Scripts;
 using Contracts.Scripts.Base;
 using Data.Service.Interfaces;
-using DesktopClient.CustomComponent.ScriptListBox;
 using DesktopClient.Service.Interfaces;
 using JobManager.Service;
 using Serilog;

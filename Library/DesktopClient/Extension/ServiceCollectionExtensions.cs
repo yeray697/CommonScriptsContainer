@@ -29,7 +29,9 @@ namespace DesktopClient.Extension
         {
             serviceCollection.AddGrpc();
 
-            return serviceCollection.AddSingleton<IScriptManagerService>((IServiceProvider sp) =>
+            return serviceCollection
+                .AddSettingServices()
+                .AddSingleton<IScriptManagerService>((IServiceProvider sp) =>
             {
                 IScriptsService scriptService = sp.GetRequiredService<IScriptsService>();
                 return new ScriptManagerService("GrpcServer", runScriptService, scriptService);
