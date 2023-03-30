@@ -1,16 +1,16 @@
-using App.Extension;
-using App.Forms;
-using App.Forms.MainForm;
-using App.Service;
-using App.Service.Interfaces;
-using App.Utils;
 using Data;
-using Data.Extensions;
-using Data.Service.Interfaces;
+using DesktopClient.Extension;
+using DesktopClient.Forms;
+using DesktopClient.Forms.MainForm;
+using DesktopClient.Models;
+using DesktopClient.Service;
+using DesktopClient.Utils;
 using JobManager.Service;
-using Logging;
-using MaterialSkin;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using System.Windows.Forms.Design;
 
@@ -39,84 +39,54 @@ namespace App
             bool singleInstance = mutex.WaitOne(0, false);
             if (!singleInstance)
             {
-                BringInstanceToForeground();
+                NativeMethods.BringInstanceToForeground();
                 Application.ExitThread();
-            } 
+            }
             else
-               InitForm(args);
-        }
-        private static void ParseArgs(string[] args, out bool startAppHidden, out bool onStartup)
-        {
-            startAppHidden = false;
-            onStartup = false;
-            if (args != null)
             {
-                foreach (var arg in args)
-                {
-                    if (arg == WindowsRegistryService.APP_HIDE_ARG)
-                        startAppHidden = true;
-                    else if (arg == WindowsRegistryService.APP_ON_STARTUP_ARG)
-                        onStartup = true;
+                IRunScriptService runScriptService = new RunScriptService();
+                ClientArguments clientArguments = new(args);
 
-                }
+                ServiceCollection = new ServiceCollection()
+                    .AddClientDependencies(runScriptService);
+                ServiceProvider = ServiceCollection.InitClientServices();
+
+                WebHost.CreateDefaultBuilder(args)
+                    .ConfigureServices(services =>
+                    {
+                        services.AddGrpcServerDependencies(runScriptService);
+                    })
+                    .Configure(app =>
+                    {
+                        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
+                        {
+                            app.UseDeveloperExceptionPage();
+                        }
+                        app.UseRouting();
+                        app.UseEndpoints(endpoints =>
+                        {
+                            endpoints.MapGrpcService<RunScriptGrpcService>();
+                            endpoints.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+                        });
+                    })
+                    .Build()
+                    .RunAsync();
+
+                RunForm(clientArguments);
             }
         }
-        private static void InitForm(string[] args)
+        private static void RunForm(ClientArguments clientArguments)
         {
-            ParseArgs(args, out bool startAppHidden, out bool onStartup);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            ConfigureServices();
-            InitServices();
-            RunForm(startAppHidden, onStartup);
-        }
-        private static void InitServices()
-        {
-            ServiceProvider = ServiceCollection!.BuildServiceProvider();
-            ISettingsService settingsService = ServiceProvider.GetRequiredService<ISettingsService>();
-            Task.Run(async () => await SettingsManager.InitInstanceAsync(settingsService))
-                .Wait();
-            LogManager.InstanceLogger(SettingsManager.Settings);
-            MaterialSkinManager.Instance.ChangeTheme(SettingsManager.Settings.App.DarkMode, true);
-        }
-        private static void RunForm(bool startAppHidden, bool onStartup)
-        {
+
             if (!OpenInstallFormIfNeeded())
                 return;
             var mainForm = ServiceProvider!.GetService<MainForm>()!;
             Log.Information("Starting application...");
-            if (startAppHidden)
-            {
-                mainForm.WindowState = FormWindowState.Minimized;
-                mainForm.Hide();
-                mainForm.ShowInTaskbar = false;
-            }
-            mainForm.RunOnStartup = onStartup;
+            mainForm.Setup(clientArguments);
             Application.Run(mainForm);
-        }
-        private static void BringInstanceToForeground()
-        {
-            _ = NativeMethods.SendMessage(
-                (IntPtr)NativeMethods.HWND_BROADCAST,
-                NativeMethods.WM_SHOWME,
-                IntPtr.Zero,
-                IntPtr.Zero);
-        }
-        private static void ThreadOnExit(object? s, EventArgs e)
-        {
-            if (IsInstallationFormOpen)
-                return;
-            DisposeObjects();
-        }
-        private static void ConfigureServices()
-        {
-            ServiceCollection = new ServiceCollection();
-            ServiceCollection
-                .AddSettingServices()
-                .AddScoped<IRunScriptService, RunScriptService>()
-                .AddScoped<IWindowsRegistryService, WindowsRegistryService>()
-                .AddSingleton<MainForm>();
         }
         private static bool OpenInstallFormIfNeeded()
         {
@@ -131,8 +101,6 @@ namespace App
                 Application.Run(installationPathForm);
                 if (installationPathForm.DialogResult == DialogResult.OK)
                 {
-                    Task.Run(async () => await SettingsManager.UpdateSettingsAsync((settings) => settings.Core.InstallationPath = installationPathForm.InstallationPath!))
-                        .Wait();
                     Application.Exit();
                 }
                 else
@@ -143,6 +111,12 @@ namespace App
                 IsInstallationFormOpen = false;
             }
             return result;
+        }
+        private static void ThreadOnExit(object? s, EventArgs e)
+        {
+            if (IsInstallationFormOpen)
+                return;
+            DisposeObjects();
         }
         private static void DisposeObjects()
         {

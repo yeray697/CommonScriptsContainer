@@ -16,6 +16,7 @@ namespace JobManager.Service
         private IScheduler? _scheduler;
 
         public event IRunScriptService.ScriptExecutedHandler? OneOffScriptExecuted;
+        public event IRunScriptService.ScriptExecutedHandler? ScriptStarted;
 
         public RunScriptService()
         {
@@ -52,6 +53,7 @@ namespace JobManager.Service
             else
                 Log.Information("Schedule Job for script {@ScriptName} ({@ScriptType})", script.ScriptName, script.ScriptType);
             JobKey jobKey = GetJobKeyForScript(script);
+            ScriptStarted?.Invoke(script.Id);
             if (await _scheduler!.CheckExists(jobKey))
             {
                 await _scheduler.ResumeJob(jobKey);
