@@ -51,7 +51,16 @@ namespace App
                     .AddClientDependencies(runScriptService);
                 ServiceProvider = ServiceCollection.InitClientServices();
 
-                WebHost.CreateDefaultBuilder(args)
+                RunGrpcServer(args, runScriptService);
+                RunWebClient(args);
+                RunForm(clientArguments);
+            }
+        }
+        private static void RunGrpcServer(string[] args, IRunScriptService runScriptService)
+        {
+            if (!SettingsManager.Settings.Core.EnableGrpcServer)
+                return;
+            WebHost.CreateDefaultBuilder(args)
                     .ConfigureServices(services =>
                     {
                         services.AddGrpcServerDependencies(runScriptService);
@@ -71,9 +80,11 @@ namespace App
                     })
                     .Build()
                     .RunAsync();
-
-                RunForm(clientArguments);
-            }
+        }
+        private static void RunWebClient(string[] args)
+        {
+            if (!SettingsManager.Settings.Core.EnableWebClient)
+                return;
         }
         private static void RunForm(ClientArguments clientArguments)
         {

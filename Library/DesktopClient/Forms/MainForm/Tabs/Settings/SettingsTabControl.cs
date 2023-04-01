@@ -23,6 +23,8 @@ namespace DesktopClient.Forms.MainForm.Tabs.Settings
         {
             _newSettings = SettingsManager.CloneSettings;
             swtIsDarkMode.Checked = _newSettings.App.DarkMode;
+            swtEnableGrpcServer.Checked = _newSettings.Core.EnableGrpcServer;
+            swtEnableWebClient.Checked = _newSettings.Core.EnableWebClient;
 
             cbxConsoleMinLevel.DataSource = Enum.GetValues(typeof(LogLevel));
             cbxConsoleMinLevel.SelectedItem = _newSettings.App.LoggingLevel;
@@ -34,7 +36,7 @@ namespace DesktopClient.Forms.MainForm.Tabs.Settings
         {
             MapSettingsFromControls();
 
-            if (_newSettings != null &&_newSettings.Equals(SettingsManager.Settings))
+            if (_newSettings != null && _newSettings.Equals(SettingsManager.Settings))
             {
                 _newSettings = null;
                 return;
@@ -70,6 +72,8 @@ namespace DesktopClient.Forms.MainForm.Tabs.Settings
             _newSettings.App.LoggingLevel = EnumUtils.Parse<LogLevel>(cbxConsoleMinLevel.SelectedValue!);
             _newSettings.Core.LoggingLevel = EnumUtils.Parse<LogLevel>(cbxFileMinLevel.SelectedValue!);
             _newSettings.App.DarkMode = swtIsDarkMode.Checked;
+            _newSettings.Core.EnableGrpcServer = swtEnableGrpcServer.Checked;
+            _newSettings.Core.EnableWebClient = swtEnableWebClient.Checked;
         }
         #endregion
     }

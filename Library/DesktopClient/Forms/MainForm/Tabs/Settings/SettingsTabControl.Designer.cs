@@ -28,163 +28,268 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblConsoleMinLogLevel = new MaterialSkin.Controls.MaterialLabel();
-            this.lblFileMinLogLevel = new MaterialSkin.Controls.MaterialLabel();
-            this.swtIsDarkMode = new MaterialSkin.Controls.MaterialSwitch();
-            this.cbxConsoleMinLevel = new MaterialSkin.Controls.MaterialComboBox();
-            this.cbxFileMinLevel = new MaterialSkin.Controls.MaterialComboBox();
-            this.btnSave = new MaterialSkin.Controls.MaterialButton();
-            this.lblDarkMode = new MaterialSkin.Controls.MaterialLabel();
-            this.SuspendLayout();
+            lblConsoleMinLogLevel = new MaterialSkin.Controls.MaterialLabel();
+            lblFileMinLogLevel = new MaterialSkin.Controls.MaterialLabel();
+            swtIsDarkMode = new MaterialSkin.Controls.MaterialSwitch();
+            cbxConsoleMinLevel = new MaterialSkin.Controls.MaterialComboBox();
+            cbxFileMinLevel = new MaterialSkin.Controls.MaterialComboBox();
+            btnSave = new MaterialSkin.Controls.MaterialButton();
+            lblDarkMode = new MaterialSkin.Controls.MaterialLabel();
+            swtEnableGrpcServer = new MaterialSkin.Controls.MaterialSwitch();
+            lblEnableGrpcServer = new MaterialSkin.Controls.MaterialLabel();
+            swtEnableWebClient = new MaterialSkin.Controls.MaterialSwitch();
+            lblEnableWebClient = new MaterialSkin.Controls.MaterialLabel();
+            lblRequiresRestart1 = new MaterialSkin.Controls.MaterialLabel();
+            lblRequiresRestart2 = new MaterialSkin.Controls.MaterialLabel();
+            SuspendLayout();
             // 
             // lblConsoleMinLogLevel
             // 
-            this.lblConsoleMinLogLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.lblConsoleMinLogLevel.Depth = 0;
-            this.lblConsoleMinLogLevel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblConsoleMinLogLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblConsoleMinLogLevel.Location = new System.Drawing.Point(39, 103);
-            this.lblConsoleMinLogLevel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblConsoleMinLogLevel.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblConsoleMinLogLevel.Name = "lblConsoleMinLogLevel";
-            this.lblConsoleMinLogLevel.Size = new System.Drawing.Size(133, 49);
-            this.lblConsoleMinLogLevel.TabIndex = 25;
-            this.lblConsoleMinLogLevel.Text = "Console Minimum Logging Level";
+            lblConsoleMinLogLevel.BackColor = Color.FromArgb(242, 242, 242);
+            lblConsoleMinLogLevel.Depth = 0;
+            lblConsoleMinLogLevel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblConsoleMinLogLevel.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblConsoleMinLogLevel.Location = new Point(39, 103);
+            lblConsoleMinLogLevel.Margin = new Padding(2, 0, 2, 0);
+            lblConsoleMinLogLevel.MouseState = MaterialSkin.MouseState.HOVER;
+            lblConsoleMinLogLevel.Name = "lblConsoleMinLogLevel";
+            lblConsoleMinLogLevel.Size = new Size(163, 49);
+            lblConsoleMinLogLevel.TabIndex = 25;
+            lblConsoleMinLogLevel.Text = "Console Minimum Logging Level";
             // 
             // lblFileMinLogLevel
             // 
-            this.lblFileMinLogLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.lblFileMinLogLevel.Depth = 0;
-            this.lblFileMinLogLevel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblFileMinLogLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblFileMinLogLevel.Location = new System.Drawing.Point(39, 34);
-            this.lblFileMinLogLevel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblFileMinLogLevel.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblFileMinLogLevel.Name = "lblFileMinLogLevel";
-            this.lblFileMinLogLevel.Size = new System.Drawing.Size(133, 49);
-            this.lblFileMinLogLevel.TabIndex = 24;
-            this.lblFileMinLogLevel.Text = "File Minimum Logging Level";
+            lblFileMinLogLevel.BackColor = Color.FromArgb(242, 242, 242);
+            lblFileMinLogLevel.Depth = 0;
+            lblFileMinLogLevel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblFileMinLogLevel.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblFileMinLogLevel.Location = new Point(39, 34);
+            lblFileMinLogLevel.Margin = new Padding(2, 0, 2, 0);
+            lblFileMinLogLevel.MouseState = MaterialSkin.MouseState.HOVER;
+            lblFileMinLogLevel.Name = "lblFileMinLogLevel";
+            lblFileMinLogLevel.Size = new Size(163, 49);
+            lblFileMinLogLevel.TabIndex = 24;
+            lblFileMinLogLevel.Text = "File Minimum Logging Level";
             // 
             // swtIsDarkMode
             // 
-            this.swtIsDarkMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.swtIsDarkMode.Checked = true;
-            this.swtIsDarkMode.CheckState = System.Windows.Forms.CheckState.Indeterminate;
-            this.swtIsDarkMode.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.swtIsDarkMode.Depth = 0;
-            this.swtIsDarkMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.swtIsDarkMode.Location = new System.Drawing.Point(199, 171);
-            this.swtIsDarkMode.Margin = new System.Windows.Forms.Padding(0);
-            this.swtIsDarkMode.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.swtIsDarkMode.MouseState = MaterialSkin.MouseState.HOVER;
-            this.swtIsDarkMode.Name = "swtIsDarkMode";
-            this.swtIsDarkMode.Ripple = true;
-            this.swtIsDarkMode.Size = new System.Drawing.Size(48, 27);
-            this.swtIsDarkMode.TabIndex = 23;
-            this.swtIsDarkMode.UseVisualStyleBackColor = false;
+            swtIsDarkMode.BackColor = Color.FromArgb(242, 242, 242);
+            swtIsDarkMode.Checked = true;
+            swtIsDarkMode.CheckState = CheckState.Indeterminate;
+            swtIsDarkMode.Cursor = Cursors.Hand;
+            swtIsDarkMode.Depth = 0;
+            swtIsDarkMode.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            swtIsDarkMode.Location = new Point(225, 171);
+            swtIsDarkMode.Margin = new Padding(0);
+            swtIsDarkMode.MouseLocation = new Point(-1, -1);
+            swtIsDarkMode.MouseState = MaterialSkin.MouseState.HOVER;
+            swtIsDarkMode.Name = "swtIsDarkMode";
+            swtIsDarkMode.Ripple = true;
+            swtIsDarkMode.Size = new Size(48, 27);
+            swtIsDarkMode.TabIndex = 23;
+            swtIsDarkMode.UseVisualStyleBackColor = false;
             // 
             // cbxConsoleMinLevel
             // 
-            this.cbxConsoleMinLevel.AllowDrop = true;
-            this.cbxConsoleMinLevel.AutoResize = false;
-            this.cbxConsoleMinLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.cbxConsoleMinLevel.CausesValidation = false;
-            this.cbxConsoleMinLevel.Depth = 0;
-            this.cbxConsoleMinLevel.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cbxConsoleMinLevel.DropDownHeight = 174;
-            this.cbxConsoleMinLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxConsoleMinLevel.DropDownWidth = 121;
-            this.cbxConsoleMinLevel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.cbxConsoleMinLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cbxConsoleMinLevel.FormattingEnabled = true;
-            this.cbxConsoleMinLevel.IntegralHeight = false;
-            this.cbxConsoleMinLevel.ItemHeight = 43;
-            this.cbxConsoleMinLevel.Location = new System.Drawing.Point(189, 103);
-            this.cbxConsoleMinLevel.Margin = new System.Windows.Forms.Padding(2);
-            this.cbxConsoleMinLevel.MaxDropDownItems = 4;
-            this.cbxConsoleMinLevel.MouseState = MaterialSkin.MouseState.OUT;
-            this.cbxConsoleMinLevel.Name = "cbxConsoleMinLevel";
-            this.cbxConsoleMinLevel.Size = new System.Drawing.Size(150, 49);
-            this.cbxConsoleMinLevel.StartIndex = 0;
-            this.cbxConsoleMinLevel.TabIndex = 22;
+            cbxConsoleMinLevel.AllowDrop = true;
+            cbxConsoleMinLevel.AutoResize = false;
+            cbxConsoleMinLevel.BackColor = Color.FromArgb(242, 242, 242);
+            cbxConsoleMinLevel.CausesValidation = false;
+            cbxConsoleMinLevel.Depth = 0;
+            cbxConsoleMinLevel.DrawMode = DrawMode.OwnerDrawVariable;
+            cbxConsoleMinLevel.DropDownHeight = 174;
+            cbxConsoleMinLevel.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbxConsoleMinLevel.DropDownWidth = 121;
+            cbxConsoleMinLevel.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            cbxConsoleMinLevel.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cbxConsoleMinLevel.FormattingEnabled = true;
+            cbxConsoleMinLevel.IntegralHeight = false;
+            cbxConsoleMinLevel.ItemHeight = 43;
+            cbxConsoleMinLevel.Location = new Point(215, 103);
+            cbxConsoleMinLevel.Margin = new Padding(2);
+            cbxConsoleMinLevel.MaxDropDownItems = 4;
+            cbxConsoleMinLevel.MouseState = MaterialSkin.MouseState.OUT;
+            cbxConsoleMinLevel.Name = "cbxConsoleMinLevel";
+            cbxConsoleMinLevel.Size = new Size(150, 49);
+            cbxConsoleMinLevel.StartIndex = 0;
+            cbxConsoleMinLevel.TabIndex = 22;
             // 
             // cbxFileMinLevel
             // 
-            this.cbxFileMinLevel.AllowDrop = true;
-            this.cbxFileMinLevel.AutoResize = false;
-            this.cbxFileMinLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.cbxFileMinLevel.CausesValidation = false;
-            this.cbxFileMinLevel.Depth = 0;
-            this.cbxFileMinLevel.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cbxFileMinLevel.DropDownHeight = 174;
-            this.cbxFileMinLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxFileMinLevel.DropDownWidth = 121;
-            this.cbxFileMinLevel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.cbxFileMinLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.cbxFileMinLevel.FormattingEnabled = true;
-            this.cbxFileMinLevel.IntegralHeight = false;
-            this.cbxFileMinLevel.ItemHeight = 43;
-            this.cbxFileMinLevel.Location = new System.Drawing.Point(189, 34);
-            this.cbxFileMinLevel.Margin = new System.Windows.Forms.Padding(2);
-            this.cbxFileMinLevel.MaxDropDownItems = 4;
-            this.cbxFileMinLevel.MouseState = MaterialSkin.MouseState.OUT;
-            this.cbxFileMinLevel.Name = "cbxFileMinLevel";
-            this.cbxFileMinLevel.Size = new System.Drawing.Size(150, 49);
-            this.cbxFileMinLevel.StartIndex = 0;
-            this.cbxFileMinLevel.TabIndex = 21;
+            cbxFileMinLevel.AllowDrop = true;
+            cbxFileMinLevel.AutoResize = false;
+            cbxFileMinLevel.BackColor = Color.FromArgb(242, 242, 242);
+            cbxFileMinLevel.CausesValidation = false;
+            cbxFileMinLevel.Depth = 0;
+            cbxFileMinLevel.DrawMode = DrawMode.OwnerDrawVariable;
+            cbxFileMinLevel.DropDownHeight = 174;
+            cbxFileMinLevel.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbxFileMinLevel.DropDownWidth = 121;
+            cbxFileMinLevel.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            cbxFileMinLevel.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cbxFileMinLevel.FormattingEnabled = true;
+            cbxFileMinLevel.IntegralHeight = false;
+            cbxFileMinLevel.ItemHeight = 43;
+            cbxFileMinLevel.Location = new Point(215, 34);
+            cbxFileMinLevel.Margin = new Padding(2);
+            cbxFileMinLevel.MaxDropDownItems = 4;
+            cbxFileMinLevel.MouseState = MaterialSkin.MouseState.OUT;
+            cbxFileMinLevel.Name = "cbxFileMinLevel";
+            cbxFileMinLevel.Size = new Size(150, 49);
+            cbxFileMinLevel.StartIndex = 0;
+            cbxFileMinLevel.TabIndex = 21;
             // 
             // btnSave
             // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.btnSave.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnSave.Depth = 0;
-            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnSave.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.btnSave.HighEmphasis = true;
-            this.btnSave.Icon = null;
-            this.btnSave.Location = new System.Drawing.Point(681, 286);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnSave.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnSave.Name = "btnSave";
-            this.btnSave.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnSave.Size = new System.Drawing.Size(64, 36);
-            this.btnSave.TabIndex = 20;
-            this.btnSave.Text = "Save";
-            this.btnSave.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnSave.UseAccentColor = false;
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.SaveSettingsButtonClicked);
+            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSave.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSave.BackColor = Color.FromArgb(242, 242, 242);
+            btnSave.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnSave.Depth = 0;
+            btnSave.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            btnSave.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnSave.HighEmphasis = true;
+            btnSave.Icon = null;
+            btnSave.Location = new Point(681, 295);
+            btnSave.Margin = new Padding(3, 4, 3, 4);
+            btnSave.MouseState = MaterialSkin.MouseState.HOVER;
+            btnSave.Name = "btnSave";
+            btnSave.NoAccentTextColor = Color.Empty;
+            btnSave.Size = new Size(64, 36);
+            btnSave.TabIndex = 20;
+            btnSave.Text = "Save";
+            btnSave.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnSave.UseAccentColor = false;
+            btnSave.UseVisualStyleBackColor = false;
+            btnSave.Click += SaveSettingsButtonClicked;
             // 
             // lblDarkMode
             // 
-            this.lblDarkMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.lblDarkMode.Depth = 0;
-            this.lblDarkMode.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lblDarkMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblDarkMode.Location = new System.Drawing.Point(39, 175);
-            this.lblDarkMode.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblDarkMode.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblDarkMode.Name = "lblDarkMode";
-            this.lblDarkMode.Size = new System.Drawing.Size(133, 28);
-            this.lblDarkMode.TabIndex = 19;
-            this.lblDarkMode.Text = "Is Dark Mode?";
+            lblDarkMode.BackColor = Color.FromArgb(242, 242, 242);
+            lblDarkMode.Depth = 0;
+            lblDarkMode.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblDarkMode.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblDarkMode.Location = new Point(39, 175);
+            lblDarkMode.Margin = new Padding(2, 0, 2, 0);
+            lblDarkMode.MouseState = MaterialSkin.MouseState.HOVER;
+            lblDarkMode.Name = "lblDarkMode";
+            lblDarkMode.Size = new Size(163, 28);
+            lblDarkMode.TabIndex = 19;
+            lblDarkMode.Text = "Is Dark Mode?";
+            // 
+            // swtEnableGrpcServer
+            // 
+            swtEnableGrpcServer.BackColor = Color.FromArgb(242, 242, 242);
+            swtEnableGrpcServer.Checked = true;
+            swtEnableGrpcServer.CheckState = CheckState.Indeterminate;
+            swtEnableGrpcServer.Cursor = Cursors.Hand;
+            swtEnableGrpcServer.Depth = 0;
+            swtEnableGrpcServer.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            swtEnableGrpcServer.Location = new Point(225, 213);
+            swtEnableGrpcServer.Margin = new Padding(0);
+            swtEnableGrpcServer.MouseLocation = new Point(-1, -1);
+            swtEnableGrpcServer.MouseState = MaterialSkin.MouseState.HOVER;
+            swtEnableGrpcServer.Name = "swtEnableGrpcServer";
+            swtEnableGrpcServer.Ripple = true;
+            swtEnableGrpcServer.Size = new Size(48, 27);
+            swtEnableGrpcServer.TabIndex = 27;
+            swtEnableGrpcServer.UseVisualStyleBackColor = false;
+            // 
+            // lblEnableGrpcServer
+            // 
+            lblEnableGrpcServer.BackColor = Color.FromArgb(242, 242, 242);
+            lblEnableGrpcServer.Depth = 0;
+            lblEnableGrpcServer.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblEnableGrpcServer.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblEnableGrpcServer.Location = new Point(39, 217);
+            lblEnableGrpcServer.Margin = new Padding(2, 0, 2, 0);
+            lblEnableGrpcServer.MouseState = MaterialSkin.MouseState.HOVER;
+            lblEnableGrpcServer.Name = "lblEnableGrpcServer";
+            lblEnableGrpcServer.Size = new Size(163, 28);
+            lblEnableGrpcServer.TabIndex = 26;
+            lblEnableGrpcServer.Text = "Enable GRPC Server";
+            // 
+            // swtEnableWebClient
+            // 
+            swtEnableWebClient.BackColor = Color.FromArgb(242, 242, 242);
+            swtEnableWebClient.Checked = true;
+            swtEnableWebClient.CheckState = CheckState.Indeterminate;
+            swtEnableWebClient.Cursor = Cursors.Hand;
+            swtEnableWebClient.Depth = 0;
+            swtEnableWebClient.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            swtEnableWebClient.Location = new Point(225, 254);
+            swtEnableWebClient.Margin = new Padding(0);
+            swtEnableWebClient.MouseLocation = new Point(-1, -1);
+            swtEnableWebClient.MouseState = MaterialSkin.MouseState.HOVER;
+            swtEnableWebClient.Name = "swtEnableWebClient";
+            swtEnableWebClient.Ripple = true;
+            swtEnableWebClient.Size = new Size(48, 27);
+            swtEnableWebClient.TabIndex = 29;
+            swtEnableWebClient.UseVisualStyleBackColor = false;
+            // 
+            // lblEnableWebClient
+            // 
+            lblEnableWebClient.BackColor = Color.FromArgb(242, 242, 242);
+            lblEnableWebClient.Depth = 0;
+            lblEnableWebClient.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblEnableWebClient.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblEnableWebClient.Location = new Point(39, 258);
+            lblEnableWebClient.Margin = new Padding(2, 0, 2, 0);
+            lblEnableWebClient.MouseState = MaterialSkin.MouseState.HOVER;
+            lblEnableWebClient.Name = "lblEnableWebClient";
+            lblEnableWebClient.Size = new Size(163, 28);
+            lblEnableWebClient.TabIndex = 28;
+            lblEnableWebClient.Text = "Enable Web Client";
+            // 
+            // lblRequiresRestart1
+            // 
+            lblRequiresRestart1.BackColor = Color.FromArgb(242, 242, 242);
+            lblRequiresRestart1.Depth = 0;
+            lblRequiresRestart1.Font = new Font("Roboto", 10F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblRequiresRestart1.FontType = MaterialSkin.MaterialSkinManager.fontType.Overline;
+            lblRequiresRestart1.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblRequiresRestart1.Location = new Point(39, 235);
+            lblRequiresRestart1.Margin = new Padding(2, 0, 2, 0);
+            lblRequiresRestart1.MouseState = MaterialSkin.MouseState.HOVER;
+            lblRequiresRestart1.Name = "lblRequiresRestart1";
+            lblRequiresRestart1.Size = new Size(163, 14);
+            lblRequiresRestart1.TabIndex = 30;
+            lblRequiresRestart1.Text = "Requires App Restart";
+            // 
+            // lblRequiresRestart2
+            // 
+            lblRequiresRestart2.BackColor = Color.FromArgb(242, 242, 242);
+            lblRequiresRestart2.Depth = 0;
+            lblRequiresRestart2.Font = new Font("Roboto", 10F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblRequiresRestart2.FontType = MaterialSkin.MaterialSkinManager.fontType.Overline;
+            lblRequiresRestart2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblRequiresRestart2.Location = new Point(39, 276);
+            lblRequiresRestart2.Margin = new Padding(2, 0, 2, 0);
+            lblRequiresRestart2.MouseState = MaterialSkin.MouseState.HOVER;
+            lblRequiresRestart2.Name = "lblRequiresRestart2";
+            lblRequiresRestart2.Size = new Size(163, 14);
+            lblRequiresRestart2.TabIndex = 31;
+            lblRequiresRestart2.Text = "Requires App Restart";
             // 
             // SettingsTabControl
             // 
-            this.Controls.Add(this.lblConsoleMinLogLevel);
-            this.Controls.Add(this.lblFileMinLogLevel);
-            this.Controls.Add(this.swtIsDarkMode);
-            this.Controls.Add(this.cbxConsoleMinLevel);
-            this.Controls.Add(this.cbxFileMinLevel);
-            this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.lblDarkMode);
-            this.Name = "SettingsTabControl";
-            this.Size = new System.Drawing.Size(781, 355);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            Controls.Add(lblRequiresRestart2);
+            Controls.Add(lblRequiresRestart1);
+            Controls.Add(swtEnableWebClient);
+            Controls.Add(lblEnableWebClient);
+            Controls.Add(swtEnableGrpcServer);
+            Controls.Add(lblEnableGrpcServer);
+            Controls.Add(lblConsoleMinLogLevel);
+            Controls.Add(lblFileMinLogLevel);
+            Controls.Add(swtIsDarkMode);
+            Controls.Add(cbxConsoleMinLevel);
+            Controls.Add(cbxFileMinLevel);
+            Controls.Add(btnSave);
+            Controls.Add(lblDarkMode);
+            Name = "SettingsTabControl";
+            Size = new Size(781, 364);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -196,5 +301,11 @@
         private MaterialSkin.Controls.MaterialComboBox cbxFileMinLevel;
         private MaterialSkin.Controls.MaterialButton btnSave;
         private MaterialSkin.Controls.MaterialLabel lblDarkMode;
+        private MaterialSkin.Controls.MaterialSwitch swtEnableGrpcServer;
+        private MaterialSkin.Controls.MaterialLabel lblEnableGrpcServer;
+        private MaterialSkin.Controls.MaterialSwitch swtEnableWebClient;
+        private MaterialSkin.Controls.MaterialLabel lblEnableWebClient;
+        private MaterialSkin.Controls.MaterialLabel lblRequiresRestart1;
+        private MaterialSkin.Controls.MaterialLabel lblRequiresRestart2;
     }
 }
