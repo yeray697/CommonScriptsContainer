@@ -4,5 +4,6 @@
     {
         bool IsAppSetToRunAtStartup();
         bool SetAppToRunAtStartup();
+        bool RemoveAppToRunAtStartup();
     }
 }

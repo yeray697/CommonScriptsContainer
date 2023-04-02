@@ -41,6 +41,8 @@
             lblEnableWebClient = new MaterialSkin.Controls.MaterialLabel();
             lblRequiresRestart1 = new MaterialSkin.Controls.MaterialLabel();
             lblRequiresRestart2 = new MaterialSkin.Controls.MaterialLabel();
+            swtRunOnStartup = new MaterialSkin.Controls.MaterialSwitch();
+            lblRunOnStartup = new MaterialSkin.Controls.MaterialLabel();
             SuspendLayout();
             // 
             // lblConsoleMinLogLevel
@@ -150,7 +152,7 @@
             btnSave.ForeColor = Color.FromArgb(222, 0, 0, 0);
             btnSave.HighEmphasis = true;
             btnSave.Icon = null;
-            btnSave.Location = new Point(681, 295);
+            btnSave.Location = new Point(681, 324);
             btnSave.Margin = new Padding(3, 4, 3, 4);
             btnSave.MouseState = MaterialSkin.MouseState.HOVER;
             btnSave.Name = "btnSave";
@@ -271,8 +273,42 @@
             lblRequiresRestart2.TabIndex = 31;
             lblRequiresRestart2.Text = "Requires App Restart";
             // 
+            // swtRunOnStartup
+            // 
+            swtRunOnStartup.BackColor = Color.FromArgb(242, 242, 242);
+            swtRunOnStartup.Checked = true;
+            swtRunOnStartup.CheckState = CheckState.Indeterminate;
+            swtRunOnStartup.Cursor = Cursors.Hand;
+            swtRunOnStartup.Depth = 0;
+            swtRunOnStartup.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            swtRunOnStartup.Location = new Point(225, 294);
+            swtRunOnStartup.Margin = new Padding(0);
+            swtRunOnStartup.MouseLocation = new Point(-1, -1);
+            swtRunOnStartup.MouseState = MaterialSkin.MouseState.HOVER;
+            swtRunOnStartup.Name = "swtRunOnStartup";
+            swtRunOnStartup.Ripple = true;
+            swtRunOnStartup.Size = new Size(48, 27);
+            swtRunOnStartup.TabIndex = 33;
+            swtRunOnStartup.UseVisualStyleBackColor = false;
+            // 
+            // lblRunOnStartup
+            // 
+            lblRunOnStartup.BackColor = Color.FromArgb(242, 242, 242);
+            lblRunOnStartup.Depth = 0;
+            lblRunOnStartup.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            lblRunOnStartup.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            lblRunOnStartup.Location = new Point(39, 298);
+            lblRunOnStartup.Margin = new Padding(2, 0, 2, 0);
+            lblRunOnStartup.MouseState = MaterialSkin.MouseState.HOVER;
+            lblRunOnStartup.Name = "lblRunOnStartup";
+            lblRunOnStartup.Size = new Size(163, 28);
+            lblRunOnStartup.TabIndex = 32;
+            lblRunOnStartup.Text = "Run On Startup";
+            // 
             // SettingsTabControl
             // 
+            Controls.Add(swtRunOnStartup);
+            Controls.Add(lblRunOnStartup);
             Controls.Add(lblRequiresRestart2);
             Controls.Add(lblRequiresRestart1);
             Controls.Add(swtEnableWebClient);
@@ -287,7 +323,7 @@
             Controls.Add(btnSave);
             Controls.Add(lblDarkMode);
             Name = "SettingsTabControl";
-            Size = new Size(781, 364);
+            Size = new Size(781, 393);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -307,5 +343,7 @@
         private MaterialSkin.Controls.MaterialLabel lblEnableWebClient;
         private MaterialSkin.Controls.MaterialLabel lblRequiresRestart1;
         private MaterialSkin.Controls.MaterialLabel lblRequiresRestart2;
+        private MaterialSkin.Controls.MaterialSwitch swtRunOnStartup;
+        private MaterialSkin.Controls.MaterialLabel lblRunOnStartup;
     }
 }
