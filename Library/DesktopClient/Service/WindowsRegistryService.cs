@@ -1,5 +1,5 @@
-﻿using DesktopClient.Service.Interfaces;
-using Data;
+﻿using Common;
+using DesktopClient.Service.Interfaces;
 using Microsoft.Win32;
 using Serilog;
 
@@ -22,7 +22,7 @@ namespace DesktopClient.Service
         }
         public bool SetAppToRunAtStartup()
         {
-            string exePath = Path.Combine(SettingsManager.Settings.Core.InstallationPath, APP_EXE_NAME);
+            string exePath = Path.Combine(FileUtils.GetProjectPath(), APP_EXE_NAME);
             bool result = true;
             try
             {

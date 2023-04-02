@@ -47,7 +47,6 @@
     <Compile Update="Forms\ScriptForm.Designer.cs">
       <DependentUpon>ScriptForm.cs</DependentUpon>
     </Compile>
-    <Compile Update="Forms\SetInstallationPathForm.cs" />
     <Compile Update="Forms\TrayContextMenu.cs">
       <SubType>Component</SubType>
     </Compile>

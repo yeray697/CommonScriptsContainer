@@ -1,6 +1,5 @@
 using Data;
 using DesktopClient.Extension;
-using DesktopClient.Forms;
 using DesktopClient.Forms.MainForm;
 using DesktopClient.Models;
 using DesktopClient.Service;
@@ -20,7 +19,6 @@ namespace App
     {
         private static IServiceCollection? ServiceCollection { get; set; }
         private static ServiceProvider? ServiceProvider { get; set; }
-        private static bool IsInstallationFormOpen = false;
         static Mutex? mutex = null;
 #if DEBUG
         static readonly string applicationMutex = @"Global\fcb9566c-9987-4095-805d-691fb98559e0-Debug";
@@ -92,41 +90,13 @@ namespace App
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            if (!OpenInstallFormIfNeeded())
-                return;
             var mainForm = ServiceProvider!.GetService<MainForm>()!;
             Log.Information("Starting application...");
             mainForm.Setup(clientArguments);
             Application.Run(mainForm);
         }
-        private static bool OpenInstallFormIfNeeded()
-        {
-            bool result = true;
-            if (string.IsNullOrWhiteSpace(SettingsManager.Settings.Core.InstallationPath))
-            {
-                var installationPathForm = new SetInstallationPathForm
-                {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
-                IsInstallationFormOpen = true;
-                Application.Run(installationPathForm);
-                if (installationPathForm.DialogResult == DialogResult.OK)
-                {
-                    Application.Exit();
-                }
-                else
-                {
-                    DisposeObjects();
-                    result = false;
-                }
-                IsInstallationFormOpen = false;
-            }
-            return result;
-        }
         private static void ThreadOnExit(object? s, EventArgs e)
         {
-            if (IsInstallationFormOpen)
-                return;
             DisposeObjects();
         }
         private static void DisposeObjects()

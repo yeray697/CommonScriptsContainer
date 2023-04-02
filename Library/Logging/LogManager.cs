@@ -23,7 +23,7 @@ namespace Logging
             _consoleLogSink = new LogSink(consoleMinLoggingLevel);
             _levelSwitch = new LoggingLevelSwitch(fileMinLoggingLevel);
 
-            string baseDirectory = FileUtils.GetConfigDirectory();
+            string baseDirectory = FileUtils.GetProjectPath();
             CreateLogDirectory(baseDirectory);
 
             var loggerConfiguration = new LoggerConfiguration()
