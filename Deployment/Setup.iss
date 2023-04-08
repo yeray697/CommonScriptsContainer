@@ -1,7 +1,7 @@
 ; Installation settings
 ;   These settings are defaulted here and are not allowed to be set from the wizard installer
 #ifndef AppMode
-  #define AppMode "Debug" ;"Release", "Debug"
+  #define AppMode "Release" ;"Release", "Debug"
 #endif
 
 #define CoreLogLevel "Information" ; Can be customized from the command line
@@ -57,8 +57,10 @@
 #define AppPublisher "yeray697"
 #define AppURL "https://github.com/yeray697/CommonScriptsContainer"
 #define AppExeName "CommonScripts.exe"
-#define AppFolder "..\Library\App\bin\" + AppMode + "\net6.0-windows"  
-#define ApplicationVersion GetVersionNumbersString(AppFolder + "\" + AppExeName)
+#define AppFolder "..\Library\App\bin\" + AppMode + "\net6.0-windows"
+#ifndef ApplicationVersion
+  #define ApplicationVersion GetFileVersion(AppFolder + "\" + AppExeName)
+#endif
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -113,7 +115,6 @@ Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; \
     Tasks: startup; Flags: uninsdeletevalue;
 
 [Code]
-
 function GetValueFromCommandLine(name: String) : String;
 begin
   Result := ExpandConstant('{param:'+name+'}')
@@ -147,7 +148,6 @@ begin
     if coreLogLevel = '' then
       coreLogLevel := '{#CoreLogLevel}';
       
-
     appLogLevel := GetValueFromCommandLine('AppLogLevel')
     if appLogLevel = '' then
       appLogLevel := '{#AppLogLevel}';
@@ -169,4 +169,3 @@ end;
 
 [Run]
 Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-
