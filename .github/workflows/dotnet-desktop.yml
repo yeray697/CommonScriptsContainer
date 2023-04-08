@@ -1,0 +1,136 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "feature/35/main" ]
+
+jobs:
+
+  build:
+
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    env:
+      Solution_Name: Library\CommonScripts.sln
+      App_Project_Path: Library\App\App.csproj
+      App_PublishProfile_Path: Library\App\Properties\PublishProfiles\ProjectBuild.pubxml
+      Inno_Setup_Path: ./Deployment/Setup.iss
+      Inno_Setup_Tmp_Path: ./Deployment/Setup.tmp.iss
+      Configuration: Release
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Get App version
+      id: get_version
+      run: echo "version=$(([Xml] (Get-Content $env:App_Project_Path)).Project.PropertyGroup.AssemblyVersion)" >> $env:GITHUB_OUTPUT
+      
+    - name: Create the app package
+      run: dotnet publish $env:App_Project_Path -c $env:Configuration /p:PublishProfile=$env:App_PublishProfile_Path
+
+    - name: Create Zip Archive
+      run: Compress-Archive -Path ./Library/App/Build/* -DestinationPath ./app-publish.zip
+      
+    - name: Prepare Inno Setup file
+      id: prepare_inno_setup
+      run: |
+        $innoVariables = "#define AppMode ""${{ env.configuration }}""`r`n#define ApplicationVersion ""${{ steps.get_version.outputs.version }}""`r`n";
+        $innoVariables + (Get-Content ${{ env.Inno_Setup_Path }} -Raw) | Set-Content ${{ env.Inno_Setup_Tmp_Path }}
+      
+    - name: Build Setup.exe with Inno Setup
+      uses: nadeemjazmawe/inno-setup-action-cli@v6.0.5
+      with:
+        filepath: ${{ env.Inno_Setup_Tmp_Path }}
+      
+    - name: Create or Update Release
+      id: create_or_update_release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        $tag_name="${{ steps.get_version.outputs.version }}"
+        $release_name="Release $tag_name"
+        $prerelease="false"
+        $draft="true"
+        $apiHeaders=@{"Authorization"="Bearer $env:GITHUB_TOKEN"}
+        $githubRepository=$env:GITHUB_REPOSITORY
+        $getReleasesEndpoint="https://api.github.com/repos/$githubRepository/releases"
+        
+        # Cannot use the "Find Release by Tag" endpoint as it does not find draft releases.
+        # Instead, getting all releases and manually filter by tag
+        $result = Invoke-WebRequest -Headers $apiHeaders -SkipHttpErrorCheck -Uri $getReleasesEndpoint
+
+        if ($result.StatusCode -ne 200)
+        {
+            echo "Invalid status code"
+            echo $result
+            exit 1
+        }
+        
+        echo "Checking if release with tag $tag_name already exists"
+        $findRelease = $result.Content | ConvertFrom-Json | Where-Object { $_.tag_name -eq $tag_name }
+        
+        if (!$findRelease)
+        {
+          echo "Release does not exist"
+          echo "Creating new release as draft"
+          $createReleaseEndpoint="https://api.github.com/repos/$githubRepository/releases"
+          $postParams = @"
+          { 
+            "tag_name": "$tag_name",
+            "name": "$release_name",
+            "draft": $draft,
+            "prerelease": $prerelease
+          }
+        "@
+          $result = Invoke-WebRequest -Headers $apiHeaders -SkipHttpErrorCheck -Uri $createReleaseEndpoint -Method POST -Body $postParams
+          if ($result.StatusCode -ne 201)
+          {
+            echo "Invalid status code"
+            echo $result
+            exit 1
+          }
+          echo "Release created"
+          $resultAsJson = $result.Content  | ConvertFrom-Json 
+          $uploadUrl = $resultAsJson.upload_url;
+        }
+        elseif (!$findRelease.draft)
+        {
+          echo "A release with tag $tag_name already exists and is not a draft"
+          exit 1
+        }
+        else
+        {
+          $uploadUrl = $findRelease.upload_url;
+          echo "Release already exists and is a draft version. Updating assets in the next build step."
+        }
+        echo "upload_url=$uploadUrl" >> $env:GITHUB_OUTPUT
+
+    - name: Upload Setup.exe Release Asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_or_update_release.outputs.upload_url }}
+        asset_path: ./Deployment/Output/CommonScripts_Installer_${{ steps.get_version.outputs.version}}.exe
+        asset_name: CommonScripts_Installer_${{ steps.get_version.outputs.version}}.exe
+        asset_content_type: octet-stream
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload Published App Release Asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_or_update_release.outputs.upload_url }}
+        asset_path: ./app-publish.zip
+        asset_name: App.zip
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

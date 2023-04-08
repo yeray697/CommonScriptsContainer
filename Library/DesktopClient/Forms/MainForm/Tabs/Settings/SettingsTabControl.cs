@@ -2,6 +2,7 @@
 using Contracts.Config;
 using Data;
 using DesktopClient.Extension;
+using DesktopClient.Service.Interfaces;
 using Logging;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -12,6 +13,7 @@ namespace DesktopClient.Forms.MainForm.Tabs.Settings
     public partial class SettingsTabControl : UserControl
     {
         private SettingsModel? _newSettings;
+        private IWindowsRegistryService? _windowsRegistryService;
         public bool PreventTabSettingsFromLeaving { get; set; }
 
         public SettingsTabControl()
@@ -19,22 +21,28 @@ namespace DesktopClient.Forms.MainForm.Tabs.Settings
             InitializeComponent();
         }
         #region Public Methods
+        public void SetWindowsRegistryService(IWindowsRegistryService windowsRegistryService)
+            => _windowsRegistryService = windowsRegistryService;
         public void LoadView()
         {
             _newSettings = SettingsManager.CloneSettings;
             swtIsDarkMode.Checked = _newSettings.App.DarkMode;
+            swtEnableGrpcServer.Checked = _newSettings.Core.EnableGrpcServer;
+            swtEnableWebClient.Checked = _newSettings.Core.EnableWebClient;
 
             cbxConsoleMinLevel.DataSource = Enum.GetValues(typeof(LogLevel));
             cbxConsoleMinLevel.SelectedItem = _newSettings.App.LoggingLevel;
 
             cbxFileMinLevel.DataSource = Enum.GetValues(typeof(LogLevel));
             cbxFileMinLevel.SelectedItem = _newSettings.Core.LoggingLevel;
+
+            swtRunOnStartup.Checked = _windowsRegistryService!.IsAppSetToRunAtStartup();
         }
         public void ShowUnsavedChangesDialogIfNeeded()
         {
             MapSettingsFromControls();
 
-            if (_newSettings != null &&_newSettings.Equals(SettingsManager.Settings))
+            if (_newSettings != null && _newSettings.Equals(SettingsManager.Settings) && _windowsRegistryService!.IsAppSetToRunAtStartup() == swtRunOnStartup.Checked)
             {
                 _newSettings = null;
                 return;
@@ -60,6 +68,10 @@ namespace DesktopClient.Forms.MainForm.Tabs.Settings
             MaterialSkinManager.Instance.ChangeTheme(_newSettings.App.DarkMode);
             LogManager.ChangeConsoleMinLoggingLevel(_newSettings.App.LoggingLevel);
             LogManager.ChangeFileMinLoggingLevel(_newSettings.Core.LoggingLevel);
+            if (swtRunOnStartup.Checked)
+                _windowsRegistryService!.SetAppToRunAtStartup();
+            else
+                _windowsRegistryService!.RemoveAppToRunAtStartup();
         }
         #endregion
         #region Private Methods
@@ -70,6 +82,8 @@ namespace DesktopClient.Forms.MainForm.Tabs.Settings
             _newSettings.App.LoggingLevel = EnumUtils.Parse<LogLevel>(cbxConsoleMinLevel.SelectedValue!);
             _newSettings.Core.LoggingLevel = EnumUtils.Parse<LogLevel>(cbxFileMinLevel.SelectedValue!);
             _newSettings.App.DarkMode = swtIsDarkMode.Checked;
+            _newSettings.Core.EnableGrpcServer = swtEnableGrpcServer.Checked;
+            _newSettings.Core.EnableWebClient = swtEnableWebClient.Checked;
         }
         #endregion
     }

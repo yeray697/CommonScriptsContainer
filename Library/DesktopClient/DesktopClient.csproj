@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -47,7 +47,6 @@
     <Compile Update="Forms\ScriptForm.Designer.cs">
       <DependentUpon>ScriptForm.cs</DependentUpon>
     </Compile>
-    <Compile Update="Forms\SetInstallationPathForm.cs" />
     <Compile Update="Forms\TrayContextMenu.cs">
       <SubType>Component</SubType>
     </Compile>

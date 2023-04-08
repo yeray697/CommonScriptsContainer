@@ -34,7 +34,7 @@ namespace DesktopClient.Service
             Log.Debug("Adding Script {@ScriptName} ({@ScriptType}) from {@Client}", script.ScriptName, script.ScriptType, _client);
             script.Id = Guid.NewGuid().ToString();
             _scriptsService!.AddScript(script);
-            _scripts!.Add(script);
+            GetScripts().Add(script);
             ScriptAdded?.Invoke(script);
         }
 
@@ -43,10 +43,10 @@ namespace DesktopClient.Service
             Log.Debug("Editing Script {@ScriptName} ({@ScriptType}) from {@Client}", oldScript.ScriptName, oldScript.ScriptType, _client);
             _scriptsService!.UpdateScript(editedScript);
 
-            int index = _scripts!.FindIndex(s => s.Id == editedScript.Id);
+            int index = GetScripts().FindIndex(s => s.Id == editedScript.Id);
             if (index == -1)
                 return;
-            _scripts[index] = editedScript;
+            _scripts![index] = editedScript;
 
             ScriptEdited?.Invoke(oldScript, editedScript);
             if (editedScript.ScriptStatus == ScriptStatus.Running 
@@ -71,7 +71,7 @@ namespace DesktopClient.Service
         {
             Log.Debug("Removing ScriptId {@ScriptId} from {@Client}", script.Id, _client);
             _scriptsService!.DeleteScript(script.Id);
-            var scriptToDelete = _scripts!.FirstOrDefault(s => s.Id == script.Id);
+            var scriptToDelete = GetScripts()!.FirstOrDefault(s => s.Id == script.Id);
             if (scriptToDelete == null)
                 return;
             _scripts!.Remove(scriptToDelete);
@@ -88,7 +88,6 @@ namespace DesktopClient.Service
                 await _runScriptService!.RunScriptAsync(script);
         }
 
-
         public async Task StopScriptAsync(ScriptAbs script)
         {
             //OneOffs are updated by IRunScriptService events
@@ -101,7 +100,7 @@ namespace DesktopClient.Service
 
         private void ModifyScriptStatusById(string scriptId, ScriptStatus newScriptStatus)
         {
-            var script = _scripts!.FirstOrDefault(s => s.Id == scriptId);
+            var script = GetScripts().FirstOrDefault(s => s.Id == scriptId);
             if (script != null)
             {
                 script.ScriptStatus = newScriptStatus;

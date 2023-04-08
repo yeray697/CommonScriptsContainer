@@ -1,10 +1,8 @@
 ﻿using Contracts.Scripts.Base;
-using Data;
 using DesktopClient.Forms.Base;
 using DesktopClient.Models;
 using DesktopClient.Service.Interfaces;
 using DesktopClient.Utils;
-using MaterialSkin.Controls;
 
 namespace DesktopClient.Forms.MainForm
 {
@@ -23,6 +21,8 @@ namespace DesktopClient.Forms.MainForm
             runTabControl.ScriptEdited += RunTabControl_ScriptEdited;
             runTabControl.ScriptAdded += RunTabControl_ScriptAdded;
             runTabControl.ScriptRemoved += RunTabControl_ScriptRemoved;
+
+            settingsTabControl.SetWindowsRegistryService(_windowsRegistryService);
 
             _trayContextMenu = new TrayContextMenu();
             ConfigureTrayContextMenu(scripts);
@@ -61,11 +61,6 @@ namespace DesktopClient.Forms.MainForm
         private void RunTabControl_ScriptAdded(ScriptAbs script)
         {
             _trayContextMenu.AddScript(script);
-        }
-        protected async override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            await ShowRunAtStartupDialogIfNeededAsync();
         }
         private void SettingsTab_Open(object sender, EventArgs e)
         {
@@ -122,18 +117,6 @@ namespace DesktopClient.Forms.MainForm
             _trayContextMenu.ScriptStatusClicked += ContextMenu_StatusClick;
             _trayContextMenu.LoadScriptList(scripts);
             this.appNotifyIcon.ContextMenuStrip = _trayContextMenu;
-        }
-        private async Task ShowRunAtStartupDialogIfNeededAsync()
-        {
-            if (SettingsManager.Settings.Core.DoNotAskAgainRunStartup || _windowsRegistryService.IsAppSetToRunAtStartup())
-                return;
-            var runAtStartupDialog = new MaterialDialog(this, null, "Do you want to set the app to run at startup?", "Yes", true, "No");
-            if (runAtStartupDialog.ShowDialog(this) == DialogResult.OK)
-                _windowsRegistryService.SetAppToRunAtStartup();
-            else
-            {
-                await SettingsManager.UpdateSettingsAsync((settings) => settings.Core.DoNotAskAgainRunStartup = true);
-            }
         }
         #endregion
     }
