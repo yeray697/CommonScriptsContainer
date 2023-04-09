@@ -11,6 +11,7 @@ function Update-AssemblyVersion
       $Version = 0
     )
 
+    Write-Host "Updating Version for $XmlPath"
     $xml = New-Object XML
     $xml.Load($XmlPath)
     $element =  $xml.SelectSingleNode("//AssemblyVersion")
@@ -18,10 +19,8 @@ function Update-AssemblyVersion
     $xml.Save($XmlPath)
 }
 
-".\Library\App\App.csproj"                      | Update-AssemblyVersion -Version $newVersion
-".\Library\Common\Common.csproj"                | Update-AssemblyVersion -Version $newVersion
-".\Library\Contracts\Contracts.csproj"          | Update-AssemblyVersion -Version $newVersion
-".\Library\Data\Data.csproj"                    | Update-AssemblyVersion -Version $newVersion
-".\Library\DesktopClient\DesktopClient.csproj"  | Update-AssemblyVersion -Version $newVersion
-".\Library\JobManager\JobManager.csproj"        | Update-AssemblyVersion -Version $newVersion
-".\Library\Logging\Logging.csproj"              | Update-AssemblyVersion -Version $newVersion
+$projects = @("App", "Common", "Contracts", "Data", "DesktopClient", "JobManager", "Logging");
+
+$projects | ForEach-Object {
+   "$PSScriptRoot\..\Library\$_\$_.csproj" | Update-AssemblyVersion -Version $newVersion
+ }
