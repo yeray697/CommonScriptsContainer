@@ -262,3 +262,6 @@ __pycache__/
 
 #CommonScript Default Build
 [Bb]uild/
+
+Deployment/Output/*
+Deployment/Setup.tmp.iss

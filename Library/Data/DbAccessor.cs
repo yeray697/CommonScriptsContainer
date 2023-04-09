@@ -76,11 +76,7 @@ namespace Data
 
         private static string GetDatabasePath()
         {
-#if DEBUG
             string path = FileUtils.GetConfigDirectory();
-#else
-            string path = SettingsManager.Settings.Core.InstallationPath;
-#endif
             return Path.Combine(path, DB_NAME);
         }
     }

@@ -1,10 +1,12 @@
-﻿using Contracts.Scripts.Base;
-using Data;
+﻿using AutoUpdaterDotNET;
+using Contracts.Scripts.Base;
 using DesktopClient.Forms.Base;
 using DesktopClient.Models;
 using DesktopClient.Service.Interfaces;
 using DesktopClient.Utils;
 using MaterialSkin.Controls;
+using Serilog;
+using System;
 
 namespace DesktopClient.Forms.MainForm
 {
@@ -24,8 +26,13 @@ namespace DesktopClient.Forms.MainForm
             runTabControl.ScriptAdded += RunTabControl_ScriptAdded;
             runTabControl.ScriptRemoved += RunTabControl_ScriptRemoved;
 
+            settingsTabControl.SetWindowsRegistryService(_windowsRegistryService);
+
             _trayContextMenu = new TrayContextMenu();
             ConfigureTrayContextMenu(scripts);
+
+            AutoUpdater.CheckForUpdateEvent += AutoUpdaterOnCheckForUpdateEvent;
+            AutoUpdater.Start("https://gist.githubusercontent.com/yeray697/484fa8d7871d44d1f67cc68a2c7d082f/raw");
         }
         #region Public methods
         public void Setup(ClientArguments clientArguments)
@@ -62,11 +69,6 @@ namespace DesktopClient.Forms.MainForm
         {
             _trayContextMenu.AddScript(script);
         }
-        protected async override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            await ShowRunAtStartupDialogIfNeededAsync();
-        }
         private void SettingsTab_Open(object sender, EventArgs e)
         {
             settingsTabControl.LoadView();
@@ -100,6 +102,94 @@ namespace DesktopClient.Forms.MainForm
                 this.ShowInTaskbar = false;
             }
         }
+        private void AutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)
+        {
+            Log.Debug("Checking if a new update is available");
+            if (args.Error == null)
+            {
+                if (args.IsUpdateAvailable)
+                {
+                    Log.Debug("New version available ({@CurrentVersion}). Current version {@InstalledVersion}", args.CurrentVersion, args.InstalledVersion);
+                    DialogResult dialogResult;
+                    string title = "Update Available";
+                    string description = $"There is new version {args.CurrentVersion} available. You are using version {args.InstalledVersion}.";
+                    if (args.Mandatory.Value)
+                    {
+                        dialogResult =
+                            new MaterialDialog(
+                                    this.FindForm(),
+                                    title,
+                                    $"{description} This is required update. Press Ok to begin updating the application.", 
+                                    "Ok"
+                                ).ShowDialog(this);
+                    }
+                    else
+                    {
+                        dialogResult =
+                            new MaterialDialog(
+                                    this.FindForm(),
+                                    title,
+                                    $"{description} Do you want to update the application now?",
+                                    "Yes",
+                                    true,
+                                    "No"
+                                ).ShowDialog(this);
+                    }
+
+                    if (dialogResult.Equals(DialogResult.Yes) || dialogResult.Equals(DialogResult.OK))
+                    {
+                        Log.Debug("Start downloading new version");
+                        try
+                        {
+                            if (AutoUpdater.DownloadUpdate(args))
+                            {
+                                Log.Debug("New version downloaded. Restarting the application");
+                                Application.Exit();
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            Log.Error(exception, "An error has occurred when downloading the new version.");
+                            MessageBox.Show(exception.Message, exception.GetType().ToString(), MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                        }
+                    }
+                }
+                else
+                {
+                    Log.Debug("There is no update available");
+                    new MaterialDialog(
+                                    this.FindForm(),
+                                    "No update available",
+                                    "There is no update available please try again later.",
+                                    "Ok"
+                                ).ShowDialog(this);
+                }
+            }
+            else
+            {
+                if (args.Error is System.Net.WebException)
+                {
+                    Log.Error(args.Error, "An error has occurred when checking if a new version is available.");
+                    new MaterialDialog(
+                                    this.FindForm(),
+                                    "Update Check Failed",
+                                    "There is a problem reaching update server. Please check your internet connection and try again later.",
+                                    "Ok"
+                                ).ShowDialog(this);
+                }
+                else
+                {
+                    Log.Error(args.Error, "An unknown error has occurred when checking if a new version is available.");
+                    new MaterialDialog(
+                                    this.FindForm(),
+                                    args.Error.GetType().ToString(),
+                                    args.Error.Message,
+                                    "Ok"
+                                ).ShowDialog(this);
+                }
+            }
+        }
         #endregion
 
         #region Private Methods
@@ -122,18 +212,6 @@ namespace DesktopClient.Forms.MainForm
             _trayContextMenu.ScriptStatusClicked += ContextMenu_StatusClick;
             _trayContextMenu.LoadScriptList(scripts);
             this.appNotifyIcon.ContextMenuStrip = _trayContextMenu;
-        }
-        private async Task ShowRunAtStartupDialogIfNeededAsync()
-        {
-            if (SettingsManager.Settings.Core.DoNotAskAgainRunStartup || _windowsRegistryService.IsAppSetToRunAtStartup())
-                return;
-            var runAtStartupDialog = new MaterialDialog(this, null, "Do you want to set the app to run at startup?", "Yes", true, "No");
-            if (runAtStartupDialog.ShowDialog(this) == DialogResult.OK)
-                _windowsRegistryService.SetAppToRunAtStartup();
-            else
-            {
-                await SettingsManager.UpdateSettingsAsync((settings) => settings.Core.DoNotAskAgainRunStartup = true);
-            }
         }
         #endregion
     }

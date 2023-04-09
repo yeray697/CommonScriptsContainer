@@ -1,20 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>CommonScripts</AssemblyName>
+    <AssemblyVersion>3.0</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <ProductVersion>$(AssemblyVersion)</ProductVersion>
+    <Version>$(AssemblyVersion)</Version>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Scripts\ShutdownPC\ShutdownPC.ps1" />
     <None Remove="Scripts\ToggleAudioDevice\AudioDeviceCmdlets.dll" />
     <None Remove="Scripts\ToggleAudioDevice\Toggle-AudioDevice.ps1" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="Scripts\ShutdownPC\ShutdownPC.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -29,11 +30,9 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\DesktopClient\DesktopClient.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="appsettings.Development.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -42,5 +41,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>
