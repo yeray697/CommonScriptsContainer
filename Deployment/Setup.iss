@@ -111,7 +111,7 @@ Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Tasks: deskto
 
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; \
-    ValueType: string; ValueName: "{#AppName}"; ValueData: "{app}\{#AppExeName} -hide -silent"; \
+    ValueType: string; ValueName: "{#AppName}"; ValueData: "{app}\{#AppExeName} -hide -startup"; \
     Tasks: startup; Flags: uninsdeletevalue;
 
 [Code]

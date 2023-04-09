@@ -6,7 +6,6 @@ using DesktopClient.Service.Interfaces;
 using DesktopClient.Utils;
 using MaterialSkin.Controls;
 using Serilog;
-using System;
 
 namespace DesktopClient.Forms.MainForm
 {
@@ -158,12 +157,6 @@ namespace DesktopClient.Forms.MainForm
                 else
                 {
                     Log.Debug("There is no update available");
-                    new MaterialDialog(
-                                    this.FindForm(),
-                                    "No update available",
-                                    "There is no update available please try again later.",
-                                    "Ok"
-                                ).ShowDialog(this);
                 }
             }
             else
@@ -171,12 +164,6 @@ namespace DesktopClient.Forms.MainForm
                 if (args.Error is System.Net.WebException)
                 {
                     Log.Error(args.Error, "An error has occurred when checking if a new version is available.");
-                    new MaterialDialog(
-                                    this.FindForm(),
-                                    "Update Check Failed",
-                                    "There is a problem reaching update server. Please check your internet connection and try again later.",
-                                    "Ok"
-                                ).ShowDialog(this);
                 }
                 else
                 {
