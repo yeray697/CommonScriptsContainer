@@ -79,26 +79,12 @@ namespace DesktopClient.Service
         }
 
         public async Task RunScriptAsync(ScriptAbs script)
-        {
-            //OneOffs are updated by IRunScriptService events
-            //The other scripts need to be updated here
-            if (script is not ScriptOneOff)
-                ModifyScriptStatusById(script.Id, ScriptStatus.Running);
-            else
-                await _runScriptService!.RunScriptAsync(script);
-        }
+            => await _runScriptService!.RunScriptAsync(script);
 
         public async Task StopScriptAsync(ScriptAbs script)
-        {
-            //OneOffs are updated by IRunScriptService events
-            //The other scripts need to be updated here
-            if (script is not ScriptOneOff)
-                ModifyScriptStatusById(script.Id, ScriptStatus.Stopped);
-            else
-                await _runScriptService!.StopScriptAsync(script);
-        }
+            => await _runScriptService!.StopScriptAsync(script);
 
-        private void ModifyScriptStatusById(string scriptId, ScriptStatus newScriptStatus)
+        public void ModifyScriptStatusById(string scriptId, ScriptStatus newScriptStatus)
         {
             var script = GetScripts().FirstOrDefault(s => s.Id == scriptId);
             if (script != null)

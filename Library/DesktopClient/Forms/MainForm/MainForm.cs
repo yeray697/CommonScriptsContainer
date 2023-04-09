@@ -13,14 +13,13 @@ namespace DesktopClient.Forms.MainForm
     {
         private readonly TrayContextMenu _trayContextMenu;
         private readonly IWindowsRegistryService _windowsRegistryService;
-        private bool RunOnStartup { get; set; }
 
         public MainForm(IScriptManagerService scriptManagerService, IWindowsRegistryService windowsRegistryService)
         {
             InitializeComponent();
             _windowsRegistryService = windowsRegistryService;
 
-            var scripts = runTabControl.InitTabController(scriptManagerService, RunOnStartup);
+            var scripts = runTabControl.InitTabController(scriptManagerService);
             runTabControl.ScriptEdited += RunTabControl_ScriptEdited;
             runTabControl.ScriptAdded += RunTabControl_ScriptAdded;
             runTabControl.ScriptRemoved += RunTabControl_ScriptRemoved;
@@ -42,7 +41,7 @@ namespace DesktopClient.Forms.MainForm
                 Hide();
                 ShowInTaskbar = false;
             }
-            RunOnStartup = clientArguments.OnStartup.Value;
+            runTabControl.NeedToRunStartupScripts(clientArguments.OnStartup.Value);
         }
         #endregion
 

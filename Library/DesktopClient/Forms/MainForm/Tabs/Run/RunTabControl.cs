@@ -36,9 +36,8 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
         }
 
         #region Public methods
-        public List<ScriptAbs> InitTabController(IScriptManagerService scriptManagerService, bool runScriptsOnStartup)
+        public List<ScriptAbs> InitTabController(IScriptManagerService scriptManagerService)
         {
-            _runScriptsOnStartup = runScriptsOnStartup;
             _scriptManagerService = scriptManagerService;
             _scriptManagerService.ScriptAdded += OnScriptAdded;
             _scriptManagerService.ScriptEdited += OnScriptEdited;
@@ -48,6 +47,10 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
             _scripts = _scriptManagerService.GetScripts();
 
             return _scripts;
+        }
+        public void NeedToRunStartupScripts(bool runScriptsOnStartup)
+        {
+            _runScriptsOnStartup = runScriptsOnStartup;
         }
         public async Task SwapScriptStatusAsync(ScriptAbs? script)
         {
@@ -92,21 +95,22 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
             {
                 if (script is ScriptListenKey)
                     _listenKeysService.Run();
-                
-                await _scriptManagerService!.RunScriptAsync(script);
+
+                if (script is not ScriptOneOff)
+                    _scriptManagerService!.ModifyScriptStatusById(script.Id, ScriptStatus.Running);
+                else
+                    await _scriptManagerService!.RunScriptAsync(script);
             }
             else
             {
                 if (script is ScriptListenKey && !IsListenKeyServiceNecessary(script.Id))
                     _listenKeysService.Stop();
-                await _scriptManagerService!.StopScriptAsync(script);
+
+                if (script is not ScriptOneOff)
+                    _scriptManagerService!.ModifyScriptStatusById(script.Id, ScriptStatus.Stopped);
+                else
+                    await _scriptManagerService!.StopScriptAsync(script);
             }
-            //OneOffs are updated by IRunScriptService events
-            //The other scripts need to be updated here
-            //if (script is not ScriptOneOff)
-            //{
-            //    ModifyScriptStatusByIdThreadSafe(script.Id, newStatus);
-            //}
         }
         private async void AddScriptButtonClicked(object sender, EventArgs e)
             => await ShowAddScriptForm();
