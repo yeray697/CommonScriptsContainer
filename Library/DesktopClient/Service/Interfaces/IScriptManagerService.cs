@@ -1,4 +1,5 @@
-﻿using Contracts.Scripts.Base;
+﻿using Contracts.Scripts;
+using Contracts.Scripts.Base;
 
 namespace DesktopClient.Service.Interfaces
 {
@@ -17,5 +18,6 @@ namespace DesktopClient.Service.Interfaces
         void RemoveScript(ScriptAbs script);
         Task RunScriptAsync(ScriptAbs script);
         Task StopScriptAsync(ScriptAbs script);
+        void ModifyScriptStatusById(string scriptId, ScriptStatus newScriptStatus);
     }
 }
