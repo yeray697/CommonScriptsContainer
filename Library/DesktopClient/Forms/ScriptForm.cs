@@ -49,7 +49,7 @@ namespace DesktopClient.Forms
         {
             if (ValidateBeforeSaving())
             {
-                ScriptType scriptType = EnumUtils.Parse<ScriptType>(cbxScriptType.SelectedValue!);
+                ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue!);
                 ScriptStatus scriptStatus = _script?.ScriptStatus ?? ScriptStatus.Stopped;
                 _script = ScriptAbs.GetInstance(_script, scriptType);
                 if (_script == null)
@@ -133,7 +133,7 @@ namespace DesktopClient.Forms
         }
         private void DisplaySpecificScriptFields()
         {
-            ScriptType scriptType = EnumUtils.Parse<ScriptType>(cbxScriptType.SelectedValue!);
+            ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue!);
 
             switch (scriptType)
             {
@@ -158,7 +158,7 @@ namespace DesktopClient.Forms
         {
             if (_script != null)
             {
-                ScriptType scriptType = EnumUtils.Parse<ScriptType>(cbxScriptType.SelectedValue!);
+                ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue!);
 
                 switch (scriptType)
                 {
@@ -231,7 +231,7 @@ namespace DesktopClient.Forms
         private bool ValidateBeforeSaving()
         {
             bool isValid = true;
-            ScriptType scriptType = EnumUtils.Parse<ScriptType>(cbxScriptType.SelectedValue!);
+            ScriptType scriptType = EnumUtils.ParseOrDefault<ScriptType>(cbxScriptType.SelectedValue!);
             if (scriptType == ScriptType.Scheduled && !IsMaskDatetimeValid(tbxScriptScheduled.Text))
             {
                 isValid = false;
