@@ -1,6 +1,6 @@
 ﻿using Contracts.Scripts;
 using Contracts.Scripts.Base;
-using Data.Service.Interfaces;
+using Data.Repository.Interfaces;
 using DesktopClient.Service.Interfaces;
 using JobManager.Service;
 using Serilog;
@@ -15,16 +15,16 @@ namespace DesktopClient.Service
         public event IScriptManagerService.ScriptHandler? ScriptStatusChanged;
 
         private readonly IRunScriptService _runScriptService;
-        private readonly IScriptsService _scriptsService;
+        private readonly IScriptsRepository _scriptsRepository;
         private readonly string _client;
 
         private List<ScriptAbs>? _scripts;
 
-        public ScriptManagerService(string client, IRunScriptService runScriptService, IScriptsService scriptsService)
+        public ScriptManagerService(string client, IRunScriptService runScriptService, IScriptsRepository scriptsRepository)
         {
             _client = client;
             _runScriptService = runScriptService;
-            _scriptsService = scriptsService;
+            _scriptsRepository = scriptsRepository;
             _runScriptService.OneOffScriptExecuted += (scriptId) => ModifyScriptStatusById(scriptId, ScriptStatus.Stopped);
             _runScriptService.ScriptStarted += (scriptId) => ModifyScriptStatusById(scriptId, ScriptStatus.Running);
         }
@@ -33,7 +33,7 @@ namespace DesktopClient.Service
         {
             Log.Debug("Adding Script {@ScriptName} ({@ScriptType}) from {@Client}", script.ScriptName, script.ScriptType, _client);
             script.Id = Guid.NewGuid().ToString();
-            _scriptsService!.AddScript(script);
+            _scriptsRepository.AddScript(script);
             GetScripts().Add(script);
             ScriptAdded?.Invoke(script);
         }
@@ -41,7 +41,7 @@ namespace DesktopClient.Service
         public async Task EditScriptAsync(ScriptAbs oldScript, ScriptAbs editedScript)
         {
             Log.Debug("Editing Script {@ScriptName} ({@ScriptType}) from {@Client}", oldScript.ScriptName, oldScript.ScriptType, _client);
-            _scriptsService!.UpdateScript(editedScript);
+            _scriptsRepository.UpdateScript(editedScript);
 
             int index = GetScripts().FindIndex(s => s.Id == editedScript.Id);
             if (index == -1)
@@ -63,14 +63,14 @@ namespace DesktopClient.Service
         public List<ScriptAbs> GetScripts(bool refresh = false)
         {
             if (_scripts ==  null || refresh)
-                _scripts = _scriptsService.GetScripts();
+                _scripts = _scriptsRepository.GetScripts();
             return _scripts;
         }
 
         public void RemoveScript(ScriptAbs script)
         {
             Log.Debug("Removing ScriptId {@ScriptId} from {@Client}", script.Id, _client);
-            _scriptsService!.DeleteScript(script.Id);
+            _scriptsRepository.DeleteScript(script.Id);
             var scriptToDelete = GetScripts()!.FirstOrDefault(s => s.Id == script.Id);
             if (scriptToDelete == null)
                 return;
@@ -90,7 +90,7 @@ namespace DesktopClient.Service
             if (script != null)
             {
                 script.ScriptStatus = newScriptStatus;
-                _scriptsService!.UpdateScript(script);
+                _scriptsRepository.UpdateScript(script);
                 ScriptStatusChanged?.Invoke(script);
             }
         }
