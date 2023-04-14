@@ -12,17 +12,21 @@ namespace JobManager.Service
     {
 
         private readonly ISchedulerFactory _schedulerFactory;
-        private readonly JobListener _jobListenerOneOff;
+        private readonly IJobListener _jobListenerOneOff;
         private IScheduler? _scheduler;
 
         public event IRunScriptService.ScriptExecutedHandler? OneOffScriptExecuted;
         public event IRunScriptService.ScriptExecutedHandler? ScriptStarted;
 
-        public RunScriptService()
+        public RunScriptService(ISchedulerFactory schedulerFactory, IJobListener jobListenerOneOff)
         {
-            _schedulerFactory = new StdSchedulerFactory();
-            _jobListenerOneOff = new JobListener();
-            _jobListenerOneOff.JobWasExecutedListener += OneOffJobWasExecuted;
+            _schedulerFactory = schedulerFactory;
+            _jobListenerOneOff = jobListenerOneOff;
+            ((JobListener)_jobListenerOneOff).JobWasExecutedListener += OneOffJobWasExecuted;
+        }
+        public RunScriptService()
+            : this(new StdSchedulerFactory(), new JobListener())
+        {
         }
         public async Task RunServiceAsync()
         {
