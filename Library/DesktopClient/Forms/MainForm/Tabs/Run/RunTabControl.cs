@@ -96,7 +96,7 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
                 if (script is ScriptListenKey)
                     _listenKeysService.Run();
 
-                if (script is not ScriptOneOff)
+                if (script is not ScriptOneOff && script is not ScriptScheduled)
                     _scriptManagerService!.ModifyScriptStatusById(script.Id, ScriptStatus.Running);
                 else
                     await _scriptManagerService!.RunScriptAsync(script);
@@ -106,7 +106,7 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
                 if (script is ScriptListenKey && !IsListenKeyServiceNecessary(script.Id))
                     _listenKeysService.Stop();
 
-                if (script is not ScriptOneOff)
+                if (script is not ScriptOneOff && script is not ScriptScheduled)
                     _scriptManagerService!.ModifyScriptStatusById(script.Id, ScriptStatus.Stopped);
                 else
                     await _scriptManagerService!.StopScriptAsync(script);
