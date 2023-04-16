@@ -17,6 +17,7 @@ namespace JobManager.Service
 
         public event IRunScriptService.ScriptExecutedHandler? OneOffScriptExecuted;
         public event IRunScriptService.ScriptExecutedHandler? ScriptStarted;
+        public event IRunScriptService.ScriptExecutedHandler? ScriptStopped;
 
         public RunScriptService()
         {
@@ -76,6 +77,7 @@ namespace JobManager.Service
                     await _scheduler.UnscheduleJob(GetTriggerKeyForScript(script));
                 else
                     await _scheduler.PauseJob(GetJobKeyForScript(script));
+                ScriptStopped?.Invoke(script.Id);
             }
         }
         private void OneOffJobWasExecuted(IJobExecutionContext context, JobExecutionException? jobException)
