@@ -27,6 +27,7 @@ namespace DesktopClient.Service
             _scriptsRepository = scriptsRepository;
             _runScriptService.OneOffScriptExecuted += (scriptId) => ModifyScriptStatusById(scriptId, ScriptStatus.Stopped);
             _runScriptService.ScriptStarted += (scriptId) => ModifyScriptStatusById(scriptId, ScriptStatus.Running);
+            _runScriptService.ScriptStopped += (scriptId) => ModifyScriptStatusById(scriptId, ScriptStatus.Stopped);
         }
 
         public void AddScript(ScriptAbs script)
