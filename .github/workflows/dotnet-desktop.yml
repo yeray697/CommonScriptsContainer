@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
           
       - name: Has Version changed?
         id: check_version_changed
@@ -85,7 +87,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0
+        fetch-depth: 1
 
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
