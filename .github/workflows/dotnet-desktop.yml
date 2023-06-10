@@ -68,7 +68,7 @@ jobs:
           else {
               Write-Host "AssemblyVersion not modified"
           }
-          echo "status=$result >> $env:GITHUB_OUTPUT
+          echo "status=$result >> $env:GITHUB_OUTPUT"
 
   release:
     runs-on: windows-latest 
