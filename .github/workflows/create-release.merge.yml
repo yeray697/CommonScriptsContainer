@@ -1,9 +1,8 @@
-name: .NET Core Desktop
+name: Create release if needed
 
 on:
   push:
-    #branches: [ "feature/3.0" ]
-    branches: [ "feature/46/fix_build" ]
+    branches: [ "feature/3.0" ]
 
 jobs:
   check_version_changed:
@@ -121,7 +120,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         $tag_name="${{ steps.get_version.outputs.version }}"
-        $release_name="Release $tag_name"
+        $release_name=$tag_name
         $prerelease="false"
         $draft="true"
         $apiHeaders=@{"Authorization"="Bearer $env:GITHUB_TOKEN"}
@@ -197,41 +196,3 @@ jobs:
         asset_content_type: application/zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Update gist for AutoUpdater.NET
-      id: update_gist_for_autoupdater
-      env:
-        GITHUB_TOKEN: ${{ secrets.GIST_GITHUB_TOKEN }}
-        gistId: 484fa8d7871d44d1f67cc68a2c7d082f
-        gistName: CommonScripts_LastVersion.xml
-      run: |
-        $tag_name="${{ steps.get_version.outputs.version }}"
-        $apiHeaders=@{"Authorization"="Bearer $env:GITHUB_TOKEN"}
-        $updateGistEndpoint="https://api.github.com/gists/$env:gistId"
-        $gistContent = @"
-        <?xml version="1.0" encoding="UTF-8"?>
-        <item>
-          <version>$tag_name</version>
-          <url>https://github.com/yeray697/CommonScriptsContainer/releases/download/$tag_name/App.zip</url>
-          <changelog>https://github.com/yeray697/CommonScriptsContainer/releases</changelog>
-          <mandatory>false</mandatory>
-        </item>
-        "@
-        $postParams = @{
-          description = "XML for AutoUpdater.NET, used in CommonScriptsContainer application. Current version $tag_name";
-          files       = @{
-            $env:gistName = @{
-              content = $gistContent
-            }
-          }
-        }
-        $postParams = $postParams | ConvertTo-Json -Depth 2
-        $result = Invoke-WebRequest -Headers $apiHeaders -SkipHttpErrorCheck -Uri $updateGistEndpoint -Method POST -Body $postParams
-
-        if ($result.StatusCode -ne 200)
-        {
-            echo "Invalid status code"
-            echo $result
-            exit 1
-        }
-        echo "Gist updated successfully"

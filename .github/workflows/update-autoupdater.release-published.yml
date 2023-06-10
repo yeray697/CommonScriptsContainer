@@ -1,0 +1,49 @@
+name: Update AutoUpdater when release is published
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+    - name: Update gist for AutoUpdater.NET
+      id: update_gist_for_autoupdater
+      env:
+        GITHUB_TOKEN: ${{ secrets.GIST_GITHUB_TOKEN }}
+        gistId: 358979da90e9bba8c0c22cf5318188ab
+        gistName: CommonScripts_Test.xml
+        # gistId: 484fa8d7871d44d1f67cc68a2c7d082f
+        # gistName: CommonScripts_LastVersion.xml
+      run: |
+        $tag_name="${{ github.event.release.name }}"
+        $apiHeaders=@{"Authorization"="Bearer $env:GITHUB_TOKEN"}
+        $updateGistEndpoint="https://api.github.com/gists/$env:gistId"
+        $gistContent = @"
+        <?xml version="1.0" encoding="UTF-8"?>
+        <item>
+          <version>$tag_name</version>
+          <url>https://github.com/yeray697/CommonScriptsContainer/releases/download/$tag_name/App.zip</url>
+          <changelog>https://github.com/yeray697/CommonScriptsContainer/releases</changelog>
+          <mandatory>false</mandatory>
+        </item>
+        "@
+        $postParams = @{
+          description = "XML for AutoUpdater.NET, used in CommonScriptsContainer application. Current version $tag_name";
+          files       = @{
+            $env:gistName = @{
+              content = $gistContent
+            }
+          }
+        }
+        $postParams = $postParams | ConvertTo-Json -Depth 2
+        $result = Invoke-WebRequest -Headers $apiHeaders -SkipHttpErrorCheck -Uri $updateGistEndpoint -Method POST -Body $postParams
+
+        if ($result.StatusCode -ne 200)
+        {
+            echo "Invalid status code"
+            echo $result
+            exit 1
+        }
+        echo "Gist updated successfully"
