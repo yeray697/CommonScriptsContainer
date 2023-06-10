@@ -1,11 +1,8 @@
 name: Update AutoUpdater when release is published
 
-# on:
-#   release:
-#     types: [published]
 on:
-  push:
-    branches: [ "feature/46/fix_build" ]
+  release:
+    types: [published]
 
 jobs:
   release:
