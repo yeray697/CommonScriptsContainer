@@ -1,8 +1,6 @@
 name: Update AutoUpdater when release is published
 
 on:
-  push:
-    branches: [ "feature/46/fix_build" ]
   release:
     types: [released]
 
@@ -14,10 +12,8 @@ jobs:
       id: update_gist_for_autoupdater
       env:
         GITHUB_TOKEN: ${{ secrets.GIST_GITHUB_TOKEN }}
-        gistId: 358979da90e9bba8c0c22cf5318188ab
-        gistName: CommonScripts_Test.xml
-        # gistId: 484fa8d7871d44d1f67cc68a2c7d082f
-        # gistName: CommonScripts_LastVersion.xml
+        gistId: 484fa8d7871d44d1f67cc68a2c7d082f
+        gistName: CommonScripts_LastVersion.xml
       run: |
         $tag_name="${{ github.event.release.name }}"
         $apiHeaders=@{"Authorization"="Bearer $env:GITHUB_TOKEN"}
