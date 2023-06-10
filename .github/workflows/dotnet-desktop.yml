@@ -22,7 +22,7 @@ jobs:
 
           $result = "skip"
 
-          $regexMatches = git show --unified=0 -- $appCsProj | Select-String $regex -AllMatches | 
+          $regexMatches = git diff head~1 head --unified=0 -- $appCsProj | Select-String $regex -AllMatches | 
               ForEach-Object {$_.Matches}
 
           if ($regexMatches.Length -eq 2) {
