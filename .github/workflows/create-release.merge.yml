@@ -2,7 +2,8 @@ name: Create release if needed
 
 on:
   push:
-    branches: [ "feature/3.0" ]
+    branches: [ "feature/46/fix_build" ]
+    #branches: [ "feature/3.0" ]
 
 jobs:
   check_version_changed:
