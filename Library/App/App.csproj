@@ -4,7 +4,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
-    <AssemblyVersion>3.0.3</AssemblyVersion>
+    <AssemblyVersion>3.0.2</AssemblyVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>CommonScripts</AssemblyName>
     <FileVersion>$(AssemblyVersion)</FileVersion>
