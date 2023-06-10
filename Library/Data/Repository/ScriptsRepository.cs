@@ -1,48 +1,29 @@
 ﻿using Contracts.Scripts.Base;
 using Data.Repository.Interfaces;
+using Data.Services.Interfaces;
 using LiteDB;
 
 namespace Data.Repository
 {
     public class ScriptsRepository : IScriptsRepository
     {
-        public void DeleteScript(string scriptId)
+        private readonly ILiteCollection<ScriptAbs> _dbSet;
+
+        public ScriptsRepository(IDatabaseService databaseService) 
         {
-            RunAction(scriptsCollection =>
-            {
-                scriptsCollection.Delete(new BsonValue(scriptId));
-            });
+            _dbSet = databaseService.ScriptsDbSet;
         }
+
+        public void DeleteScript(string scriptId)
+            => _dbSet.Delete(new BsonValue(scriptId));
 
         public List<ScriptAbs> GetScripts()
-        {
-            List<ScriptAbs> scripts = new();
-
-            RunAction(scriptsCollection =>
-            {
-                scripts = scriptsCollection.FindAll().ToList();
-            });
-
-            return scripts;
-        }
+            => _dbSet.FindAll().ToList();
 
         public void UpdateScript(ScriptAbs script)
-        {
-            RunAction(scriptsCollection =>
-            {
-                scriptsCollection.Update(script);
-            });
-        }
+            => _dbSet.Update(script);
 
         public void AddScript(ScriptAbs script)
-        {
-            RunAction(scriptsCollection =>
-            {
-                scriptsCollection.Insert(script);
-            });
-        }
-
-        private static void RunAction(Action<ILiteCollection<ScriptAbs>> action)
-            => DbAccessor.GetInstance().RunAction(db => action(db.GetCollection<ScriptAbs>("scripts")));
+            => _dbSet.Insert(script);
     }
 }

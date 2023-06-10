@@ -1,5 +1,5 @@
 ﻿using Contracts.Config;
-using Data.Service.Interfaces;
+using Data.Repository.Interfaces;
 
 namespace Data
 {
@@ -7,12 +7,12 @@ namespace Data
     {
         private static SettingsManager? _instance;
 
-        private readonly ISettingsService _settingsService;
+        private readonly ISettingsRepository _settingsRepository;
         private Settings? _settings;
 
-        private SettingsManager(ISettingsService settingsService)
+        private SettingsManager(ISettingsRepository settingsRepository)
         {
-            _settingsService = settingsService;
+            _settingsRepository = settingsRepository;
         }
 
         public static Settings Settings
@@ -21,9 +21,9 @@ namespace Data
         public static Settings CloneSettings
             => (Settings)GetInstance().GetSettings().Clone();
 
-        public static async Task InitInstanceAsync(ISettingsService settingsService)
+        public static async Task InitInstanceAsync(ISettingsRepository settingsRepository)
         {
-            _instance = new(settingsService);
+            _instance = new(settingsRepository);
             await _instance.InitConfigFilesAsync();
         }
 
@@ -42,7 +42,7 @@ namespace Data
 
         private async Task InitConfigFilesAsync()
         {
-            _settings = await _settingsService.ReadSettingsAsync();
+            _settings = await _settingsRepository.ReadSettingsAsync();
         }
 
         private Settings GetSettings()
@@ -52,7 +52,7 @@ namespace Data
         {
             if (newSettings.Equals(_settings))
                 return;
-            await _settingsService.UpdateSettingsAsync(newSettings);
+            await _settingsRepository.UpdateSettingsAsync(newSettings);
             _settings = newSettings;
         }
     }

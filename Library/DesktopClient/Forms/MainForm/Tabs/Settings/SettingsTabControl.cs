@@ -79,8 +79,8 @@ namespace DesktopClient.Forms.MainForm.Tabs.Settings
         {
             if (_newSettings == null)
                 return;
-            _newSettings.App.LoggingLevel = EnumUtils.Parse<LogLevel>(cbxConsoleMinLevel.SelectedValue!);
-            _newSettings.Core.LoggingLevel = EnumUtils.Parse<LogLevel>(cbxFileMinLevel.SelectedValue!);
+            _newSettings.App.LoggingLevel = EnumUtils.ParseOrDefault<LogLevel>(cbxConsoleMinLevel.SelectedValue!);
+            _newSettings.Core.LoggingLevel = EnumUtils.ParseOrDefault<LogLevel>(cbxFileMinLevel.SelectedValue!);
             _newSettings.App.DarkMode = swtIsDarkMode.Checked;
             _newSettings.Core.EnableGrpcServer = swtEnableGrpcServer.Checked;
             _newSettings.Core.EnableWebClient = swtEnableWebClient.Checked;
