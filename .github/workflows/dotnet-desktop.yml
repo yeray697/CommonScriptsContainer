@@ -5,8 +5,70 @@ on:
     branches: [ "feature/3.0" ]
 
 jobs:
+  check_version_changed:
+    outputs:
+      status: ${{ steps.check_version_changed.outputs.status }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+          
+      - name: Has Version changed?
+        id: check_version_changed
+        run: |
+          $appCsProj = ""
+          $regex = "([-+])\s*<AssemblyVersion>(.*)<\/AssemblyVersion>"
 
-  build:
+          $result = "skip"
+
+          $regexMatches = git show --unified=0 -- $appCsProj | Select-String $regex -AllMatches | 
+              ForEach-Object {$_.Matches}
+
+          if ($regexMatches.Length -eq 2) {
+              Write-Host "AssemblyVersion was modified"
+              Write-Host "Checking if versions are different..."
+              $firstSignFound = $regexMatches[0].Groups[1].Value
+              $firstVersionFound = $regexMatches[0].Groups[2].Value
+              $secondSignFound = $regexMatches[1].Groups[1].Value
+              $secondVersionFound = $regexMatches[1].Groups[2].Value
+
+              switch ($firstSignFound) {
+                  "-" { $prevVersion = $firstVersionFound; Break; }
+                  "+" { $newVersion = $firstVersionFound; Break; }
+              }
+
+              switch ($secondSignFound) {
+                  "-" { $prevVersion = $secondVersionFound; Break; }
+                  "+" { $newVersion = $secondVersionFound; Break; }
+              }
+
+              if (!$prevVersion) {
+                  throw "PrevVersion was not populated"
+              }
+
+              if (!$newVersion) {
+                  throw "NewVersion was not populated"
+              }
+              
+              if ($prevVersion -eq $newVersion) {
+                  Write-Host "AssemblyVersion has not changed"
+              }
+              else {
+                  Write-Host "Different AssemblyVersion"
+                  $result = "continue"
+              }
+              Write-Host "Previous Version: $prevVersion"
+              Write-Host "New Version: $newVersion"
+
+          }
+          elseif ($regexMatches.Length -ne 0) {
+              throw "Not the expected number of matches: $($regexMatches.Length)"
+          }
+          else {
+              Write-Host "AssemblyVersion not modified"
+          }
+          echo "status=$result >> $env:GITHUB_OUTPUT
+
+  release:
 
     runs-on: windows-latest 
 
@@ -24,6 +86,8 @@ jobs:
         fetch-depth: 0
 
     - name: Install .NET Core
+      needs: check_version_changed
+      if: needs.check_version_changed.outputs.status == 'continue'
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
