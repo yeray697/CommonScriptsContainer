@@ -1,15 +1,80 @@
-name: .NET Core Desktop
+name: Create release if needed
 
 on:
   push:
     branches: [ "feature/3.0" ]
 
 jobs:
-
-  build:
-
+  check_version_changed:
     runs-on: windows-latest 
+    outputs:
+      status: ${{ steps.check_version_changed.outputs.status }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+          
+      - name: Has Version changed?
+        id: check_version_changed
+        run: |
+          $appCsProj = ""
+          $regex = "([-+])\s*<AssemblyVersion>(.*)<\/AssemblyVersion>"
 
+          $result = "skip"
+
+          $regexMatches = git diff head~1 head --unified=0 -- $appCsProj | Select-String $regex -AllMatches | 
+              ForEach-Object {$_.Matches}
+
+          if ($regexMatches.Length -eq 2) {
+              Write-Host "AssemblyVersion was modified"
+              Write-Host "Checking if versions are different..."
+              $firstSignFound = $regexMatches[0].Groups[1].Value
+              $firstVersionFound = $regexMatches[0].Groups[2].Value
+              $secondSignFound = $regexMatches[1].Groups[1].Value
+              $secondVersionFound = $regexMatches[1].Groups[2].Value
+
+              switch ($firstSignFound) {
+                  "-" { $prevVersion = $firstVersionFound; Break; }
+                  "+" { $newVersion = $firstVersionFound; Break; }
+              }
+
+              switch ($secondSignFound) {
+                  "-" { $prevVersion = $secondVersionFound; Break; }
+                  "+" { $newVersion = $secondVersionFound; Break; }
+              }
+
+              if (!$prevVersion) {
+                  throw "PrevVersion was not populated"
+              }
+
+              if (!$newVersion) {
+                  throw "NewVersion was not populated"
+              }
+              
+              if ($prevVersion -eq $newVersion) {
+                  Write-Host "AssemblyVersion has not changed"
+              }
+              else {
+                  Write-Host "Different AssemblyVersion"
+                  $result = "continue"
+              }
+              Write-Host "Previous Version: $prevVersion"
+              Write-Host "New Version: $newVersion"
+
+          }
+          elseif ($regexMatches.Length -ne 0) {
+              throw "Not the expected number of matches: $($regexMatches.Length)"
+          }
+          else {
+              Write-Host "AssemblyVersion not modified"
+          }
+          echo "status=$result" >> $env:GITHUB_OUTPUT
+
+  release:
+    runs-on: windows-latest 
+    needs: check_version_changed
+    if: needs.check_version_changed.outputs.status == 'continue'
     env:
       App_Project_Path: Library\App\App.csproj
       App_PublishProfile_Path: Library\App\Properties\PublishProfiles\ProjectBuild.pubxml
@@ -21,7 +86,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0
+        fetch-depth: 1
 
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
@@ -55,7 +120,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         $tag_name="${{ steps.get_version.outputs.version }}"
-        $release_name="Release $tag_name"
+        $release_name=$tag_name
         $prerelease="false"
         $draft="true"
         $apiHeaders=@{"Authorization"="Bearer $env:GITHUB_TOKEN"}
@@ -131,41 +196,3 @@ jobs:
         asset_content_type: application/zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Update gist for AutoUpdater.NET
-      id: update_gist_for_autoupdater
-      env:
-        GITHUB_TOKEN: ${{ secrets.GIST_GITHUB_TOKEN }}
-        gistId: 484fa8d7871d44d1f67cc68a2c7d082f
-        gistName: CommonScripts_LastVersion.xml
-      run: |
-        $tag_name="${{ steps.get_version.outputs.version }}"
-        $apiHeaders=@{"Authorization"="Bearer $env:GITHUB_TOKEN"}
-        $updateGistEndpoint="https://api.github.com/gists/$env:gistId"
-        $gistContent = @"
-        <?xml version="1.0" encoding="UTF-8"?>
-        <item>
-          <version>$tag_name</version>
-          <url>https://github.com/yeray697/CommonScriptsContainer/releases/download/$tag_name/App.zip</url>
-          <changelog>https://github.com/yeray697/CommonScriptsContainer/releases</changelog>
-          <mandatory>false</mandatory>
-        </item>
-        "@
-        $postParams = @{
-          description = "XML for AutoUpdater.NET, used in CommonScriptsContainer application. Current version $tag_name";
-          files       = @{
-            $env:gistName = @{
-              content = $gistContent
-            }
-          }
-        }
-        $postParams = $postParams | ConvertTo-Json -Depth 2
-        $result = Invoke-WebRequest -Headers $apiHeaders -SkipHttpErrorCheck -Uri $updateGistEndpoint -Method POST -Body $postParams
-
-        if ($result.StatusCode -ne 200)
-        {
-            echo "Invalid status code"
-            echo $result
-            exit 1
-        }
-        echo "Gist updated successfully"
