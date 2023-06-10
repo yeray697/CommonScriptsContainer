@@ -5,8 +5,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyVersion>3.0.2</AssemblyVersion>
     <AssemblyName>CommonScripts</AssemblyName>
-    <AssemblyVersion>3.0.1</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <ProductVersion>$(AssemblyVersion)</ProductVersion>
     <Version>$(AssemblyVersion)</Version>
