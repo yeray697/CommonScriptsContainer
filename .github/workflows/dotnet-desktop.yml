@@ -2,7 +2,8 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "feature/3.0" ]
+    #branches: [ "feature/3.0" ]
+    branches: [ "feature/46/fix_build" ]
 
 jobs:
   check_version_changed:
