@@ -7,6 +7,7 @@ on:
 
 jobs:
   check_version_changed:
+    runs-on: windows-latest 
     outputs:
       status: ${{ steps.check_version_changed.outputs.status }}
     steps:
@@ -70,9 +71,9 @@ jobs:
           echo "status=$result >> $env:GITHUB_OUTPUT
 
   release:
-
     runs-on: windows-latest 
-
+    needs: check_version_changed
+    if: needs.check_version_changed.outputs.status == 'continue'
     env:
       App_Project_Path: Library\App\App.csproj
       App_PublishProfile_Path: Library\App\Properties\PublishProfiles\ProjectBuild.pubxml
@@ -87,8 +88,6 @@ jobs:
         fetch-depth: 0
 
     - name: Install .NET Core
-      needs: check_version_changed
-      if: needs.check_version_changed.outputs.status == 'continue'
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
