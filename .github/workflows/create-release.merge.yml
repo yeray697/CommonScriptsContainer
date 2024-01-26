@@ -26,7 +26,7 @@ jobs:
           $regexMatches = git diff head~1 head --unified=0 -- $appCsProj | Select-String $regex -AllMatches | 
               ForEach-Object {$_.Matches}
 
-          if ($regexMatches.Length -eq 2) {
+          if ($regexMatches.Length -eq 14) {
               Write-Host "AssemblyVersion was modified"
               Write-Host "Checking if versions are different..."
               $firstSignFound = $regexMatches[0].Groups[1].Value
