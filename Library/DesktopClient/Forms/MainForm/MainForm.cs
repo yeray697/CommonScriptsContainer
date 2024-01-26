@@ -14,6 +14,7 @@ namespace DesktopClient.Forms.MainForm
         private readonly TrayContextMenu _trayContextMenu;
         private readonly IWindowsRegistryService _windowsRegistryService;
 
+        private static bool systemShutdown = false;
         public MainForm(IScriptManagerService scriptManagerService, IWindowsRegistryService windowsRegistryService)
         {
             InitializeComponent();
@@ -44,13 +45,18 @@ namespace DesktopClient.Forms.MainForm
             runTabControl.NeedToRunStartupScripts(clientArguments.OnStartup.Value);
         }
         #endregion
-
         protected override void WndProc(ref Message m)
         {
             base.WndProc(ref m);
             if (m.Msg == NativeMethods.WM_SHOWME)
             {
+                Log.Debug("WM_SHOWME event triggered");
                 ShowForm();
+            }
+            else if (m.Msg == NativeMethods.WM_QUERYENDSESSION)
+            {
+                Log.Debug("WM_QUERYENDSESSION");
+                systemShutdown = true;
             }
         }
 
@@ -98,6 +104,14 @@ namespace DesktopClient.Forms.MainForm
             {
                 Hide();
                 this.ShowInTaskbar = false;
+            }
+        }
+        private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (systemShutdown)
+            {
+                systemShutdown = false;
+                runTabControl.RunShutdownScriptsAsync().Wait();
             }
         }
         private void AutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)

@@ -171,6 +171,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Common Scripts";
             this.Resize += new System.EventHandler(this.MainForm_Resize);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_Closing);
             this.mtcMain.ResumeLayout(false);
             this.mtpRun.ResumeLayout(false);
             this.mtpConsole.ResumeLayout(false);
