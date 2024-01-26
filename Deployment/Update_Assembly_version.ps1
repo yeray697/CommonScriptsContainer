@@ -1,4 +1,4 @@
-param([string]$newVersion)
+param([string]$newVersion = "3.1.0")
 function Update-AssemblyVersion
 {
     param
