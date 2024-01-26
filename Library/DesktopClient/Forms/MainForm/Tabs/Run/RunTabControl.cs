@@ -52,6 +52,18 @@ namespace DesktopClient.Forms.MainForm.Tabs.Run
         {
             _runScriptsOnStartup = runScriptsOnStartup;
         }
+        public async Task RunShutdownScriptsAsync()
+        {
+            var onShutdownScripts = GetRunningScriptsByType<ScriptOnShutdown>().ToList();
+            if (!onShutdownScripts.Any())
+                return;
+            foreach (var script in onShutdownScripts)
+            {
+                await _scriptManagerService!.RunScriptAsync(script);
+            }
+            // Grace time before shutdown
+            await Task.Delay(10000);
+        }
         public async Task SwapScriptStatusAsync(ScriptAbs? script)
         {
             await Task.Run(() => ScriptStatusButtonClickedAsync(script));

@@ -5,7 +5,8 @@ namespace DesktopClient.Utils
     public class NativeMethods
     {
         public static readonly int WM_SHOWME = RegisterWindowMessage("WM_SHOWME");
-        
+        public static readonly int WM_QUERYENDSESSION = 0x11;
+
         private const int HWND_BROADCAST = 0xffff;
 
         public static void BringInstanceToForeground()
