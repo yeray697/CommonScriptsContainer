@@ -1,5 +1,6 @@
 ﻿using AutoUpdaterDotNET;
 using Contracts.Scripts.Base;
+using DesktopClient.Extension;
 using DesktopClient.Forms.Base;
 using DesktopClient.Models;
 using DesktopClient.Service.Interfaces;
@@ -18,6 +19,7 @@ namespace DesktopClient.Forms.MainForm
         public MainForm(IScriptManagerService scriptManagerService, IWindowsRegistryService windowsRegistryService)
         {
             InitializeComponent();
+            this.OnFormClosingAsync(MainForm_ClosingAsync);
             _windowsRegistryService = windowsRegistryService;
 
             var scripts = runTabControl.InitTabController(scriptManagerService);
@@ -106,12 +108,12 @@ namespace DesktopClient.Forms.MainForm
                 this.ShowInTaskbar = false;
             }
         }
-        private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private async Task MainForm_ClosingAsync(object? sender, FormClosingAsyncEventArgs e)
         {
             if (systemShutdown)
             {
                 systemShutdown = false;
-                runTabControl.RunShutdownScriptsAsync().Wait();
+                await runTabControl.RunShutdownScriptsAsync();
             }
         }
         private void AutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)
