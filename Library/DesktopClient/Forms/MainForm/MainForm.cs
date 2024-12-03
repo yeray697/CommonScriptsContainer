@@ -57,7 +57,7 @@ namespace DesktopClient.Forms.MainForm
             }
             else if (m.Msg == NativeMethods.WM_QUERYENDSESSION)
             {
-                Log.Debug("WM_QUERYENDSESSION");
+                Log.Information("WM_QUERYENDSESSION event received");
                 systemShutdown = true;
             }
         }
@@ -110,11 +110,18 @@ namespace DesktopClient.Forms.MainForm
         }
         private async Task MainForm_ClosingAsync(object? sender, FormClosingAsyncEventArgs e)
         {
+            Log.Information("Form close event called");
             if (systemShutdown)
             {
+                Log.Information("Closing because of system shutdown");
                 systemShutdown = false;
                 await runTabControl.RunShutdownScriptsAsync();
             }
+            else
+            {
+                Log.Information("Normal Close");
+            }
+            Log.Information("Finished closing");
         }
         private void AutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)
         {
