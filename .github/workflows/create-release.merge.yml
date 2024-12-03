@@ -18,12 +18,11 @@ jobs:
       - name: Has Version changed?
         id: check_version_changed
         run: |
-          $appCsProj = ""
           $regex = "([-+])\s*<AssemblyVersion>(.*)<\/AssemblyVersion>"
 
           $result = "skip"
 
-          $regexMatches = git diff head~1 head --unified=0 -- $appCsProj | Select-String $regex -AllMatches | 
+          $regexMatches = git diff head~1 head --unified=0 | Select-String $regex -AllMatches | 
               ForEach-Object {$_.Matches}
 
           if ($regexMatches.Length -eq 14) {
